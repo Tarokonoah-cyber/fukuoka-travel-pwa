@@ -1,21 +1,62 @@
-import { itinerary } from "@/data/itinerary";
+export const TRIP_START_DATE = "2026-08-02";
+export const TRIP_END_DATE = "2026-08-06";
+export const TRIP_TIME_ZONE = "Asia/Taipei";
 
-const toLocalDate = (value: Date) => new Date(value.getFullYear(), value.getMonth(), value.getDate());
-const fromISO = (iso: string) => { const [y,m,d]=iso.split("-").map(Number); return new Date(y,m-1,d); };
+export type TripStatus = {
+  phase: "before" | "during" | "after";
+  countdown: number;
+  day: number;
+  activeDate: string;
+};
+
+const taipeiDateFormatter = new Intl.DateTimeFormat("en-CA", {
+  timeZone: TRIP_TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+function dateKeyToUtcMs(dateKey: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateKey);
+  if (!match) throw new Error(`Invalid date key: ${dateKey}`);
+  return Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+}
+
+export function getTaipeiDateKey(now = new Date()) {
+  const parts = taipeiDateFormatter.formatToParts(now);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+export function getTripStatusForDateKey(dateKey: string): TripStatus {
+  const today = dateKeyToUtcMs(dateKey);
+  const start = dateKeyToUtcMs(TRIP_START_DATE);
+  const end = dateKeyToUtcMs(TRIP_END_DATE);
+  const dayMs = 86_400_000;
+
+  if (today < start) {
+    return { phase: "before", countdown: Math.ceil((start - today) / dayMs), day: 1, activeDate: TRIP_START_DATE };
+  }
+  if (today > end) {
+    return { phase: "after", countdown: 0, day: 5, activeDate: TRIP_END_DATE };
+  }
+
+  const day = Math.floor((today - start) / dayMs) + 1;
+  return { phase: "during", countdown: 0, day, activeDate: dateKey };
+}
 
 export function getTripStatus(now = new Date()) {
-  const today=toLocalDate(now), start=fromISO("2026-08-02"), end=fromISO("2026-08-06");
-  const diff=Math.ceil((start.getTime()-today.getTime())/86400000);
-  if(today<start) return {phase:"before" as const, countdown:diff, day:1, activeDate:"2026-08-02"};
-  if(today>end) return {phase:"after" as const, countdown:0, day:5, activeDate:"2026-08-06"};
-  const day=Math.floor((today.getTime()-start.getTime())/86400000)+1;
-  return {phase:"during" as const, countdown:0, day, activeDate:itinerary[day-1].date};
+  return getTripStatusForDateKey(getTaipeiDateKey(now));
 }
 
-export function formatTripDate(iso:string){
-  return new Intl.DateTimeFormat("zh-TW",{month:"numeric",day:"numeric",weekday:"short"}).format(fromISO(iso));
+function dateKeyToNoonUtc(dateKey: string) {
+  return new Date(dateKeyToUtcMs(dateKey) + 12 * 60 * 60 * 1000);
 }
 
-export function formatToday(now=new Date()){
-  return new Intl.DateTimeFormat("zh-TW",{year:"numeric",month:"long",day:"numeric",weekday:"short"}).format(now);
+export function formatTripDate(iso: string) {
+  return new Intl.DateTimeFormat("zh-TW", { timeZone: TRIP_TIME_ZONE, month: "numeric", day: "numeric", weekday: "short" }).format(dateKeyToNoonUtc(iso));
+}
+
+export function formatToday(now = new Date()) {
+  return new Intl.DateTimeFormat("zh-TW", { timeZone: TRIP_TIME_ZONE, year: "numeric", month: "long", day: "numeric", weekday: "short" }).format(now);
 }

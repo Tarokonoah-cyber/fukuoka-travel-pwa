@@ -9,6 +9,7 @@ import { useTripStatus } from "@/lib/useTripStatus";
 
 export default function TodayPage(){
   const status=useTripStatus();
+  if(status.phase==="loading")return <div className="page-enter"><PageHeader eyebrow="QUICK VIEW" title="今日行程" description="旅行中最常看的這一頁"/><NoticeBox tone="blue" title="正在確認日期">正在以台北時間確認今日旅程狀態。</NoticeBox></div>;
   const day=itinerary[status.day-1];
   const nextTransport=day.items.find(item=>item.type==="交通")??day.items[0];
   return <div className="page-enter"><PageHeader eyebrow="QUICK VIEW" title="今日行程" description="旅行中最常看的這一頁"/>
@@ -21,6 +22,7 @@ export default function TodayPage(){
       <div><span>休息點</span><p>{day.restStops.join(" · ")}</p></div>
     </section>
     <aside className="today-memo"><span>媽媽友善 MEMO</span><p>{day.momFriendlyNote}</p><div><b>步行 {day.walkingLevel}</b><b>室內 {day.indoorRatio}%</b></div></aside>
+    <Link className="map-entry-link" href="/map"><span>旅程點位</span><strong>查看旅程地圖</strong><b aria-hidden>→</b></Link>
     <section><div className="section-header"><h2>{day.title}</h2><span>{day.items.length} 段安排</span></div><DayTimeline day={day}/></section>
   </div>;
 }

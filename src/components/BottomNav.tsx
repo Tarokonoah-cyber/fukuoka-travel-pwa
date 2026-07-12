@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 const items=[
   {href:"/",label:"首頁",mark:"冊"},{href:"/today",label:"今日",mark:"今"},{href:"/itinerary",label:"行程",mark:"程"},
-  {href:"/packing",label:"清單",mark:"單"},{href:"/emergency",label:"緊急",mark:"急"},
+  {href:"/map",label:"地圖",mark:"圖"},{href:"/packing",label:"清單",mark:"單"},
 ];
 export function BottomNav(){
   const pathname=usePathname();

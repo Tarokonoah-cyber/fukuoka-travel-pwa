@@ -312,6 +312,68 @@ h1, h2, h3, p { margin-top: 0; }
 .setting-row.danger button { border-color: #d3aaa4; color: var(--danger); }
 .success-message { padding: 12px; border-left: 3px solid var(--accent); background: var(--accent-soft); font-size: 15px; }
 
+/* Trip map */
+.map-entry-link {
+  display: grid;
+  min-height: 62px;
+  align-items: center;
+  margin: 14px 0 20px;
+  padding: 9px 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--paper);
+  transition: background 180ms ease, transform 180ms ease;
+}
+.map-entry-link:active { background: var(--accent-soft); transform: translateX(2px); }
+.map-entry-link span { grid-column: 1; color: var(--muted); font-size: 13px; }
+.map-entry-link strong { grid-column: 1; font-size: 16px; }
+.map-entry-link > b { grid-row: 1 / 3; grid-column: 2; color: var(--accent); font-size: 18px; }
+.map-day-note { display: flex; min-height: 52px; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; padding: 8px 11px; border-left: 3px solid var(--warning); background: var(--warning-soft); }
+.map-day-note span { color: var(--warning); font: 700 10px/1.2 var(--font-geist-mono), monospace; letter-spacing: .08em; white-space: nowrap; }
+.map-day-note strong { font-size: 14px; text-align: right; }
+.map-canvas-wrap { position: relative; width: 100%; overflow: hidden; border: 1px solid var(--line-strong); background: #e5e5df; }
+.trip-map { width: 100%; height: clamp(320px, 46vh, 380px); background: #e5e5df; }
+.map-loading, .map-fallback { display: flex; width: 100%; height: clamp(320px, 46vh, 380px); align-items: center; justify-content: center; flex-direction: column; gap: 10px; border: 1px solid var(--line-strong); background: var(--paper-alt); color: var(--muted); font-size: 15px; text-align: center; }
+.map-loading span { width: 24px; height: 24px; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: map-spin 700ms linear infinite; }
+@keyframes map-spin { to { transform: rotate(360deg); } }
+.map-fallback { padding: 24px; }
+.map-fallback strong { color: var(--ink); font-size: 17px; }
+.map-fallback p { margin: 0; }
+.tile-fallback { position: absolute; z-index: 600; right: 8px; bottom: 8px; left: 8px; padding: 8px 10px; border: 1px solid var(--line); background: rgba(250, 247, 240, .94); color: var(--muted); font-size: 13px; text-align: center; }
+.map-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 0 4px; }
+.map-filters button { min-width: 58px; min-height: 44px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 0; background: var(--paper); color: var(--ink); font-size: 14px; }
+.map-filters button.active { border-color: var(--accent); background: var(--accent); color: white; font-weight: 700; }
+.map-place-list { margin-top: 4px; }
+.map-place-row { display: grid; min-width: 0; min-height: 86px; align-items: center; padding: 11px 2px; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; border-bottom: 1px solid var(--line); }
+.map-place-row > div { min-width: 0; }
+.map-place-row span { color: var(--accent); font-size: 12px; font-weight: 700; }
+.map-place-row h3 { margin: 2px 0; font-size: 17px; line-height: 1.4; }
+.map-place-row p { display: -webkit-box; margin: 3px 0 0; overflow: hidden; color: var(--muted); font-size: 14px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.map-place-row > a { display: inline-flex; min-width: 66px; min-height: 44px; align-items: center; justify-content: center; border: 1px solid var(--accent); color: var(--accent); font-size: 14px; font-weight: 700; }
+.trip-marker { display: grid !important; place-items: center; border: 2px solid var(--paper); border-radius: 50%; background: var(--accent); color: white; box-shadow: 0 1px 4px rgba(32, 35, 31, .28); }
+.trip-marker span { display: grid; width: 100%; height: 100%; place-items: center; font-size: 12px; font-weight: 800; line-height: 1; }
+.marker-hotel, .marker-baseball { background: var(--warning); }
+.marker-transport { background: #4f6d86; }
+.marker-restaurant { background: #96614b; }
+.marker-shopping { background: #6c6f92; }
+.marker-rest { background: #68806b; }
+.marker-wishlist { background: #8b6a7d; }
+.leaflet-container { z-index: 0; font-family: inherit; }
+.leaflet-control-zoom a { width: 44px !important; height: 44px !important; font-size: 21px !important; line-height: 44px !important; }
+.leaflet-control-attribution { max-width: calc(100vw - 64px); font-size: 9px !important; }
+.leaflet-popup-content-wrapper { max-width: calc(100vw - 54px); border: 1px solid var(--line-strong); border-radius: 0; background: var(--paper); color: var(--ink); box-shadow: 0 3px 14px rgba(32, 35, 31, .2); }
+.leaflet-popup-tip { background: var(--paper); }
+.leaflet-popup-content { width: auto !important; margin: 14px 16px; }
+.leaflet-popup-close-button { width: 44px !important; height: 44px !important; color: var(--ink) !important; font-size: 22px !important; line-height: 42px !important; }
+.map-popup { min-width: 0; padding-top: 3px; }
+.map-popup > span { display: block; padding-right: 20px; color: var(--accent); font-size: 11px; font-weight: 700; }
+.map-popup > strong { display: block; margin-top: 3px; font-size: 17px; line-height: 1.35; }
+.map-popup p { margin: 7px 0; font-size: 13px; line-height: 1.45; }
+.map-popup-memo { padding: 7px 8px; background: var(--warning-soft); }
+.map-popup-memo b { display: block; color: var(--warning); font-size: 11px; }
+.map-popup a { display: inline-flex; min-height: 44px; align-items: center; margin-top: 5px; color: var(--accent); font-size: 14px; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
+
 @media (min-width: 600px) {
   .page-frame { padding: 34px 28px 120px; }
   .travel-cover { padding: 24px; }
@@ -341,6 +403,9 @@ h1, h2, h3, p { margin-top: 0; }
   .timeline-item { grid-template-columns: 47px 10px minmax(0, 1fr); gap: 5px; }
   .timeline-item::before { left: 57px; }
   .today-quick-grid > div { grid-template-columns: 86px minmax(0, 1fr); }
+  .trip-map, .map-loading, .map-fallback { height: 320px; }
+  .map-day-note { align-items: flex-start; flex-direction: column; gap: 3px; }
+  .map-day-note strong { text-align: left; }
 }
 
 @media (prefers-reduced-motion: reduce) {
