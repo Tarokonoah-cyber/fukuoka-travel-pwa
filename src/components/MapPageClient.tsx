@@ -23,7 +23,7 @@ export function MapPageClient() {
   const [category, setCategory] = useState<"all" | PlaceCategory>("all");
   const filteredPlaces = useMemo(() => category === "all" ? places : places.filter((place) => place.category === category), [category]);
   const activeCount = places.filter((place) => place.day === status.activeDate).length;
-  const statusLabel = status.phase === "loading" ? "正在以台北時間確認日期" : status.phase === "before" ? `出發前預覽 · DAY 1 有 ${activeCount} 個相關點位` : status.phase === "during" ? `今天是 DAY ${status.day} · ${activeCount} 個相關點位` : "旅程已結束 · 地圖保留完整點位";
+  const statusLabel = status.phase === "pending" ? "正在以台北時間確認日期" : status.phase === "before" ? `出發前預覽 · DAY 1 有 ${activeCount} 個相關點位` : status.phase === "active" ? `今天是 DAY ${status.day} · ${activeCount} 個相關點位` : "旅程已結束 · 地圖保留完整點位";
 
   return <>
     <div className="map-day-note"><span>DATE NOTE</span><strong>{statusLabel}</strong></div>

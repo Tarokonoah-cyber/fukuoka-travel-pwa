@@ -2,8 +2,10 @@ export const TRIP_START_DATE = "2026-08-02";
 export const TRIP_END_DATE = "2026-08-06";
 export const TRIP_TIME_ZONE = "Asia/Taipei";
 
+export type TripPhase = "pending" | "before" | "active" | "after";
+
 export type TripStatus = {
-  phase: "before" | "during" | "after";
+  phase: Exclude<TripPhase, "pending">;
   countdown: number;
   day: number;
   activeDate: string;
@@ -42,7 +44,7 @@ export function getTripStatusForDateKey(dateKey: string): TripStatus {
   }
 
   const day = Math.floor((today - start) / dayMs) + 1;
-  return { phase: "during", countdown: 0, day, activeDate: dateKey };
+  return { phase: "active", countdown: 0, day, activeDate: dateKey };
 }
 
 export function getTripStatus(now = new Date()) {

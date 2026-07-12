@@ -374,6 +374,50 @@ h1, h2, h3, p { margin-top: 0; }
 .map-popup-memo b { display: block; color: var(--warning); font-size: 11px; }
 .map-popup a { display: inline-flex; min-height: 44px; align-items: center; margin-top: 5px; color: var(--accent); font-size: 14px; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
 
+/* Weather and currency travel tools */
+.today-tools { margin: 15px 0 5px; border-top: 1px solid var(--line-strong); }
+.today-tools > a { position: relative; display: grid; min-width: 0; min-height: 86px; padding: 11px 34px 11px 2px; border-bottom: 1px solid var(--line); }
+.today-tools span { color: var(--accent); font: 700 10px/1.3 var(--font-geist-mono), monospace; letter-spacing: .09em; }
+.today-tools strong { margin-top: 2px; font-size: 16px; line-height: 1.4; }
+.today-tools p { margin: 3px 0 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+.today-tools b { position: absolute; top: 50%; right: 8px; color: var(--accent); font-size: 18px; transform: translateY(-50%); }
+.weather-loading { display: grid; min-height: 300px; align-content: start; gap: 11px; padding-top: 8px; color: var(--muted); font-size: 15px; }
+.weather-loading div { height: 70px; border: 1px solid var(--line); background: var(--paper-alt); animation: tool-pulse 1.2s ease-in-out infinite alternate; }
+@keyframes tool-pulse { from { opacity: .55; } to { opacity: 1; } }
+.weather-current { display: grid; min-height: 148px; align-items: center; padding: 20px 16px; grid-template-columns: minmax(0, 1fr) auto; border: 1px solid var(--ink); background: var(--paper); }
+.weather-current span { color: var(--accent); font: 700 10px/1.3 var(--font-geist-mono), monospace; letter-spacing: .09em; }
+.weather-current h2 { margin: 8px 0 2px; font-size: 27px; font-weight: 600; }
+.weather-current p { margin: 0; color: var(--muted); font-size: 15px; }
+.weather-current > strong { font: 650 clamp(48px, 15vw, 68px)/1 var(--font-geist-mono), monospace; letter-spacing: -.07em; }
+.weather-advice { margin: 10px 0 0; padding: 11px 13px; border-left: 3px solid var(--warning); background: var(--warning-soft); font-size: 15px; }
+.weather-advice b { display: block; color: var(--warning); font-size: 12px; }
+.weather-updated { padding: 10px 2px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; text-align: right; }
+.forecast-list { border-top: 2px solid var(--ink); }
+.forecast-row { display: grid; min-width: 0; min-height: 116px; align-items: start; padding: 12px 2px; grid-template-columns: minmax(88px, 1.2fr) 54px minmax(90px, 1fr); gap: 8px; border-bottom: 1px solid var(--line); }
+.forecast-date span, .forecast-date strong { display: block; }
+.forecast-date span { color: var(--accent); font-size: 13px; font-weight: 700; }
+.forecast-date strong { margin-top: 4px; font-size: 16px; }
+.forecast-temp { display: flex; align-items: baseline; gap: 3px; }
+.forecast-temp strong { font: 700 23px/1.2 var(--font-geist-mono), monospace; }
+.forecast-temp span { color: var(--muted); font: 600 14px/1.2 var(--font-geist-mono), monospace; }
+.forecast-detail span { display: block; color: var(--muted); font-size: 13px; }
+.forecast-row > p { margin: 7px 0 0; grid-column: 1 / -1; font-size: 14px; line-height: 1.45; }
+.forecast-row .forecast-wait { align-self: center; margin: 0; grid-row: 1; grid-column: 2 / -1; color: var(--muted); }
+.currency-sheet { border: 1px solid var(--ink); background: var(--paper); }
+.currency-direction { display: grid; min-height: 62px; align-items: center; padding: 8px 14px; grid-template-columns: 1fr 54px 1fr; border-bottom: 1px solid var(--line); text-align: center; }
+.currency-direction span { font: 700 18px/1.2 var(--font-geist-mono), monospace; }
+.currency-direction button { min-width: 48px; min-height: 48px; border: 1px solid var(--line-strong); background: var(--paper-alt); color: var(--accent); font-size: 23px; }
+.currency-input { display: block; padding: 14px; border-bottom: 1px solid var(--line); }
+.currency-input span { display: block; margin-bottom: 4px; color: var(--muted); font-size: 13px; }
+.currency-input input { width: 100%; min-width: 0; height: 64px; padding: 0 10px; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; background: transparent; color: var(--ink); font: 650 34px/1 var(--font-geist-mono), monospace; }
+.currency-result { display: flex; min-height: 118px; justify-content: center; flex-direction: column; padding: 15px; background: var(--accent-soft); }
+.currency-result span { color: var(--accent); font-size: 13px; font-weight: 700; }
+.currency-result strong { margin-top: 5px; font: 700 clamp(30px, 10vw, 44px)/1.25 var(--font-geist-mono), monospace; overflow-wrap: anywhere; }
+.currency-rate { display: flex; min-height: 46px; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+.quick-amounts { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+.quick-amounts button { min-height: 46px; padding: 0 12px; border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); font-size: 14px; font-weight: 700; }
+.quick-amounts button:active { border-color: var(--accent); background: var(--accent-soft); }
+
 @media (min-width: 600px) {
   .page-frame { padding: 34px 28px 120px; }
   .travel-cover { padding: 24px; }
@@ -389,6 +433,8 @@ h1, h2, h3, p { margin-top: 0; }
   .add-form { grid-template-columns: 1fr 160px 82px; }
   .add-form button { align-self: end; grid-column: auto; }
   .reminder-list { grid-template-columns: 1fr 1fr; }
+  .today-tools { display: grid; grid-template-columns: 1fr 1fr; }
+  .today-tools > a:first-child { border-right: 1px solid var(--line); }
 }
 
 @media (max-width: 374px) {
@@ -406,6 +452,8 @@ h1, h2, h3, p { margin-top: 0; }
   .trip-map, .map-loading, .map-fallback { height: 320px; }
   .map-day-note { align-items: flex-start; flex-direction: column; gap: 3px; }
   .map-day-note strong { text-align: left; }
+  .forecast-row { grid-template-columns: minmax(84px, 1.1fr) 52px minmax(82px, 1fr); gap: 5px; }
+  .currency-rate { align-items: flex-start; flex-direction: column; gap: 1px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -5,7 +5,7 @@ import { HomeTodayStatus } from "@/components/HomeTodayStatus";
 
 const menu=[
   ["/today","今日","現在要去哪裡"],["/itinerary","行程","五天完整安排"],["/map","地圖","旅程點位與導航"],["/packing","清單","出發前確認"],
-  ["/shopping","購物","伴手禮與必買"],["/wishlist","願望","想去的地方"],["/transport","交通","少轉乘路線"],
+  ["/weather","天氣","福岡預報與提醒"],["/currency","匯率","日幣台幣快速換算"],["/shopping","購物","伴手禮與必買"],["/wishlist","願望","想去的地方"],["/transport","交通","少轉乘路線"],
   ["/documents","文件","非敏感摘要"],["/emergency","緊急","電話與處理方式"],
 ] as const;
 
