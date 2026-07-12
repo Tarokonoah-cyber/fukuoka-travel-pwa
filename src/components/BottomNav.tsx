@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const items=[
-  {href:"/",label:"目次",mark:"冊"},{href:"/today",label:"今日",mark:"今"},{href:"/itinerary",label:"行程",mark:"程"},
+  {href:"/",label:"首頁",mark:"冊"},{href:"/today",label:"今日",mark:"今"},{href:"/itinerary",label:"行程",mark:"程"},
   {href:"/packing",label:"清單",mark:"單"},{href:"/emergency",label:"緊急",mark:"急"},
 ];
 export function BottomNav(){

@@ -1,5 +1,9 @@
 "use client";
 import { itinerary } from "@/data/itinerary";
 import { useTripStatus } from "@/lib/useTripStatus";
-import { TodaySummaryCard } from "./TodaySummaryCard";
-export function HomeTodayStatus(){const status=useTripStatus();return <section className="home-today"><div className="section-header"><h2>今日狀態</h2><span>{status.phase==="before"?"出發前預覽":status.phase==="after"?"旅程回顧":"旅行中"}</span></div><TodaySummaryCard day={itinerary[status.day-1]}/></section>}
+export function HomeTodayStatus(){const status=useTripStatus();const day=itinerary[status.day-1];return <section className="home-today">
+  <div className="home-today-head"><span>{status.phase==="before"?"FIRST DAY PREVIEW":status.phase==="after"?"TRIP ARCHIVE":`DAY ${day.day} · TODAY`}</span><strong>今日重點</strong></div>
+  <h2>{day.highlight}</h2>
+  <div className="home-today-tags"><span>步行 {day.walkingLevel}</span><span>室內 {day.indoorRatio}%</span><span>雨備已記</span></div>
+  <p><b>雨天</b>{day.rainPlan}</p>
+  </section>}
