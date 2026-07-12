@@ -1,65 +1,19 @@
-import Image from "next/image";
+import { CountdownCard } from "@/components/CountdownCard";
+import { HomeMenuCard } from "@/components/HomeMenuCard";
+import { HomeTodayStatus } from "@/components/HomeTodayStatus";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+const menu=[
+  ["/today","今日","現在要去哪裡"],["/itinerary","行程","五天完整安排"],["/packing","清單","出發前確認"],
+  ["/shopping","購物","伴手禮與必買"],["/wishlist","願望","想去的地方"],["/transport","交通","少轉乘路線"],
+  ["/documents","文件","非敏感摘要"],["/emergency","緊急","電話與處理方式"],["/settings","設定","本機資料管理"],
+] as const;
+
+export default function Home(){
+  return <div className="home-page page-enter">
+    <header className="home-header"><div><span className="eyebrow">TRAVEL NOTE · 2026</span><h1>福岡 <b>8/2–8/6</b></h1><p>Fukuoka Travel Handbook</p></div><div className="trip-seal"><span>2 人</span><strong>5日</strong><small>4 夜</small></div></header>
+    <CountdownCard />
+    <section className="home-facts"><span><small>住宿</small><strong>Nishitetsu Croom Hakata</strong></span><span><small>旅程</small><strong>博多・天神・棒球</strong></span></section>
+    <section className="home-menu" aria-labelledby="menu-title"><div className="section-header"><h2 id="menu-title">旅程目次</h2><span>點一下就出發</span></div><div className="menu-grid">{menu.map((m,i)=><HomeMenuCard key={m[0]} href={m[0]} label={m[1]} detail={m[2]} index={i+1}/>)}</div></section>
+    <HomeTodayStatus />
+  </div>
 }

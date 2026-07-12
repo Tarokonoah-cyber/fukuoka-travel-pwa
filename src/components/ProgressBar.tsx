@@ -1,0 +1,1 @@
+export function ProgressBar({value,total}:{value:number;total:number}){const pct=total?Math.round(value/total*100):0;return <div className="progress-wrap"><div className="progress-label"><span>已完成 {value} / {total}</span><span>{pct}%</span></div><div className="progress-track"><span style={{width:`${pct}%`}} /></div></div>}

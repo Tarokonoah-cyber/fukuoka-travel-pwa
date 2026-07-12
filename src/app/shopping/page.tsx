@@ -1,0 +1,2 @@
+import { Checklist } from "@/components/Checklist"; import { PageHeader } from "@/components/PageHeader"; import { shoppingCategories,shoppingItems } from "@/data/shopping"; import { STORAGE_KEYS } from "@/lib/storage";
+export default function ShoppingPage(){return <div className="page-enter"><PageHeader eyebrow="SHOPPING NOTE" title="必買清單" description="價格是日幣估值，現場再確認。"/><Checklist items={shoppingItems} categories={shoppingCategories} storageKey={STORAGE_KEYS.shopping} customPlaceholder="新增想買的東西"/></div>}
