@@ -4,6 +4,7 @@ import { useState } from "react";
 import { NoticeBox } from "@/components/NoticeBox";
 import { PageHeader } from "@/components/PageHeader";
 import { clearExpenses } from "@/lib/budgetStorage";
+import { clearPrepChecks } from "@/lib/prepStorage";
 import {
   STORAGE_KEYS,
   clearAllTripData,
@@ -17,7 +18,7 @@ const checklistActions: [string, string, StorageKey | null][] = [
   ["清除行李清單", "只清除行李清單的勾選與自訂項目。", STORAGE_KEYS.packing],
   ["清除必買清單", "只清除必買清單的勾選與自訂項目。", STORAGE_KEYS.shopping],
   ["清除願望清單", "只清除願望清單的勾選與自訂項目。", STORAGE_KEYS.wishlist],
-  ["清除全部本機資料", "包含清單、天氣快取、匯率快取與花費紀錄。", null],
+  ["清除全部本機資料", "包含清單、行前檢查、天氣快取、匯率快取與花費紀錄。", null],
 ];
 
 export default function SettingsPage() {
@@ -51,12 +52,12 @@ export default function SettingsPage() {
 
   return (
     <div className="page-enter">
-      <PageHeader eyebrow="ON THIS PHONE" title="設定" description="管理這支手機上的清單、快取、花費紀錄與離線資料。" />
+      <PageHeader eyebrow="ON THIS PHONE" title="設定" description="管理這支手機上的清單、快取、花費紀錄、行前檢查與離線資料。" />
       <NoticeBox tone="blue" title="PWA 離線資料">
         主要行程、交通、文件與緊急資訊會透過 PWA cache 保留在手機上；清單與花費紀錄則存在 localStorage。
       </NoticeBox>
       <NoticeBox tone="plain" title="天氣 / 匯率 / 花費">
-        天氣與匯率會保留最近一次成功資料；花費紀錄只存在這支手機，不會同步到雲端。
+        天氣與匯率會保留最近一次成功資料；花費與行前檢查只存在這支手機，不會同步到雲端。
       </NoticeBox>
 
       {message && (
@@ -82,6 +83,24 @@ export default function SettingsPage() {
               </button>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="prep-data-title">
+        <div className="section-header">
+          <h2 id="prep-data-title">行前檢查</h2>
+          <span>prep</span>
+        </div>
+        <div className="settings-list">
+          <div className="setting-row">
+            <div>
+              <strong>清除行前檢查勾選</strong>
+              <p>只清除待補資料的完成狀態，不會刪除行李、必買、願望清單或花費紀錄。</p>
+            </div>
+            <button type="button" onClick={() => clearToolCache("清除行前檢查勾選", clearPrepChecks)}>
+              清除
+            </button>
+          </div>
         </div>
       </section>
 

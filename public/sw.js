@@ -1,4 +1,4 @@
-const VERSION = "fukuoka-pwa-3c-20260713";
+const VERSION = "fukuoka-pwa-3d-20260713";
 const PAGE_CACHE = `${VERSION}-pages`;
 const STATIC_CACHE = `${VERSION}-static`;
 const IMAGE_CACHE = `${VERSION}-images`;
@@ -12,6 +12,7 @@ const OFFLINE_PAGES = [
   "/itinerary",
   "/map",
   "/budget",
+  "/prep",
   "/weather",
   "/currency",
   "/packing",

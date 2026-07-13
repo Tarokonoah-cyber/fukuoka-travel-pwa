@@ -613,6 +613,116 @@ h1, h2, h3, p { margin-top: 0; }
 .comfort-check strong { font-size: 16px; }
 .comfort-check p { margin: 2px 0 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
 
+/* Pre-trip checklist */
+.prep-entry-link {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 82px;
+  margin: 0 0 16px;
+  padding: 12px 38px 12px 12px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  background: var(--paper);
+  transition: background 180ms ease, transform 180ms ease;
+}
+.prep-entry-link:active { background: var(--accent-soft); transform: translateX(2px); }
+.prep-entry-link span { color: var(--accent); font: 700 10px/1.3 var(--font-geist-mono), monospace; letter-spacing: .09em; }
+.prep-entry-link strong { margin-top: 2px; font-size: 16px; line-height: 1.4; }
+.prep-entry-link p { margin: 3px 0 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+.prep-entry-link b { position: absolute; top: 50%; right: 12px; color: var(--accent); font-size: 18px; transform: translateY(-50%); }
+.prep-summary {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+.prep-summary-main span { color: var(--accent); font: 700 10px/1.3 var(--font-geist-mono), monospace; letter-spacing: .09em; }
+.prep-summary-main h2 { margin: 5px 0 2px; font-size: clamp(28px, 9vw, 40px); font-weight: 650; letter-spacing: -.04em; line-height: 1.15; }
+.prep-summary-main p { margin: 7px 0 0; color: var(--muted); font-size: 15px; }
+.prep-summary-counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.prep-count { min-width: 0; min-height: 68px; padding: 9px 8px; border: 1px solid var(--line); background: var(--paper-alt); }
+.prep-count span { display: block; color: var(--muted); font-size: 12px; }
+.prep-count strong { display: block; margin-top: 3px; font: 750 24px/1.1 var(--font-geist-mono), monospace; }
+.prep-count.critical { border-color: #d9ad91; background: var(--warning-soft); color: var(--warning); }
+.prep-warning { margin: 0 0 18px; padding: 12px 13px; border-left: 3px solid var(--warning); background: var(--warning-soft); }
+.prep-warning strong { display: block; color: var(--warning); font-size: 14px; }
+.prep-warning p { margin: 3px 0 0; font-size: 15px; line-height: 1.5; }
+.prep-filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.prep-filter-chips button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+.prep-filter-chips button small { color: var(--muted); font: 650 12px/1 var(--font-geist-mono), monospace; }
+.prep-filter-chips button.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.prep-group { margin-top: 26px; }
+.prep-group .section-header { margin-bottom: 7px; padding-bottom: 7px; border-bottom: 2px solid var(--ink); }
+.prep-group-note { margin: 0 0 7px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.prep-list { border-top: 1px solid var(--line-strong); }
+.prep-item {
+  display: grid;
+  min-width: 0;
+  min-height: 116px;
+  align-items: start;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  transition: background 180ms ease, opacity 180ms ease;
+}
+.prep-item:active { background: var(--accent-soft); }
+.prep-item input { position: absolute; opacity: 0; pointer-events: none; }
+.prep-check-box {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  margin-top: 4px;
+  place-items: center;
+  border: 1.5px solid var(--accent);
+  background: var(--paper);
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.prep-item.checked { opacity: .72; }
+.prep-item.checked .prep-check-box { background: var(--accent); animation: check-complete 200ms ease-out; }
+.prep-copy { display: grid; min-width: 0; gap: 5px; }
+.prep-item-meta { display: flex; flex-wrap: wrap; gap: 5px; }
+.prep-item-meta b,
+.prep-item-meta small {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 2px 7px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.prep-item-meta .priority-critical { background: var(--warning-soft); color: var(--warning); }
+.prep-item-meta .priority-important { background: var(--accent-soft); color: var(--accent); }
+.prep-item-meta .priority-nice_to_have { border: 1px solid var(--line); background: var(--paper); color: var(--muted); }
+.prep-item-meta small { background: var(--paper-alt); color: var(--muted); }
+.prep-copy strong { font-size: 17px; line-height: 1.45; }
+.prep-copy > span:not(.prep-item-meta) { color: var(--muted); font-size: 14px; line-height: 1.5; }
+.prep-copy em { color: var(--muted); font-size: 12px; font-style: normal; line-height: 1.4; }
+.prep-item.checked .prep-copy strong { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+
 @media (min-width: 600px) {
   .page-frame { padding: 34px 28px 120px; }
   .travel-cover { padding: 24px; }
@@ -637,6 +747,7 @@ h1, h2, h3, p { margin-top: 0; }
   .comfort-signal { border-right: 1px solid var(--line); }
   .comfort-signal:nth-child(2n) { border-right: 1px solid var(--line); }
   .comfort-signal:last-child { border-right: 0; }
+  .prep-summary { grid-template-columns: minmax(0, 1fr) 230px; }
 }
 
 @media (max-width: 374px) {
@@ -665,6 +776,8 @@ h1, h2, h3, p { margin-top: 0; }
   .budget-stat-row small { justify-items: start; text-align: left; }
   .comfort-signals { grid-template-columns: 1fr; }
   .comfort-signal { border-right: 0; }
+  .prep-summary-counts { grid-template-columns: 1fr; }
+  .prep-filter-chips button { flex: 1 1 calc(50% - 6px); justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
