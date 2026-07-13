@@ -1,6 +1,6 @@
 import type { CurrencyRate } from "@/types/currency";
+import { CURRENCY_CACHE_KEY } from "./storage";
 
-const CURRENCY_CACHE_KEY = "fukuoka-currency-v1";
 const CURRENCY_CACHE_MS = 12 * 60 * 60 * 1000;
 
 type FrankfurterRate = { date?: string; base?: string; quote?: string; rate?: number };
@@ -20,6 +20,7 @@ function saveCurrencyCache(data: CurrencyRate) {
 export async function fetchJpyTwdRate(): Promise<CurrencyRate> {
   const cached = readCurrencyCache();
   if (cached && Date.now() - Date.parse(cached.fetchedAt) < CURRENCY_CACHE_MS) return { ...cached, stale: false };
+  if (cached && typeof navigator !== "undefined" && !navigator.onLine) return { ...cached, stale: true };
   try {
     const response = await fetch("https://api.frankfurter.dev/v2/rate/JPY/TWD");
     if (!response.ok) throw new Error(`Currency request failed: ${response.status}`);

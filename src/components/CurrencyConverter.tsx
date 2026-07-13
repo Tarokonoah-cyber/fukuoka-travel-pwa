@@ -24,7 +24,7 @@ export function CurrencyConverter() {
   }
 
   return <>
-    {currency.status === "error"&&<NoticeBox title="暫時無法取得最新匯率">沒有可用的上次資料，請稍後重新開啟頁面。</NoticeBox>}
+    {currency.status === "error"&&<NoticeBox title="暫時無法取得最新匯率">{currency.error}，沒有可用的上次資料。</NoticeBox>}
     {currency.status === "success"&&currency.data.stale&&<NoticeBox tone="blue" title="使用上次參考匯率">匯率服務暫時無法連線，換算仍可使用最近一次成功取得的資料。</NoticeBox>}
     <section className="currency-sheet">
       <div className="currency-direction"><span>{source}</span><button type="button" onClick={switchDirection} aria-label="切換換算方向">⇄</button><span>{target}</span></div>

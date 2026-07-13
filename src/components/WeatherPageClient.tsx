@@ -14,7 +14,7 @@ function ForecastRow({ date, weather }: { date: string; weather?: DailyWeather }
 export function WeatherPageClient() {
   const weather = useWeather();
   if (weather.status === "loading") return <div className="weather-loading" role="status"><span>取得福岡天氣中…</span><div /><div /><div /></div>;
-  if (weather.status === "error") return <><NoticeBox title="天氣暫時無法載入">頁面其他功能仍可使用，請稍後再試。</NoticeBox><EmptyState>目前沒有可顯示的天氣資料</EmptyState></>;
+  if (weather.status === "error") return <><NoticeBox title="天氣暫時無法載入">{weather.error}。頁面其他旅程資料仍可使用。</NoticeBox><EmptyState>目前沒有可顯示的天氣資料</EmptyState></>;
 
   const { data } = weather;
   const todayForecast = data.daily[0];

@@ -1,8 +1,8 @@
 import type { DailyWeather, WeatherData } from "@/types/weather";
+import { WEATHER_CACHE_KEY } from "./storage";
 
 export const FUKUOKA_LATITUDE = 33.5902;
 export const FUKUOKA_LONGITUDE = 130.4017;
-const WEATHER_CACHE_KEY = "fukuoka-weather-v1";
 const WEATHER_CACHE_MS = 30 * 60 * 1000;
 
 type OpenMeteoResponse = {
@@ -51,6 +51,7 @@ function parseDaily(data: NonNullable<OpenMeteoResponse["daily"]>): DailyWeather
 export async function fetchFukuokaWeather(): Promise<WeatherData> {
   const cached = readWeatherCache();
   if (cached && Date.now() - Date.parse(cached.updatedAt) < WEATHER_CACHE_MS) return { ...cached, stale: false };
+  if (cached && typeof navigator !== "undefined" && !navigator.onLine) return { ...cached, stale: true };
 
   const params = new URLSearchParams({
     latitude: String(FUKUOKA_LATITUDE), longitude: String(FUKUOKA_LONGITUDE), timezone: "Asia/Taipei", forecast_days: "16",

@@ -10,7 +10,12 @@ export function useWeather() {
   useEffect(() => {
     let subscribed = true;
     fetchFukuokaWeather().then((data) => { if (subscribed) setState({ status: "success", data, error: null }); })
-      .catch(() => { if (subscribed) setState({ status: "error", data: null, error: "暫時無法取得福岡天氣" }); });
+      .catch(() => {
+        if (subscribed) {
+          const message = navigator.onLine ? "暫時無法取得福岡天氣" : "離線中，且沒有已儲存的天氣資料";
+          setState({ status: "error", data: null, error: message });
+        }
+      });
     return () => { subscribed = false; };
   }, []);
   return state;

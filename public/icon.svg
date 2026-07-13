@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="福岡旅遊手冊">
+  <rect width="512" height="512" fill="#f4efe5"/>
+  <rect x="54" y="42" width="404" height="428" fill="#faf7f0" stroke="#20231f" stroke-width="18"/>
+  <rect x="84" y="72" width="344" height="368" fill="none" stroke="#d4cec2" stroke-width="8"/>
+  <path d="M123 158h266" stroke="#557772" stroke-width="18" stroke-linecap="square"/>
+  <path d="M123 238h188M123 300h232M123 362h154" stroke="#20231f" stroke-width="14" stroke-linecap="square"/>
+  <circle cx="360" cy="354" r="44" fill="#f4e4d7" stroke="#b86c42" stroke-width="12"/>
+  <path d="M360 321v66M327 354h66" stroke="#b86c42" stroke-width="10"/>
+</svg>
