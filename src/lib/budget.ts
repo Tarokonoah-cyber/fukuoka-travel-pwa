@@ -84,7 +84,7 @@ export function getDailyExpenseSummaries(expenses: Expense[]): DailyExpenseSumma
       ...day,
       spentJpy,
       remainingJpy: day.amountJpy - spentJpy,
-      overBudget: spentJpy > day.amountJpy,
+      overBudget: day.amountJpy > 0 && spentJpy > day.amountJpy,
       topCategoryLabel: topCategory ? getExpenseCategoryLabel(topCategory) : "尚未記錄",
     };
   });

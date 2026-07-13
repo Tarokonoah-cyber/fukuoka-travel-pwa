@@ -55,7 +55,7 @@ export function PrepPageClient({ items }: PrepPageClientProps) {
       {summary.openCritical > 0 && (
         <div className="prep-warning" role="status">
           <strong>核心資料未補齊</strong>
-          <p>航班、保險、緊急聯絡與球賽票券建議出發前優先確認。</p>
+          <p>航班、球賽票券、熊本與太宰府交通建議出發前優先確認。</p>
         </div>
       )}
 

@@ -7,7 +7,7 @@ export const prepPriorityLabels: Record<PrepPriority, string> = {
 };
 
 export const prepPriorityDescriptions: Record<PrepPriority, string> = {
-  critical: "出發前建議優先確認，會影響交通、安全或球賽安排。",
+  critical: "出發前建議優先確認，會影響航班、交通或球賽安排。",
   important: "補齊後旅途中會更順，尤其是雨天與媽媽友善動線。",
   nice_to_have: "有空再整理，讓行程更舒服但不影響基本出發。",
 };
@@ -16,13 +16,11 @@ export const prepCategoryLabels: Record<PrepCategory, string> = {
   flight: "航班",
   hotel: "住宿",
   baseball: "棒球",
-  insurance: "保險",
   transport: "交通",
   map: "地圖",
   budget: "預算",
   shopping: "購物",
   restaurant: "餐廳",
-  emergency: "緊急",
   packing: "行李",
   other: "其他",
 };
@@ -31,8 +29,6 @@ export const prepCategoryOrder: PrepCategory[] = [
   "flight",
   "hotel",
   "baseball",
-  "insurance",
-  "emergency",
   "transport",
   "map",
   "budget",

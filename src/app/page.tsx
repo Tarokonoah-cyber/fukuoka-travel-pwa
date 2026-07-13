@@ -10,7 +10,7 @@ const menu = [
   ["/map", "地圖", "飯店與重點點位"],
   ["/budget", "花費", "預算與記帳"],
   ["/comfort", "舒適度", "天氣、步行量與媽媽友善提醒"],
-  ["/prep", "行前檢查", "航班、球賽、保險與待補資料"],
+  ["/prep", "行前檢查", "航班、球賽與交通確認"],
   ["/emergency", "緊急", "電話與求助資訊"],
   ["/packing", "清單", "行李與出發前確認"],
   ["/weather", "天氣", "福岡預報與提醒"],
@@ -42,7 +42,7 @@ export default function Home() {
           </div>
         </div>
         <p className="cover-route">
-          博多 <i>/</i> 天神 <i>/</i> PayPay Dome
+          博多 <i>/</i> 太宰府 <i>/</i> 熊本 <i>/</i> Mizuho PayPay Dome
         </p>
         <dl className="cover-details">
           <div>
@@ -51,7 +51,7 @@ export default function Home() {
           </div>
           <div>
             <dt>STAY</dt>
-            <dd>Nishitetsu Croom Hakata</dd>
+            <dd>博多西鐵克魯姆飯店</dd>
           </div>
         </dl>
       </header>

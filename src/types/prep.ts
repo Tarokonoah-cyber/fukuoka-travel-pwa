@@ -4,13 +4,11 @@ export type PrepCategory =
   | "flight"
   | "hotel"
   | "baseball"
-  | "insurance"
   | "transport"
   | "map"
   | "budget"
   | "shopping"
   | "restaurant"
-  | "emergency"
   | "packing"
   | "other";
 

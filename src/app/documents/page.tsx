@@ -12,7 +12,7 @@ export default function DocumentsPage() {
       <Link className="prep-entry-link" href="/prep">
         <span>PRE-TRIP CHECK</span>
         <strong>查看待補資料與行前檢查</strong>
-        <p>航班、球賽票券、保險、緊急聯絡與訂房摘要。</p>
+        <p>航班、球賽票券、熊本／太宰府交通與必買清單。</p>
         <b>→</b>
       </Link>
       <InfoCard title="航班摘要">
@@ -70,19 +70,6 @@ export default function DocumentsPage() {
             <span>票券</span>
             {documents.baseball.ticket}
           </p>
-        </div>
-      </InfoCard>
-      <InfoCard title="旅遊保險">
-        <div className="document-lines">
-          <p>
-            <span>公司</span>
-            {documents.insurance.company}
-          </p>
-          <p>
-            <span>聯絡</span>
-            {documents.insurance.contact}
-          </p>
-          <small>{documents.insurance.note}</small>
         </div>
       </InfoCard>
       <div className="reminder-list">

@@ -64,6 +64,7 @@ export function BudgetPageClient() {
   const categorySummaries = useMemo(() => getCategoryExpenseSummaries(expenses), [expenses]);
   const sortedExpenses = useMemo(() => sortExpensesByNewest(expenses), [expenses]);
   const rate = currency.status === "success" ? currency.data.rate : undefined;
+  const hasBudget = budgetPlan.totalBudgetJpy > 0;
 
   function updateForm<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -114,7 +115,7 @@ export function BudgetPageClient() {
 
   return (
     <div className="budget-page page-enter">
-      <PageHeader eyebrow="TRAVEL LEDGER" title="旅行花費" description="用手機快速記錄日幣花費，掌握每日預算與台幣參考換算。" />
+      <PageHeader eyebrow="TRAVEL LEDGER" title="旅行花費" description="用手機快速記錄日幣花費；預算可之後再設定。" />
 
       <NoticeBox tone="plain" title="預算仍可調整">
         {budgetPlan.note} 台幣換算為參考值，實際刷卡與換匯依銀行為準。
@@ -127,8 +128,8 @@ export function BudgetPageClient() {
       <section className="budget-summary-grid" aria-label="預算摘要">
         <div className="budget-total-card">
           <span>總預算</span>
-          <strong>{formatJpy(budgetPlan.totalBudgetJpy)}</strong>
-          <p>{formatTwdFromJpy(budgetPlan.totalBudgetJpy)}</p>
+          <strong>{hasBudget ? formatJpy(budgetPlan.totalBudgetJpy) : "尚未設定預算"}</strong>
+          <p>{hasBudget ? formatTwdFromJpy(budgetPlan.totalBudgetJpy) : "目前只記錄實際花費"}</p>
         </div>
         <div className="budget-total-card accent">
           <span>已花費</span>
@@ -137,13 +138,13 @@ export function BudgetPageClient() {
         </div>
         <div className="budget-total-card">
           <span>剩餘預算</span>
-          <strong>{formatJpy(totals.remainingJpy)}</strong>
-          <p>{formatTwdFromJpy(Math.max(0, totals.remainingJpy))}</p>
+          <strong>{hasBudget ? formatJpy(totals.remainingJpy) : "尚未設定"}</strong>
+          <p>{hasBudget ? formatTwdFromJpy(Math.max(0, totals.remainingJpy)) : "設定預算後再顯示"}</p>
         </div>
         <div className="budget-total-card">
           <span>今日花費</span>
           <strong>{formatJpy(totals.todaySpentJpy)}</strong>
-          <p>今日剩餘 {formatJpy(totals.todayRemainingJpy)}</p>
+          <p>{hasBudget ? `今日剩餘 ${formatJpy(totals.todayRemainingJpy)}` : "今日預算尚未設定"}</p>
         </div>
       </section>
 
@@ -258,7 +259,7 @@ export function BudgetPageClient() {
               <div>
                 <b>{formatJpy(day.spentJpy)}</b>
                 <small>
-                  預算 {formatJpy(day.amountJpy)} · {day.overBudget ? "已超支" : `剩餘 ${formatJpy(day.remainingJpy)}`}
+                  {day.amountJpy > 0 ? `預算 ${formatJpy(day.amountJpy)} · ${day.overBudget ? "已超支" : `剩餘 ${formatJpy(day.remainingJpy)}`}` : "尚未設定預算"}
                 </small>
               </div>
             </article>
@@ -277,13 +278,13 @@ export function BudgetPageClient() {
               <div className="category-budget-head">
                 <strong>{category.label}</strong>
                 <span>
-                  {formatJpy(category.spentJpy)} / {formatJpy(category.amountJpy)}
+                  {formatJpy(category.spentJpy)} / {category.amountJpy > 0 ? formatJpy(category.amountJpy) : "未設定"}
                 </span>
               </div>
               <div className="mini-progress" aria-hidden>
                 <span style={{ width: `${category.percent}%` }} />
               </div>
-              <p>{category.overBudget ? "已超過示範預算" : category.note}</p>
+              <p>{category.overBudget ? "已超過目前設定預算" : category.note}</p>
             </article>
           ))}
         </div>
