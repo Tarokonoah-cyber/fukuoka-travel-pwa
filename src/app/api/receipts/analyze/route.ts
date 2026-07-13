@@ -5,7 +5,7 @@ import { apiError, apiSuccess, requireTravelSession } from "@/lib/server/api";
 
 const GEMINI_MODEL = "gemini-3.5-flash";
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
-const MAX_REQUEST_BYTES = 5.6 * 1024 * 1024;
+const MAX_REQUEST_BYTES = Math.ceil(5.6 * 1024 * 1024);
 const supportedMimeTypes = ["image/jpeg", "image/png", "image/webp"] as const;
 
 const requestSchema = z.object({
@@ -27,6 +27,26 @@ function hasExpectedSignature(buffer: Buffer, mimeType: (typeof supportedMimeTyp
   return buffer.subarray(0, 4).toString("ascii") === "RIFF" && buffer.subarray(8, 12).toString("ascii") === "WEBP";
 }
 
+async function readLimitedJson(request: Request) {
+  if (!request.body) throw new Error("INVALID_REQUEST");
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let received = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    received += value.byteLength;
+    if (received > MAX_REQUEST_BYTES) {
+      await reader.cancel();
+      throw new Error("REQUEST_TOO_LARGE");
+    }
+    chunks.push(value);
+  }
+
+  return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+}
+
 const prompt = `你是日本收據辨識助手。請只根據圖片可見內容輸出 schema 指定的 JSON，不可虛構。
 amountJPY 必須是整張收據實際付款總額，優先找「合計、合計金額、お支払金額、ご利用金額、領収金額、クレジット利用額、現計」。
 絕對不可把「小計、お預り、預り金、お釣り、釣銭、税額、點數餘額」當成總額。即使同時有 8% 與 10% 稅率也只取最終實付總額。
@@ -45,8 +65,11 @@ export async function POST(request: Request) {
 
   let body: unknown;
   try {
-    body = await request.json();
-  } catch {
+    body = await readLimitedJson(request);
+  } catch (error) {
+    if (error instanceof Error && error.message === "REQUEST_TOO_LARGE") {
+      return apiError("IMAGE_TOO_LARGE", "圖片太大，請重新選取或拍攝。", 413);
+    }
     return apiError("INVALID_REQUEST", "無法讀取圖片資料。", 400);
   }
   const parsed = requestSchema.safeParse(body);

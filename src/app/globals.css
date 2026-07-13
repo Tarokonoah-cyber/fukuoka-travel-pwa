@@ -788,9 +788,14 @@ h1, h2, h3, p { margin-top: 0; }
 }
 
 /* Private AI receipt expenses */
-.expenses-page { min-width: 0; }
+.expenses-page { width: 100%; min-width: 0; }
+.expenses-page .page-header-row { min-width: 0; gap: 12px; }
+.expenses-page .page-header-row .eyebrow { min-width: 0; overflow-wrap: anywhere; text-align: right; }
 .expense-auth-card {
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow: hidden;
   padding: 24px 18px 18px;
   border: 1px solid var(--ink);

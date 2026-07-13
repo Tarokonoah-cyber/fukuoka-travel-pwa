@@ -7,6 +7,10 @@ export const EXPENSE_SETTINGS_KEY = "fukuoka-expense-settings-v1";
 export const DEFAULT_EXCHANGE_RATE = 0.22;
 
 const nullableTrimmedString = z.string().trim().max(120).nullable();
+const exchangeRateSchema = z.number().positive().max(100).refine(
+  (value) => Math.abs(value * 1_000_000 - Math.round(value * 1_000_000)) < 1e-6,
+  "匯率最多只能有 6 位小數。",
+);
 
 export const receiptAnalysisSchema = z.object({
   storeName: nullableTrimmedString,
@@ -25,7 +29,7 @@ const expenseFieldsSchema = z.object({
   storeName: z.string().trim().max(120).nullable().optional(),
   storeNameJa: z.string().trim().max(120).nullable().optional(),
   amountJPY: z.number().int().nonnegative().max(10_000_000),
-  exchangeRate: z.number().positive().max(100),
+  exchangeRate: exchangeRateSchema,
   category: z.enum(expenseCategories),
   paymentMethod: z.enum(expensePaymentMethods),
   note: z.string().trim().max(500).nullable().optional(),
