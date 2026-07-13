@@ -10,5 +10,5 @@ export const trip = {
   hotelArea: "博多站附近",
   nights: 4,
   days: 5,
-  focus: ["太宰府", "熊本一日遊", "天神地下街", "Mizuho PayPay Dome", "博多", "少走路", "可休息", "雨天室內備案"],
+  focus: ["太宰府", "柳川", "熊本一日遊", "天神地下街", "Mizuho PayPay Dome", "博多", "少走路", "可休息", "雨天室內備案"],
 } as const;

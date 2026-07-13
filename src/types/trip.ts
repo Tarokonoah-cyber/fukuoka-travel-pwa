@@ -1,4 +1,4 @@
-export type WalkingLevel = "低" | "中" | "高";
+export type WalkingLevel = "低" | "中" | "中高" | "高";
 export type PlaceType = "交通" | "景點" | "餐廳" | "購物" | "休息" | "住宿" | "棒球";
 
 export interface TimelineItem {

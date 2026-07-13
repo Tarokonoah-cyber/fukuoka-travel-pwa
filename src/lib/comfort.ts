@@ -49,7 +49,8 @@ export function buildComfortReport(day: TripDay, weather?: DailyWeather, weather
   const indoorFriendly = day.indoorRatio >= 70;
   const hasShopping = hasAnyText(day, ["購物", "百貨", "地下街", "藥妝", "shopping", "mall"]);
   const hasBaseball = hasAnyText(day, ["棒球", "PayPay", "Dome", "球場"]);
-  const hasLongMove = hasAnyText(day, ["機場", "移動", "退房", "行李", "長距離"]);
+  const hasYanagawa = hasAnyText(day, ["柳川", "遊船", "川下り", "太宰府"]);
+  const hasLongMove = hasAnyText(day, ["機場", "移動", "退房", "行李", "長距離", "轉乘", "柳川"]);
   const hasHotelRest = hasAnyText(day, ["飯店", "hotel", "Croom"]);
   const { rainHigh, rainMedium, hot } = getWeatherFlags(weather);
 
@@ -58,10 +59,15 @@ export function buildComfortReport(day: TripDay, weather?: DailyWeather, weather
 
   if (rainHigh && lowIndoor) {
     decision = "switch_to_indoor";
-    reason = "降雨機率偏高，而且今日室內比例較低，建議把戶外段落換成雨天備案。";
+    reason = hasYanagawa
+      ? "降雨機率偏高，而且太宰府＋柳川戶外比例高，建議先確認遊船營運，必要時縮短柳川或改室內。"
+      : "降雨機率偏高，而且今日室內比例較低，建議把戶外段落換成雨天備案。";
   } else if (rainHigh || (rainMedium && indoorFriendly)) {
     decision = "switch_to_indoor";
     reason = "天氣可能不穩，今天優先走百貨、地下街與室內休息點會比較安心。";
+  } else if (hasYanagawa && (hot || highWalking || lowIndoor)) {
+    decision = "slow_down";
+    reason = "今天是太宰府＋柳川移動日，轉乘、戶外與高溫負擔較高，建議短程遊船、減少額外散步。";
   } else if (hasBaseball || (hasLongMove && (highWalking || mediumWalking || hot))) {
     decision = "shorten_day";
     reason = hasBaseball
@@ -84,6 +90,7 @@ export function buildComfortReport(day: TripDay, weather?: DailyWeather, weather
   }
   if (highWalking || mediumWalking) riskTips.add("今天步行量不低，建議安排咖啡休息。");
   if (hasBaseball) riskTips.add("球賽日不要把下午排太滿。");
+  if (hasYanagawa) riskTips.add("太宰府＋柳川需要轉乘，遊船以短程優先。");
   if (hasShopping) riskTips.add("購物日可以優先走地下街與百貨。");
   if (hasLongMove) riskTips.add("移動日先顧好行李與座位休息。");
 
@@ -94,6 +101,8 @@ export function buildComfortReport(day: TripDay, weather?: DailyWeather, weather
   if (decision === "shorten_day") adjustments.add("縮短上午或下午其中一段，保留體力給主要行程。");
   if (decision === "rest_first") adjustments.add("先確認飯店、車站、百貨或咖啡店休息點，再出發。");
   if (hasBaseball) adjustments.add("比賽日前不要排太滿，提早到球場周邊比較從容。");
+  if (hasYanagawa) adjustments.add("高溫時使用短程遊船，減少太宰府或柳川額外散步。");
+  if (hasYanagawa && (rainHigh || rainMedium || !weather)) adjustments.add("天氣不穩時先確認遊船營運，必要時縮短柳川或改天神地下街。");
   if (hasHotelRest) adjustments.add("需要時直接回飯店休息，不必硬走完所有點。");
 
   return {

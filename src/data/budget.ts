@@ -28,9 +28,9 @@ export const budgetPlan: BudgetPlan = {
   note: "尚未設定預算；目前只使用花費紀錄功能，不把未確認金額顯示為正式預算。",
   dailyBudgets: [
     { date: "2026-08-02", label: "DAY 1 抵達與博多", amountJpy: 0, note: "尚未設定每日預算。" },
-    { date: "2026-08-03", label: "DAY 2 太宰府 / 天神地下街", amountJpy: 0, note: "尚未設定每日預算。" },
+    { date: "2026-08-03", label: "DAY 2 太宰府 / 柳川", amountJpy: 0, note: "尚未設定每日預算。" },
     { date: "2026-08-04", label: "DAY 3 熊本一日遊", amountJpy: 0, note: "尚未設定每日預算。" },
-    { date: "2026-08-05", label: "DAY 4 Mizuho PayPay Dome", amountJpy: 0, note: "尚未設定每日預算。" },
+    { date: "2026-08-05", label: "DAY 4 天神地下街 / Mizuho PayPay Dome", amountJpy: 0, note: "尚未設定每日預算。" },
     { date: "2026-08-06", label: "DAY 5 回程", amountJpy: 0, note: "尚未設定每日預算。" },
   ],
   categoryBudgets: [
