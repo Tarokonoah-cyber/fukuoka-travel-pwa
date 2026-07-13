@@ -1,4 +1,4 @@
-const VERSION = "fukuoka-pwa-3d-20260713";
+const VERSION = "fukuoka-pwa-3e-20260713";
 const PAGE_CACHE = `${VERSION}-pages`;
 const STATIC_CACHE = `${VERSION}-static`;
 const IMAGE_CACHE = `${VERSION}-images`;
@@ -61,6 +61,12 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
+  if (
+    url.origin === self.location.origin &&
+    (url.pathname.startsWith("/expenses") || url.pathname.startsWith("/api/travel-") || url.pathname.startsWith("/api/receipts"))
+  ) {
+    return;
+  }
   const acceptsHtml = request.headers.get("accept")?.includes("text/html");
   if (request.mode === "navigate" || (OFFLINE_PAGES.includes(url.pathname) && acceptsHtml)) {
     event.respondWith(networkFirst(request, PAGE_CACHE, "/"));
