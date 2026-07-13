@@ -6,11 +6,12 @@ import { HomeTodayStatus } from "@/components/HomeTodayStatus";
 
 const menu = [
   ["/today", "今日", "旅途中快速查看"],
-  ["/comfort", "舒適度", "天氣、步行量與媽媽友善提醒"],
   ["/itinerary", "行程", "五天完整安排"],
   ["/map", "地圖", "飯店與重點點位"],
   ["/budget", "花費", "預算與記帳"],
+  ["/comfort", "舒適度", "天氣、步行量與媽媽友善提醒"],
   ["/prep", "行前檢查", "航班、球賽、保險與待補資料"],
+  ["/emergency", "緊急", "電話與求助資訊"],
   ["/packing", "清單", "行李與出發前確認"],
   ["/weather", "天氣", "福岡預報與提醒"],
   ["/currency", "匯率", "日幣台幣快速換算"],
@@ -18,7 +19,6 @@ const menu = [
   ["/wishlist", "願望", "想去的地方"],
   ["/transport", "交通", "少轉乘路線"],
   ["/documents", "文件", "票券與重要資料"],
-  ["/emergency", "緊急", "電話與求助資訊"],
 ] as const;
 
 export default function Home() {
