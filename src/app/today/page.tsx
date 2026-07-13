@@ -8,6 +8,7 @@ import { TodayBudgetSummary } from "@/components/TodayBudgetSummary";
 import { TodaySummaryCard } from "@/components/TodaySummaryCard";
 import { TodayToolsSummary } from "@/components/TodayToolsSummary";
 import { itinerary } from "@/data/itinerary";
+import { buildComfortReport } from "@/lib/comfort";
 import { useTripStatus } from "@/lib/useTripStatus";
 
 export default function TodayPage() {
@@ -35,6 +36,7 @@ export default function TodayPage() {
 
   const day = itinerary[status.day - 1];
   const nextTransport = day.items[0];
+  const comfort = buildComfortReport(day);
 
   return (
     <div className="page-enter">
@@ -70,6 +72,13 @@ export default function TodayPage() {
           <b>室內 {day.indoorRatio}%</b>
         </div>
       </aside>
+
+      <Link className="comfort-entry-link" href="/comfort">
+        <span>今日決策</span>
+        <strong>今日建議：{comfort.label}</strong>
+        <p>{comfort.reason}</p>
+        <b aria-hidden>→</b>
+      </Link>
 
       <TodayBudgetSummary activeDate={status.activeDate} />
       <TodayToolsSummary phase={status.phase} activeDate={status.activeDate} />

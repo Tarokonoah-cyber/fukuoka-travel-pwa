@@ -6,6 +6,7 @@ import { HomeTodayStatus } from "@/components/HomeTodayStatus";
 
 const menu = [
   ["/today", "今日", "旅途中快速查看"],
+  ["/comfort", "舒適度", "天氣、步行量與媽媽友善提醒"],
   ["/itinerary", "行程", "五天完整安排"],
   ["/map", "地圖", "飯店與重點點位"],
   ["/budget", "花費", "預算與記帳"],
