@@ -21,9 +21,9 @@ export const shoppingItems: ChecklistItemData[] = [
   { id:"stationery", name:"文具／收納小物", category:"生活用品", price:"待確認", location:"天神／博多", note:"不特地繞路，有看到再買" },
   { id:"eco-bag", name:"折疊購物袋", category:"生活用品", price:"約 ¥500–1,500", location:"雜貨店", note:"旅行中也能立刻用" },
 
-  { id:"hawks-towel", name:"軟銀鷹紀念毛巾", category:"棒球周邊", price:"待確認", location:"PayPay Dome", note:"8/6 到球場再看款式" },
-  { id:"hawks-keychain", name:"球隊鑰匙圈／小物", category:"棒球周邊", price:"待確認", location:"PayPay Dome", note:"小件好帶，不佔行李" },
-  { id:"baseball-photo", name:"球場紀念照／票根保存", category:"棒球周邊", price:"待確認", location:"PayPay Dome", note:"票根與照片比大型周邊更實用" },
+  { id:"hawks-towel", name:"軟銀鷹紀念毛巾", category:"棒球周邊", price:"待確認", location:"Mizuho PayPay Dome", note:"8/6 到球場再看款式" },
+  { id:"hawks-keychain", name:"球隊鑰匙圈／小物", category:"棒球周邊", price:"待確認", location:"Mizuho PayPay Dome", note:"小件好帶，不佔行李" },
+  { id:"baseball-photo", name:"球場紀念照／票根保存", category:"棒球周邊", price:"待確認", location:"Mizuho PayPay Dome", note:"票根與照片比大型周邊更實用" },
 
   { id:"mom-request", name:"媽媽想買項目待補", category:"媽媽想買", price:"待確認", location:"天神／博多", note:"出發前請媽媽先列 3 個最想買的" },
   { id:"mom-tea", name:"茶點／甜點候補", category:"媽媽想買", price:"待確認", location:"百貨食品樓層", note:"看保存期限與重量" },

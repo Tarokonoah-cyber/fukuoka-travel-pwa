@@ -16,7 +16,7 @@ export const prepItems: PrepItem[] = [
     category: "flight",
     priority: "critical",
     source: "src/data/documents.ts / flight.inbound",
-    note: "8/6 有 PayPay Dome 行程，回程時間會影響賽後是否直接去機場或改住宿休息。",
+    note: "8/6 有 Mizuho PayPay Dome 行程，回程時間會影響賽後是否直接去機場或改住宿休息。",
     dueHint: "出發前 7 天",
   },
   {
@@ -25,12 +25,12 @@ export const prepItems: PrepItem[] = [
     category: "hotel",
     priority: "critical",
     source: "src/data/documents.ts / hotel.bookingSummary",
-    note: "房型、早餐、住宿稅、訂房姓名、寄放行李與入住退房規則仍待補。不要放完整訂房編號在公開頁面。",
+    note: "飯店名稱、入住日與退房日已具備；日文名稱、完整地址、電話、入住／退房時間、房型、早餐、訂房來源、訂房編號末四碼、寄放行李與特別需求仍待填。不要放完整訂房編號在公開頁面。",
     dueHint: "出發前 10 天",
   },
   {
     id: "baseball-start-time",
-    title: "確認 8/6 PayPay Dome 開賽時間",
+    title: "確認 8/6 Mizuho PayPay Dome 開賽時間",
     category: "baseball",
     priority: "critical",
     source: "src/data/documents.ts / baseball.startTime",
@@ -43,7 +43,7 @@ export const prepItems: PrepItem[] = [
     category: "baseball",
     priority: "critical",
     source: "src/data/documents.ts / baseball.ticket",
-    note: "確認座位、入場方式、電子票或取票位置；QR code 與完整票券資訊請存在手機安全位置。",
+    note: "球場與日期已具備；對戰組合、建議抵達時間、開放入場時間、座位區域、票券形式、取票方式、入場入口與禁帶物品提醒仍待填。QR code、條碼與完整票券資訊請存在手機安全位置。",
     dueHint: "出發前 14 天",
   },
   {
@@ -52,7 +52,7 @@ export const prepItems: PrepItem[] = [
     category: "insurance",
     priority: "critical",
     source: "src/data/documents.ts / insurance",
-    note: "保單號碼不要放公開網站；這裡只記得要補公司名稱、海外電話與理賠流程位置。",
+    note: "保單號碼只在網站顯示已保存於手機安全位置；保險公司、海外緊急聯絡電話與理賠聯絡方式仍待填。",
     dueHint: "出發前 7 天",
   },
   {
@@ -61,7 +61,16 @@ export const prepItems: PrepItem[] = [
     category: "emergency",
     priority: "critical",
     source: "src/data/emergency.ts",
-    note: "媽媽與我各自手機、紙本小卡都留一份；外交協助窗口請出發前確認最新資訊。",
+    note: "台灣緊急聯絡人與電話仍待填。網站目前公開部署，私人電話建議只放手機聯絡人與紙本小卡；外交協助窗口請出發前確認最新資訊。",
+    dueHint: "出發前 7 天",
+  },
+  {
+    id: "credit-card-loss-phone",
+    title: "補上信用卡掛失電話",
+    category: "emergency",
+    priority: "important",
+    source: "src/data/emergency.ts / src/data/documents.ts",
+    note: "只記發卡銀行掛失電話或安全保存位置，不要在公開網站放完整信用卡號或安全碼。",
     dueHint: "出發前 7 天",
   },
   {
@@ -75,7 +84,7 @@ export const prepItems: PrepItem[] = [
   },
   {
     id: "dome-return-route",
-    title: "確認 PayPay Dome 賽後回程與計程車備案",
+    title: "確認 Mizuho PayPay Dome 賽後回程與計程車備案",
     category: "transport",
     priority: "important",
     source: "src/data/transport.ts / itinerary.ts",
@@ -97,7 +106,7 @@ export const prepItems: PrepItem[] = [
     category: "budget",
     priority: "important",
     source: "src/data/budget.ts / shopping.ts",
-    note: "目前預算是待調整示範值；明太子、藥妝、球場周邊與媽媽想買項目可先抓上限。",
+    note: "本次未提供正式預算金額，目前仍沿用示範值；旅行總預算、每日預算、餐飲、交通、購物、伴手禮、藥妝、棒球與備用金都待填／待調整。",
     dueHint: "出發前 5 天",
   },
   {

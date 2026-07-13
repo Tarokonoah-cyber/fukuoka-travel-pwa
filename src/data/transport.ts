@@ -17,15 +17,15 @@ export const transportRoutes: TransportRoute[] = [
   {
     id: "hotel-dome",
     from: "Nishitetsu Croom Hakata",
-    to: "MIZUHO PayPay Dome Fukuoka",
+    to: "Mizuho PayPay Dome Fukuoka",
     method: "地鐵空港線＋步行／計程車",
     duration: "約 35–55 分",
     walkingLevel: "中",
     transfer: "博多站搭地鐵到唐人町站，再步行或短程計程車到球場；比賽日需預留人潮時間。",
     accessibilityNote: "唐人町站到球場步行較長，出口與電梯位置請現場確認；雨天或炎熱時改計程車。",
-    note: "8/6 棒球比賽開賽時間待確認，建議提早到 MARK IS 福岡百道休息。",
+    note: "8/6 Mizuho PayPay Dome 棒球比賽開賽時間待填，建議提早到 MARK IS 福岡百道休息。",
     momFriendlyNote: "賽前不要排重行程；散場不搶第一波，等人潮散或搭計程車。",
-    mapHref: "https://www.google.com/maps/search/?api=1&query=MIZUHO%20PayPay%20Dome%20Fukuoka",
+    mapHref: "https://www.google.com/maps/search/?api=1&query=Mizuho%20PayPay%20Dome%20Fukuoka",
   },
   {
     id: "hakata-tenjin",

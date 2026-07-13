@@ -23,7 +23,7 @@ export const wishlistItems: ChecklistItemData[] = [
   { id:"hotel-rest", name:"飯店大浴場／房間休息", category:"媽媽友善", area:"博多", reason:"旅行中段恢復體力", suitability:"高", momFriendly:"高", note:"休息是正式行程，不算浪費" },
   { id:"taxi-day", name:"短程計程車日", category:"媽媽友善", area:"全市區", reason:"下雨、炎熱、腳痠時保留體力", suitability:"高", momFriendly:"高", note:"兩人同行時很實用" },
 
-  { id:"paypay-dome", name:"MIZUHO PayPay Dome", category:"棒球相關", area:"百道", reason:"8/6 確定看比賽", suitability:"高", momFriendly:"中～高", note:"開賽時間、座位、取票方式待確認" },
+  { id:"paypay-dome", name:"Mizuho PayPay Dome Fukuoka", category:"棒球相關", area:"百道", reason:"8/6 確定看比賽", suitability:"高", momFriendly:"中～高", note:"對戰組合、開賽時間、座位、票券形式與取票方式待填" },
   { id:"mark-is", name:"MARK IS 福岡百道", category:"棒球相關", area:"百道", reason:"賽前休息與用餐", suitability:"高", momFriendly:"高", note:"避免太早在球場外站著等" },
   { id:"teamlab", name:"teamLab Forest 福岡", category:"棒球相關", area:"百道", reason:"球場旁室內候補", suitability:"中", momFriendly:"中", note:"互動展較耗體力，先問媽媽想不想去" },
 ];

@@ -1,11 +1,11 @@
 export const trip = {
   title: "福岡 8/2–8/6",
   subtitle: "Fukuoka Travel Handbook",
-  destination: "福岡・博多",
+  destination: "福岡",
   startDate: "2026-08-02",
   endDate: "2026-08-06",
   travelers: 2,
-  travelerNote: "我和媽媽，媽媽約 60 歲",
+  travelerNote: "2 人（我和媽媽）",
   hotel: "Nishitetsu Croom Hakata",
   hotelArea: "博多站附近",
   nights: 4,

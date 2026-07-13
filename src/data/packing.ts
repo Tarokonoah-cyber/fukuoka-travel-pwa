@@ -4,9 +4,9 @@ export const packingCategories = ["證件", "現金 / 支付", "衣物", "藥品
 
 export const packingItems: ChecklistItemData[] = [
   { id:"passport", name:"護照", category:"證件", important:true, note:"確認效期、姓名與入境資料" },
-  { id:"flight-summary", name:"航班資訊摘要", category:"證件", important:true, note:"航班時間待補；截圖存在手機安全位置" },
+  { id:"flight-summary", name:"航班資訊摘要", category:"證件", important:true, note:"航空公司、航班編號、時間、航廈與行李額度待填；截圖存在手機安全位置" },
   { id:"hotel-summary", name:"住宿摘要", category:"證件", important:true, note:"訂房編號不要放公開頁，另存在安全位置" },
-  { id:"insurance", name:"旅遊保險摘要", category:"證件", note:"保險公司與緊急電話待補" },
+  { id:"insurance", name:"旅遊保險摘要", category:"證件", note:"保險公司、海外緊急電話與理賠聯絡方式待填；保單號碼不放公開頁" },
   { id:"emergency-card", name:"緊急聯絡小卡", category:"證件", important:true, note:"紙本一份放隨身包" },
 
   { id:"jpy-cash", name:"日幣現金", category:"現金 / 支付", important:true, note:"小額紙鈔與零錢包" },
@@ -49,7 +49,7 @@ export const packingItems: ChecklistItemData[] = [
   { id:"mom-memo", name:"媽媽用藥與過敏備忘", category:"媽媽用品", important:true, note:"紙本與手機各一份" },
   { id:"cooling", name:"涼感小物", category:"媽媽用品", note:"涼感巾或小扇子，避免中暑" },
 
-  { id:"baseball-ticket", name:"棒球票券提醒", category:"棒球觀賽用品", important:true, note:"8/6 比賽；開賽時間、座位、取票方式待確認" },
+  { id:"baseball-ticket", name:"棒球票券提醒", category:"棒球觀賽用品", important:true, note:"8/6 Mizuho PayPay Dome；對戰組合、開賽時間、座位、票券形式與取票方式待填" },
   { id:"baseball-battery", name:"球賽日行動電源", category:"棒球觀賽用品", important:true },
   { id:"baseball-towel", name:"應援毛巾／外套", category:"棒球觀賽用品", note:"球場冷氣與紀念照用" },
   { id:"baseball-bag", name:"輕便隨身包", category:"棒球觀賽用品", note:"只帶必要物品進場" },
