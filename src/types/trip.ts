@@ -15,10 +15,10 @@ export interface TripDay {
 
 export interface ChecklistItemData {
   id: string; name: string; category: string; important?: boolean; note?: string;
-  price?: number; location?: string; area?: string; reason?: string; suitability?: string;
+  price?: number | string; location?: string; area?: string; reason?: string; suitability?: string; momFriendly?: string;
 }
 
 export interface TransportRoute {
   id: string; from: string; to: string; method: string; duration: string;
-  transfer: string; note: string; momFriendlyNote: string;
+  transfer: string; note: string; momFriendlyNote: string; walkingLevel?: WalkingLevel; accessibilityNote?: string; mapHref?: string;
 }

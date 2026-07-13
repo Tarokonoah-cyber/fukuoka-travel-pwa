@@ -1,11 +1,17 @@
 export const emergency = {
-  hotel:"Nishitetsu Croom Hakata", address:"1-17-6 Hakataekimae, Hakata Ward, Fukuoka",
-  phones:[{label:"警察",number:"110"},{label:"消防／救護",number:"119"}],
-  guidance:[
-    {title:"護照遺失",body:"先向附近警察報案取得證明，再聯絡台灣相關協助窗口辦理後續文件。"},
-    {title:"信用卡掛失",body:"立即聯絡發卡銀行停卡；卡片客服電話請另存於手機安全位置。"},
-    {title:"旅遊保險",body:"保險公司：待填寫｜保單號碼與電話請保存在安全位置。"},
-    {title:"台灣相關協助窗口",body:"名稱與電話：出發前確認最新資訊後填入。"},
-    {title:"緊急聯絡人",body:"姓名與電話：請出發前填寫，並另備紙本。"},
+  hotel: "Nishitetsu Croom Hakata",
+  address: "1-17-6 Hakataekimae, Hakata Ward, Fukuoka（待最終確認）",
+  phones: [
+    { label: "警察", number: "110" },
+    { label: "消防／救護", number: "119" },
+  ],
+  guidance: [
+    { title: "先做的事", body: "先停下來確認人身安全，再找飯店櫃台、車站站務員、商場服務台或附近店員協助。" },
+    { title: "護照遺失", body: "先向附近警察報案取得證明，再聯絡台灣相關協助窗口；窗口名稱與電話待補，請出發前確認最新資訊。" },
+    { title: "信用卡掛失", body: "立即聯絡發卡銀行停卡；完整卡號不要放在網站，掛失電話請另存手機安全位置與紙本。" },
+    { title: "旅遊保險", body: "保險公司：待補｜海外急難電話：待補｜保單號碼請保存在手機安全位置。" },
+    { title: "緊急聯絡人", body: "姓名與電話：待補；建議媽媽與我各自手機、紙本小卡都留一份。" },
+    { title: "身體不舒服", body: "先回飯店或就近找商場服務台協助；需要救護撥 119。不要為了趕行程硬撐。" },
+    { title: "走散時", body: "先到約定地點等待，例如飯店大廳、博多站服務台或當日商場入口；約定地點待出發前確認。" },
   ],
 };
