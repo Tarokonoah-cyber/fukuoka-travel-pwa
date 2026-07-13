@@ -62,9 +62,11 @@ export function buildComfortReport(day: TripDay, weather?: DailyWeather, weather
   } else if (rainHigh || (rainMedium && indoorFriendly)) {
     decision = "switch_to_indoor";
     reason = "天氣可能不穩，今天優先走百貨、地下街與室內休息點會比較安心。";
-  } else if ((hasBaseball || hasLongMove) && (highWalking || hot)) {
+  } else if (hasBaseball || (hasLongMove && (highWalking || mediumWalking || hot))) {
     decision = "shorten_day";
-    reason = "今天已有球賽或長距離移動，再加上步行/高溫壓力，建議縮短其他行程。";
+    reason = hasBaseball
+      ? "今天有球賽行程，建議縮短其他安排，保留體力與回程彈性。"
+      : "今天有長距離移動，再加上步行/高溫壓力，建議縮短其他行程。";
   } else if (hot || highWalking || mediumWalking) {
     decision = "slow_down";
     reason = hot ? "體感溫度可能偏高，建議放慢節奏並增加室內休息。" : "今天步行量不低，建議保留咖啡或百貨休息時間。";
