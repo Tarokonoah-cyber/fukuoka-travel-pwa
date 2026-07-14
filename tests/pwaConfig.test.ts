@@ -5,12 +5,11 @@ import nextConfig from "../next.config";
 import { publicOfflineRoutes } from "@/data/pwa";
 
 describe("PWA reliability configuration", () => {
-  it("exposes the four travel shortcuts", () => {
+  it("exposes the three primary travel shortcuts", () => {
     expect(manifest().shortcuts?.map((shortcut) => shortcut.url)).toEqual([
       "/today",
       "/itinerary",
       "/expenses",
-      "/emergency",
     ]);
   });
 
@@ -32,6 +31,9 @@ describe("PWA reliability configuration", () => {
     expect(worker.indexOf("privateRoutes")).toBeLessThan(worker.indexOf("...defaultCache"));
     expect(publicOfflineRoutes).not.toContain("/expenses");
     expect(publicOfflineRoutes).not.toContain("/budget");
+    expect(publicOfflineRoutes).not.toContain("/emergency");
+    expect(publicOfflineRoutes).not.toContain("/packing");
+    expect(publicOfflineRoutes).toContain("/prep");
     expect(publicOfflineRoutes).toContain("/~offline");
   });
 });

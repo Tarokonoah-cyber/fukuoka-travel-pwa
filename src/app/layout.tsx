@@ -9,7 +9,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: { default: "福岡 8/2–8/6 旅遊手冊", template: "%s｜福岡旅遊手冊" },
-  description: "2026 福岡母女旅行 PWA，收納行程、清單、地圖、交通、文件與緊急資訊。",
+  description: "2026 福岡母女旅行 PWA，收納行程、行前檢查、地圖、交通與文件。",
   applicationName: "福岡旅遊手冊",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/favicon.ico", apple: "/apple-touch-icon.png" },

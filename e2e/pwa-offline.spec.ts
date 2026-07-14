@@ -23,15 +23,15 @@ test("全新安裝後公開頁面與清單可真正離線使用", async ({ page,
   expect(cacheAudit.some((url) => new URL(url).pathname.startsWith("/api/"))).toBe(false);
 
   await context.setOffline(true);
-  const routesToOpen = ["/", "/today", "/itinerary", "/map", "/packing", "/transport", "/documents", "/emergency", "/settings"];
+  const routesToOpen = ["/", "/today", "/itinerary", "/map", "/prep", "/transport", "/documents", "/settings"];
   for (const route of routesToOpen) {
     await page.goto(`${baseURL}${route}`, { waitUntil: "domcontentloaded" });
     await expect(page.locator("main")).toBeVisible();
   }
 
-  await page.goto(`${baseURL}/packing`, { waitUntil: "domcontentloaded" });
-  const firstCheckbox = page.getByRole("checkbox").first();
-  await firstCheckbox.click({ force: true });
-  await page.getByRole("button", { name: "全部" }).click();
-  await expect(page.getByRole("checkbox").first()).toBeChecked();
+  await page.goto(`${baseURL}/prep`, { waitUntil: "domcontentloaded" });
+  const passport = page.getByRole("checkbox", { name: /護照/ });
+  await passport.click({ force: true });
+  await page.getByRole("button", { name: "全部" }).last().click();
+  await expect(page.getByRole("checkbox", { name: /護照/ })).toBeChecked();
 });

@@ -58,7 +58,6 @@ export default function TodayPage() {
       <nav className="today-action-grid" aria-label="今日快捷操作">
         <Link href={{ pathname: "/map", query: { scope: "today" } }}><span>圖</span><strong>今日地圖</strong></Link>
         <Link href="/expenses"><span>¥</span><strong>記錄旅費</strong></Link>
-        <Link href="/emergency"><span>急</span><strong>緊急資訊</strong></Link>
         <Link href="/itinerary"><span>行</span><strong>原始行程</strong></Link>
       </nav>
 

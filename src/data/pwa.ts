@@ -7,12 +7,10 @@ export const publicOfflineRoutes = [
   "/prep",
   "/weather",
   "/currency",
-  "/packing",
   "/shopping",
   "/wishlist",
   "/transport",
   "/documents",
-  "/emergency",
   "/settings",
   "/~offline",
 ] as const;

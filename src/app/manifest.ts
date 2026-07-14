@@ -17,7 +17,6 @@ export default function manifest(): MetadataRoute.Manifest {
       { name: "今日行程", short_name: "今日", url: "/today", icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }] },
       { name: "完整行程", short_name: "行程", url: "/itinerary", icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }] },
       { name: "旅費紀錄", short_name: "旅費", url: "/expenses", icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }] },
-      { name: "緊急資訊", short_name: "緊急", url: "/emergency", icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }] },
     ],
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },

@@ -1,2 +1,5 @@
-import { Checklist } from "@/components/Checklist"; import { NoticeBox } from "@/components/NoticeBox"; import { PageHeader } from "@/components/PageHeader"; import { packingCategories,packingItems } from "@/data/packing";
-export default function PackingPage(){return <div className="page-enter"><PageHeader eyebrow="BEFORE DEPARTURE" title="行李清單" description="離線也能勾選，連線後會同步到兩支手機。"/><NoticeBox title="先確認這個">護照、每日用藥與手機，出門前再檢查一次。</NoticeBox><Checklist items={packingItems} categories={packingCategories} namespace="packing" customPlaceholder="例如：媽媽的薄外套"/></div>}
+import { redirect } from "next/navigation";
+
+export default function PackingPage() {
+  redirect("/prep");
+}

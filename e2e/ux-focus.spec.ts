@@ -1,4 +1,17 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+async function mockLiveFukuokaWeather(page: Page) {
+  await page.route("https://api.open-meteo.com/**", (route) => route.fulfill({
+    contentType: "application/json",
+    body: JSON.stringify({
+      current: { time: "2026-07-14T14:00", temperature_2m: 31, apparent_temperature: 35, weather_code: 1, wind_speed_10m: 8 },
+      daily: {
+        time: ["2026-07-14"], weather_code: [1], temperature_2m_max: [33], temperature_2m_min: [26],
+        apparent_temperature_max: [37], precipitation_probability_max: [20], wind_speed_10m_max: [15],
+      },
+    }),
+  }));
+}
 
 test("今日頁預設聚焦現在與下一站", async ({ page }) => {
   await page.goto("/today");
@@ -17,12 +30,22 @@ test("出發前地圖預設只看日本目的地", async ({ page }) => {
 });
 
 test("長清單預設隱藏剛完成的項目並在有待送資料時提醒", async ({ page }) => {
-  await page.goto("/packing");
+  await page.goto("/prep");
   await expect(page.getByRole("button", { name: "未完成", pressed: true })).toBeVisible();
   const passport = page.getByRole("checkbox", { name: /護照/ });
   await passport.click({ force: true });
   await expect(passport).toHaveCount(0);
   await expect(page.getByText("1 筆變更尚未同步")).toBeVisible();
+});
+
+test("天氣頁標示即時來源且不把範圍外日期當成預報", async ({ page }) => {
+  await mockLiveFukuokaWeather(page);
+  await page.goto("/weather");
+  await expect(page.getByText("福岡即時觀測 · LIVE")).toBeVisible();
+  await expect(page.getByText("31°", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: /資料來源 Open-Meteo/ })).toBeVisible();
+  await expect(page.getByText("旅行日期尚未進入預報範圍")).toBeVisible();
+  await expect(page.locator(".forecast-row")).toHaveCount(0);
 });
 
 for (const viewport of [
@@ -36,8 +59,9 @@ for (const viewport of [
       if (message.type() === "error") consoleErrors.push(message.text());
     });
     await page.setViewportSize(viewport);
+    await mockLiveFukuokaWeather(page);
 
-    for (const route of ["/", "/today", "/itinerary", "/map", "/transport", "/settings", "/packing", "/expenses"]) {
+    for (const route of ["/", "/today", "/itinerary", "/map", "/transport", "/settings", "/prep", "/weather", "/expenses"]) {
       await page.goto(route);
       await expect(page.locator("main")).toBeVisible();
       const overlayText = await page.locator("nextjs-portal").evaluateAll((portals) => portals
