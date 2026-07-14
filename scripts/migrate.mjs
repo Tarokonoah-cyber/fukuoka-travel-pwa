@@ -31,15 +31,18 @@ const expectedIndexes = [
 ];
 
 const sql = neon(databaseUrl);
+let phase = "initialization";
 const assert = (condition, message) => {
   if (!condition) throw new Error(`CATALOG_ASSERTION_FAILED:${message}`);
 };
 
 try {
   for (const migrationUrl of migrationUrls) {
+    phase = `migration:${migrationUrl.pathname.split("/").at(-1)}`;
     await sql.query(await readFile(migrationUrl, "utf8"));
   }
 
+  phase = "catalog:tables";
   const tables = await sql`
     select table_name
     from information_schema.tables
@@ -52,6 +55,7 @@ try {
     "tables",
   );
 
+  phase = "catalog:columns";
   const columns = await sql`
     select table_name, column_name, data_type, is_nullable
     from information_schema.columns
@@ -71,6 +75,7 @@ try {
     "no-receipt-image-columns",
   );
 
+  phase = "catalog:constraints";
   const constraints = await sql`
     select
       c.conrelid::regclass::text as table_name,
@@ -104,6 +109,7 @@ try {
   assert(dayPlanChecks.includes("custom_title") && dayPlanChecks.includes("is_custom"), "day-plan-custom-check");
   assert(dayPlanChecks.includes("custom_start_time"), "day-plan-time-check");
 
+  phase = "catalog:indexes";
   const indexes = await sql`
     select indexname, indexdef
     from pg_indexes
@@ -118,6 +124,7 @@ try {
     "receipt-hash-partial-index",
   );
 
+  phase = "catalog:triggers";
   const triggers = await sql`
     select t.tgname, p.prosecdef
     from pg_trigger t
@@ -135,9 +142,12 @@ try {
     `Migration and catalog verification passed: ${tables.length} tables, ${constraints.length} constraints, ${indexes.length} indexes, ${triggers.length} application trigger.`,
   );
 } catch (error) {
+  const sqlState = error && typeof error === "object" && "code" in error
+    ? String(error.code).replace(/[^A-Z0-9]/gi, "").slice(0, 12)
+    : "unknown";
   const safeReason = error instanceof Error && error.message.startsWith("CATALOG_ASSERTION_FAILED:")
     ? error.message
-    : "DATABASE_MIGRATION_FAILED";
+    : `DATABASE_MIGRATION_FAILED:${phase}:SQLSTATE_${sqlState}`;
   console.error(`Migration verification failed: ${safeReason}`);
   process.exit(1);
 }
