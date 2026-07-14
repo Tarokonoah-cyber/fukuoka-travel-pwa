@@ -23,7 +23,7 @@ test("全新安裝後公開頁面與清單可真正離線使用", async ({ page,
   expect(cacheAudit.some((url) => new URL(url).pathname.startsWith("/api/"))).toBe(false);
 
   await context.setOffline(true);
-  const routesToOpen = ["/", "/today", "/itinerary", "/map", "/prep", "/transport", "/documents", "/settings"];
+  const routesToOpen = ["/", "/today", "/itinerary", "/map", "/prep", "/weather", "/currency", "/transport", "/documents", "/settings"];
   for (const route of routesToOpen) {
     await page.goto(`${baseURL}${route}`, { waitUntil: "domcontentloaded" });
     await expect(page.locator("main")).toBeVisible();

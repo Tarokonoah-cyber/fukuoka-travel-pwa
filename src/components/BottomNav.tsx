@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const items = [
   { href: "/", label: "首頁", mark: "首" },
   { href: "/today", label: "今日", mark: "今" },
-  { href: "/itinerary", label: "行程", mark: "行" },
+  { href: "/currency", label: "匯率", mark: "匯" },
   { href: "/map", label: "地圖", mark: "圖" },
   { href: "/expenses", label: "旅費", mark: "¥" },
 ];

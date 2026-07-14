@@ -11,6 +11,23 @@ async function mockLiveFukuokaWeather(page: Page) {
       },
     }),
   }));
+  await page.route("https://seasonal-api.open-meteo.com/**", (route) => route.fulfill({
+    contentType: "application/json",
+    body: JSON.stringify({
+      daily: {
+        time: ["2026-08-02", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06"],
+        temperature_2m_max: [32, 32, 33, 33, 32], temperature_2m_min: [25, 25, 25, 26, 25],
+        apparent_temperature_max: [36, 36, 37, 37, 36], precipitation_sum: [3, 2, 0, 4, 1],
+      },
+    }),
+  }));
+}
+
+async function mockCurrencyRate(page: Page) {
+  await page.route("https://api.frankfurter.dev/**", (route) => route.fulfill({
+    contentType: "application/json",
+    body: JSON.stringify({ date: "2026-07-14", base: "JPY", quote: "TWD", rate: 0.21 }),
+  }));
 }
 
 test("今日頁預設聚焦現在與下一站", async ({ page }) => {
@@ -38,14 +55,29 @@ test("長清單預設隱藏剛完成的項目並在有待送資料時提醒", as
   await expect(page.getByText("1 筆變更尚未同步")).toBeVisible();
 });
 
-test("天氣頁標示即時來源且不把範圍外日期當成預報", async ({ page }) => {
+test("天氣頁同時顯示即時資料、旅行日長期預估與穿搭建議", async ({ page }) => {
   await mockLiveFukuokaWeather(page);
   await page.goto("/weather");
   await expect(page.getByText("福岡即時觀測 · LIVE")).toBeVisible();
   await expect(page.getByText("31°", { exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: /資料來源 Open-Meteo/ })).toBeVisible();
-  await expect(page.getByText("旅行日期尚未進入預報範圍")).toBeVisible();
-  await expect(page.locator(".forecast-row")).toHaveCount(0);
+  await expect(page.getByText("依目前預估準備衣服")).toBeVisible();
+  await expect(page.getByText("目前先看旅行日長期預估")).toBeVisible();
+  await expect(page.locator(".forecast-row.estimate")).toHaveCount(5);
+});
+
+test("匯率計算機可用數字鍵即時雙向換算", async ({ page }) => {
+  await mockCurrencyRate(page);
+  await page.goto("/currency");
+  const bottomNav = page.getByRole("navigation", { name: "主要導覽" });
+  await expect(bottomNav.getByRole("link", { name: "匯率" })).toHaveAttribute("aria-current", "page");
+  await expect(bottomNav.getByRole("link", { name: "行程" })).toHaveCount(0);
+  await page.getByRole("button", { name: "清除金額" }).click();
+  await page.getByRole("button", { name: "輸入 5" }).click();
+  await page.getByRole("button", { name: "輸入 000" }).click();
+  await expect(page.getByText("NT$ 1,050", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "切換換算方向" }).click();
+  await expect(page.getByLabel("TWD 金額")).toHaveValue("1050");
 });
 
 for (const viewport of [
@@ -60,8 +92,9 @@ for (const viewport of [
     });
     await page.setViewportSize(viewport);
     await mockLiveFukuokaWeather(page);
+    await mockCurrencyRate(page);
 
-    for (const route of ["/", "/today", "/itinerary", "/map", "/transport", "/settings", "/prep", "/weather", "/expenses"]) {
+    for (const route of ["/", "/today", "/itinerary", "/map", "/transport", "/settings", "/prep", "/weather", "/currency", "/expenses"]) {
       await page.goto(route);
       await expect(page.locator("main")).toBeVisible();
       const overlayText = await page.locator("nextjs-portal").evaluateAll((portals) => portals

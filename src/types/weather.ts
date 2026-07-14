@@ -16,9 +16,20 @@ export type CurrentWeather = {
   windSpeed: number;
 };
 
+export type TripWeatherEstimate = {
+  date: string;
+  maxTemperature: number;
+  minTemperature: number;
+  apparentTemperature?: number;
+  maxTemperatureRange: [number, number];
+  rainyMemberPercent: number | null;
+  source: "ecmwf-ec46" | "jma-normal";
+};
+
 export type WeatherData = {
   current: CurrentWeather;
   daily: DailyWeather[];
+  tripEstimates: TripWeatherEstimate[];
   updatedAt: string;
   stale: boolean;
 };

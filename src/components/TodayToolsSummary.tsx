@@ -9,9 +9,10 @@ export function TodayToolsSummary({ phase, activeDate }: { phase: Exclude<TripPh
   const weather = useWeather();
   const currency = useCurrency();
   const forecast = weather.status === "success" ? weather.data.daily.find((item) => item.date === activeDate) : undefined;
+  const estimate = weather.status === "success" ? weather.data.tripEstimates.find((item) => item.date === activeDate) : undefined;
   const current = weather.status === "success" ? weather.data.current : undefined;
-  const weatherTitle = weather.status === "loading" ? "天氣載入中" : weather.status === "error" ? "天氣暫時無法取得" : forecast ? `${getWeatherLabel(forecast.weatherCode)} · ${Math.round(forecast.maxTemperature)}° / ${Math.round(forecast.minTemperature)}°` : current ? `${getWeatherLabel(current.weatherCode)} · 福岡現在 ${Math.round(current.temperature)}°` : "天氣暫時無資料";
-  const weatherNote = forecast ? `降雨 ${Math.round(forecast.precipitationProbability)}% · ${getWeatherAdvice(forecast)}` : current ? `體感 ${Math.round(current.apparentTemperature)}° · 旅行日預報進入 16 日範圍後自動顯示` : phase === "before" ? "接近出發日後再更新。" : "稍後再更新即可。";
+  const weatherTitle = weather.status === "loading" ? "天氣載入中" : weather.status === "error" ? "天氣暫時無法取得" : forecast ? `${getWeatherLabel(forecast.weatherCode)} · ${Math.round(forecast.maxTemperature)}° / ${Math.round(forecast.minTemperature)}°` : estimate ? `旅行日預估 · ${Math.round(estimate.maxTemperature)}° / ${Math.round(estimate.minTemperature)}°` : current ? `${getWeatherLabel(current.weatherCode)} · 福岡現在 ${Math.round(current.temperature)}°` : "天氣暫時無資料";
+  const weatherNote = forecast ? `降雨 ${Math.round(forecast.precipitationProbability)}% · ${getWeatherAdvice(forecast)}` : estimate ? `EC46 長期集合預估 · 建議短袖、薄外套與摺疊傘` : current ? `體感 ${Math.round(current.apparentTemperature)}° · 稍後再更新旅行日預報` : phase === "before" ? "接近出發日後再更新。" : "稍後再更新即可。";
   const currencyTitle = currency.status === "loading" ? "匯率載入中" : currency.status === "error" ? "匯率暫時無法取得" : `¥1,000 ≈ NT$${Math.round(currency.data.rate * 1000)}`;
   const currencyNote = currency.status === "success" ? `參考日 ${currency.data.date}${currency.data.stale?" · 上次資料":""}` : "換算頁仍可稍後重新載入。";
 

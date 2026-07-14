@@ -1,4 +1,5 @@
-import type { DailyWeather, WeatherData } from "@/types/weather";
+import { itinerary } from "@/data/itinerary";
+import type { DailyWeather, TripWeatherEstimate, WeatherData } from "@/types/weather";
 import { WEATHER_CACHE_KEY } from "./storage";
 
 export const FUKUOKA_LATITUDE = 33.5902;
@@ -18,11 +19,17 @@ type OpenMeteoResponse = {
   };
 };
 
+type OpenMeteoSeasonalResponse = {
+  daily?: Record<string, unknown> & { time?: string[] };
+};
+
+const JMA_AUGUST_NORMAL = { maxTemperature: 32.5, minTemperature: 25.4 };
+
 function readWeatherCache() {
   if (typeof window === "undefined") return null;
   try {
     const value = JSON.parse(localStorage.getItem(WEATHER_CACHE_KEY) ?? "") as WeatherData;
-    return value?.updatedAt && value.current && Array.isArray(value.daily) ? value : null;
+    return value?.updatedAt && value.current && Array.isArray(value.daily) && Array.isArray(value.tripEstimates) ? value : null;
   } catch { return null; }
 }
 
@@ -48,6 +55,78 @@ function parseDaily(data: NonNullable<OpenMeteoResponse["daily"]>): DailyWeather
   }));
 }
 
+function average(values: number[]) {
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function percentile(values: number[], ratio: number) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const index = Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * ratio)));
+  return sorted[index];
+}
+
+function ensembleValues(daily: Record<string, unknown>, variable: string, index: number) {
+  return Object.entries(daily).flatMap(([key, series]) => {
+    if (key !== variable && !key.startsWith(`${variable}_member`)) return [];
+    if (!Array.isArray(series)) return [];
+    const value = series[index];
+    return typeof value === "number" && Number.isFinite(value) ? [value] : [];
+  });
+}
+
+export function buildJmaNormalEstimates(dates = itinerary.map((day) => day.date)): TripWeatherEstimate[] {
+  return dates.map((date) => ({
+    date,
+    ...JMA_AUGUST_NORMAL,
+    maxTemperatureRange: [31, 35],
+    rainyMemberPercent: null,
+    source: "jma-normal",
+  }));
+}
+
+export function parseTripWeatherEstimates(payload: OpenMeteoSeasonalResponse, dates = itinerary.map((day) => day.date)): TripWeatherEstimate[] {
+  const daily = payload.daily;
+  const times = daily?.time;
+  if (!daily || !Array.isArray(times)) return [];
+
+  return dates.flatMap((date) => {
+    const index = times.indexOf(date);
+    if (index < 0) return [];
+    const highs = ensembleValues(daily, "temperature_2m_max", index);
+    const lows = ensembleValues(daily, "temperature_2m_min", index);
+    const apparent = ensembleValues(daily, "apparent_temperature_max", index);
+    const rain = ensembleValues(daily, "precipitation_sum", index);
+    if (!highs.length || !lows.length) return [];
+    return [{
+      date,
+      maxTemperature: average(highs),
+      minTemperature: average(lows),
+      apparentTemperature: apparent.length ? average(apparent) : undefined,
+      maxTemperatureRange: [percentile(highs, 0.2), percentile(highs, 0.8)] as [number, number],
+      rainyMemberPercent: rain.length ? Math.round((rain.filter((value) => value >= 1).length / rain.length) * 100) : null,
+      source: "ecmwf-ec46" as const,
+    }];
+  });
+}
+
+async function fetchTripWeatherEstimates() {
+  const params = new URLSearchParams({
+    latitude: String(FUKUOKA_LATITUDE),
+    longitude: String(FUKUOKA_LONGITUDE),
+    timezone: "Asia/Tokyo",
+    forecast_days: "30",
+    daily: "temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_sum",
+  });
+  try {
+    const response = await fetch(`https://seasonal-api.open-meteo.com/v1/seasonal?${params}`);
+    if (!response.ok) throw new Error(`Seasonal weather request failed: ${response.status}`);
+    const estimates = parseTripWeatherEstimates(await response.json() as OpenMeteoSeasonalResponse);
+    return estimates.length === itinerary.length ? estimates : buildJmaNormalEstimates();
+  } catch {
+    return buildJmaNormalEstimates();
+  }
+}
+
 export async function fetchFukuokaWeather(): Promise<WeatherData> {
   const cached = readWeatherCache();
   if (cached && Date.now() - Date.parse(cached.updatedAt) < WEATHER_CACHE_MS) return { ...cached, stale: false };
@@ -60,7 +139,10 @@ export async function fetchFukuokaWeather(): Promise<WeatherData> {
   });
 
   try {
-    const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+    const [response, tripEstimates] = await Promise.all([
+      fetch(`https://api.open-meteo.com/v1/forecast?${params}`),
+      fetchTripWeatherEstimates(),
+    ]);
     if (!response.ok) throw new Error(`Weather request failed: ${response.status}`);
     const payload = await response.json() as OpenMeteoResponse;
     if (!payload.current || !payload.daily) throw new Error("Weather response is incomplete");
@@ -72,7 +154,7 @@ export async function fetchFukuokaWeather(): Promise<WeatherData> {
         weatherCode: requiredNumber(payload.current.weather_code, "current weather code"),
         windSpeed: requiredNumber(payload.current.wind_speed_10m, "current wind speed"),
       },
-      daily: parseDaily(payload.daily), updatedAt: new Date().toISOString(), stale: false,
+      daily: parseDaily(payload.daily), tripEstimates, updatedAt: new Date().toISOString(), stale: false,
     };
     saveWeatherCache(data);
     return data;

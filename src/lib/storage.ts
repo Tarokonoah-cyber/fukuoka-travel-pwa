@@ -1,5 +1,5 @@
 export const STORAGE_KEYS={packing:"fukuoka-packing-v1",shopping:"fukuoka-shopping-v1",wishlist:"fukuoka-wishlist-v1"} as const;
-export const WEATHER_CACHE_KEY="fukuoka-weather-v1";
+export const WEATHER_CACHE_KEY="fukuoka-weather-v2";
 export const CURRENCY_CACHE_KEY="fukuoka-currency-v1";
 export const PREP_CHECKS_KEY="fukuoka-prep-checks-v1";
 export type StorageKey=typeof STORAGE_KEYS[keyof typeof STORAGE_KEYS];
