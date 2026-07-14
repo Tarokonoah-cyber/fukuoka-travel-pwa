@@ -12,5 +12,6 @@ create table if not exists travel_item_state (
   )
 );
 
+-- statement-breakpoint
 create index if not exists travel_item_state_updated_at_idx
   on travel_item_state (updated_at desc);

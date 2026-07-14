@@ -1,5 +1,6 @@
 create extension if not exists pgcrypto;
 
+-- statement-breakpoint
 create table if not exists travel_expenses (
   id uuid primary key default gen_random_uuid(),
   expense_date date not null,
@@ -23,16 +24,20 @@ create table if not exists travel_expenses (
   updated_at timestamptz not null default now()
 );
 
+-- statement-breakpoint
 create index if not exists travel_expenses_expense_date_idx
   on travel_expenses (expense_date desc);
 
+-- statement-breakpoint
 create index if not exists travel_expenses_created_at_idx
   on travel_expenses (created_at desc);
 
+-- statement-breakpoint
 create index if not exists travel_expenses_receipt_hash_idx
   on travel_expenses (receipt_hash)
   where receipt_hash is not null;
 
+-- statement-breakpoint
 create or replace function set_travel_expenses_updated_at()
 returns trigger
 language plpgsql
@@ -43,7 +48,9 @@ begin
 end;
 $function$;
 
+-- statement-breakpoint
 drop trigger if exists travel_expenses_set_updated_at on travel_expenses;
+-- statement-breakpoint
 create trigger travel_expenses_set_updated_at
 before update on travel_expenses
 for each row execute function set_travel_expenses_updated_at();

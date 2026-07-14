@@ -39,7 +39,14 @@ const assert = (condition, message) => {
 try {
   for (const migrationUrl of migrationUrls) {
     phase = `migration:${migrationUrl.pathname.split("/").at(-1)}`;
-    await sql.query(await readFile(migrationUrl, "utf8"));
+    const statements = (await readFile(migrationUrl, "utf8"))
+      .split(/^-- statement-breakpoint\s*$/m)
+      .map((statement) => statement.trim())
+      .filter(Boolean);
+    for (const [index, statement] of statements.entries()) {
+      phase = `migration:${migrationUrl.pathname.split("/").at(-1)}:${index + 1}`;
+      await sql.query(statement);
+    }
   }
 
   phase = "catalog:tables";

@@ -20,6 +20,7 @@ create table if not exists travel_day_plan_state (
   check (custom_start_time is null or custom_start_time ~ '^([01][0-9]|2[0-3]):[0-5][0-9]$')
 );
 
+-- statement-breakpoint
 create index if not exists travel_day_plan_state_date_order_idx
   on travel_day_plan_state (travel_date, sort_order, item_id)
   where deleted_at is null;
