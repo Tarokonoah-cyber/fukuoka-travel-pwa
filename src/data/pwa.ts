@@ -1,0 +1,18 @@
+export const publicOfflineRoutes = [
+  "/",
+  "/today",
+  "/comfort",
+  "/itinerary",
+  "/map",
+  "/prep",
+  "/weather",
+  "/currency",
+  "/packing",
+  "/shopping",
+  "/wishlist",
+  "/transport",
+  "/documents",
+  "/emergency",
+  "/settings",
+  "/~offline",
+] as const;

@@ -136,13 +136,4 @@ export const prepItems: PrepItem[] = [
     note: "AMANBERRY、やまや明太子仙貝、伊都きんぐ 博多ぱいおう與紅白圓形仙貝的實際庫存與門市仍待確認。",
     dueHint: "出發前 3 天",
   },
-  {
-    id: "budget-not-set",
-    title: "視需要再設定旅行預算",
-    category: "budget",
-    priority: "nice_to_have",
-    source: "src/data/budget.ts",
-    note: "目前預算尚未設定；花費紀錄功能保留，可先只記錄實際日幣支出。",
-    dueHint: "有需要再設定",
-  },
 ];

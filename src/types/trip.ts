@@ -3,6 +3,7 @@ export type PlaceType = "交通" | "景點" | "餐廳" | "購物" | "休息" | "
 
 export interface TimelineItem {
   id: string; time: string; title: string; location: string; type: PlaceType;
+  startTime?: string; fixedTime?: boolean; placeId?: string;
   note: string; walkingLevel: WalkingLevel; environment: "室內" | "室外" | "室內／室外";
   momFriendlyNote: string; rainPlan: string; restStops: string;
 }

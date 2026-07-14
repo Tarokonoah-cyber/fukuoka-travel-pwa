@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
+import { notifyTravelAuthChanged } from "@/components/TravelSyncProvider";
 import {
   calculateAmountTWD,
   DEFAULT_EXCHANGE_RATE,
@@ -257,6 +258,7 @@ export function ExpensesPageClient({ initialAuthenticated, authConfigured }: { i
       await apiRequest<{ authenticated: true }>("/api/travel-auth", { method: "POST", body: JSON.stringify({ pin }) });
       setPin("");
       setAuthenticated(true);
+      notifyTravelAuthChanged("login");
     } catch (requestError) {
       setError((requestError as ApiRequestError).message);
     } finally {
@@ -265,11 +267,18 @@ export function ExpensesPageClient({ initialAuthenticated, authConfigured }: { i
   }
 
   async function logout() {
-    await apiRequest<{ authenticated: false }>("/api/travel-auth", { method: "DELETE" }).catch(() => undefined);
+    setError("");
+    try {
+      await apiRequest<{ authenticated: false }>("/api/travel-auth", { method: "DELETE" });
+    } catch (requestError) {
+      setError((requestError as ApiRequestError).message);
+      return;
+    }
     clearReceipt();
     setExpenses([]);
     setAuthenticated(false);
     setMode("dashboard");
+    notifyTravelAuthChanged("logout");
   }
 
   function saveDefaultRate() {
@@ -307,6 +316,10 @@ export function ExpensesPageClient({ initialAuthenticated, authConfigured }: { i
 
   async function chooseReceipt(file: File | undefined) {
     if (!file) return;
+    if (!navigator.onLine) {
+      setError("目前離線，為保護隱私不會暫存收據照片；恢復連線後請重新拍攝或選取。");
+      return;
+    }
     clearReceipt();
     setMode("scan");
     setBusy(true);
@@ -437,7 +450,7 @@ export function ExpensesPageClient({ initialAuthenticated, authConfigured }: { i
   if (!authenticated) {
     return (
       <div className="expenses-page page-enter">
-        <PageHeader eyebrow="PRIVATE TRAVEL LEDGER" title="旅費紀錄" description="收據與旅費包含私人資訊，請先驗證管理 PIN。" />
+        <PageHeader eyebrow="PRIVATE TRAVEL LEDGER" title="旅費紀錄" description="收據與旅費包含私人資訊，請先輸入旅行共用 PIN。" />
         <section className="expense-auth-card">
           <span className="expense-auth-mark" aria-hidden>¥</span>
           <h2>Owner access</h2>
@@ -445,7 +458,7 @@ export function ExpensesPageClient({ initialAuthenticated, authConfigured }: { i
             <p className="error-message" role="alert">正式環境尚未設定 TRAVEL_ADMIN_PIN，旅費功能已安全鎖定。</p>
           ) : (
             <form onSubmit={login}>
-              <label htmlFor="travel-pin">管理 PIN</label>
+              <label htmlFor="travel-pin">旅行共用 PIN</label>
               <input id="travel-pin" type="password" inputMode="numeric" autoComplete="current-password" value={pin} onChange={(event) => setPin(event.target.value)} autoFocus />
               <button type="submit" disabled={busy || !pin}>{busy ? "驗證中…" : "解鎖旅費"}</button>
             </form>

@@ -1,6 +1,6 @@
 "use client";
 import { useSyncExternalStore } from "react";
-import { getTaipeiDateKey, getTripStatusForDateKey, TRIP_START_DATE, type TripStatus } from "./date";
+import { getTokyoDateKey, getTripStatusForDateKey, TRIP_START_DATE, type TripStatus } from "./date";
 
 export type TripStatusView = TripStatus | {
   phase: "pending";
@@ -11,7 +11,7 @@ export type TripStatusView = TripStatus | {
 
 const pendingStatus: TripStatusView = { phase: "pending", countdown: 0, day: 1, activeDate: TRIP_START_DATE };
 const getServerSnapshot = () => "";
-const getClientSnapshot = () => getTaipeiDateKey();
+const getClientSnapshot = () => getTokyoDateKey();
 
 function subscribe(callback: () => void) {
   const timer = window.setInterval(callback, 60_000);

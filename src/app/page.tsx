@@ -1,15 +1,12 @@
 import Link from "next/link";
-import { CountdownCard } from "@/components/CountdownCard";
-import { HomeBudgetSummary } from "@/components/HomeBudgetSummary";
 import { HomeMenuCard } from "@/components/HomeMenuCard";
-import { HomeTodayStatus } from "@/components/HomeTodayStatus";
+import { HomeSmartDashboard } from "@/components/HomeSmartDashboard";
 
 const menu = [
   ["/today", "今日", "旅途中快速查看"],
   ["/itinerary", "行程", "五天完整安排"],
   ["/map", "地圖", "飯店與重點點位"],
-  ["/budget", "花費", "預算與記帳"],
-  ["/expenses", "旅費", "AI 收據掃描與旅費紀錄"],
+  ["/expenses", "旅費", "AI 收據掃描與雲端旅費紀錄"],
   ["/comfort", "舒適度", "天氣、步行量與媽媽友善提醒"],
   ["/prep", "行前檢查", "航班、球賽與交通確認"],
   ["/emergency", "緊急", "電話與求助資訊"],
@@ -25,43 +22,7 @@ const menu = [
 export default function Home() {
   return (
     <div className="home-page page-enter">
-      <header className="travel-cover">
-        <div className="cover-kicker">
-          <span>TRAVEL HANDBOOK</span>
-          <span>FUK 2026</span>
-        </div>
-        <div className="cover-title">
-          <div>
-            <p>Fukuoka Travel Handbook</p>
-            <h1>福岡</h1>
-            <strong>2026.08.02 – 08.06</strong>
-          </div>
-          <div className="trip-seal">
-            <span>5 DAYS</span>
-            <strong>05</strong>
-            <small>4 NIGHTS</small>
-          </div>
-        </div>
-        <p className="cover-route">
-          博多 <i>/</i> 太宰府 <i>/</i> 熊本 <i>/</i> Mizuho PayPay Dome
-        </p>
-        <dl className="cover-details">
-          <div>
-            <dt>MEMBERS</dt>
-            <dd>2 人</dd>
-          </div>
-          <div>
-            <dt>STAY</dt>
-            <dd>博多西鐵克魯姆飯店</dd>
-          </div>
-        </dl>
-      </header>
-
-      <div className="home-status-row">
-        <CountdownCard />
-        <HomeTodayStatus />
-      </div>
-      <HomeBudgetSummary />
+      <HomeSmartDashboard />
 
       <section className="home-menu" aria-labelledby="menu-title">
         <div className="toc-heading">
@@ -74,7 +35,7 @@ export default function Home() {
           ))}
         </div>
         <Link className="settings-link" href="/settings">
-          本機資料與設定 <span>→</span>
+          同步、安裝與設定 <span>→</span>
         </Link>
       </section>
     </div>

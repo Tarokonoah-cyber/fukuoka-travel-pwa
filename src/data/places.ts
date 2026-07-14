@@ -16,6 +16,7 @@ export const places: Place[] = [
   {
     id: "taipei-kaifeng-hotel",
     name: "天雲旅棧台北開封",
+    journeySide: "origin",
     category: "hotel",
     area: "台北車站周邊",
     latitude: 25.0461,
@@ -29,6 +30,7 @@ export const places: Place[] = [
   {
     id: "taipei-main-a1",
     name: "台北車站／桃園機場捷運 A1",
+    journeySide: "origin",
     category: "transport",
     area: "台北車站",
     latitude: 25.0478,
@@ -42,6 +44,7 @@ export const places: Place[] = [
   {
     id: "taoyuan-airport",
     name: "桃園國際機場 TPE",
+    journeySide: "origin",
     category: "transport",
     area: "桃園",
     latitude: 25.0797,
@@ -55,6 +58,7 @@ export const places: Place[] = [
   {
     id: "fukuoka-airport",
     name: "福岡機場 FUK",
+    journeySide: "destination",
     category: "transport",
     area: "福岡機場",
     latitude: 33.5859,
@@ -69,6 +73,7 @@ export const places: Place[] = [
   {
     id: "croom-hakata",
     name: "博多西鐵克魯姆飯店",
+    journeySide: "destination",
     category: "hotel",
     area: "博多站",
     latitude: 33.5921,
@@ -84,6 +89,7 @@ export const places: Place[] = [
   {
     id: "hakata-station",
     name: "博多站",
+    journeySide: "destination",
     category: "transport",
     area: "博多",
     latitude: 33.5898,
@@ -98,6 +104,7 @@ export const places: Place[] = [
   {
     id: "dazaifu",
     name: "太宰府",
+    journeySide: "destination",
     category: "attraction",
     area: "太宰府",
     latitude: 33.5214,
@@ -112,6 +119,7 @@ export const places: Place[] = [
   {
     id: "yanagawa-station",
     name: "西鐵柳川站",
+    journeySide: "destination",
     category: "transport",
     area: "柳川",
     latitude: 33.1631,
@@ -126,6 +134,7 @@ export const places: Place[] = [
   {
     id: "yanagawa-boat-pier",
     name: "柳川遊船乘船處（待確認）",
+    journeySide: "destination",
     category: "attraction",
     area: "柳川",
     latitude: 33.1638,
@@ -140,6 +149,7 @@ export const places: Place[] = [
   {
     id: "yanagawa-okinohata",
     name: "柳川主要觀光區／沖端地區",
+    journeySide: "destination",
     category: "attraction",
     area: "柳川",
     latitude: 33.1574,
@@ -154,6 +164,7 @@ export const places: Place[] = [
   {
     id: "tenjin-underground",
     name: "天神地下街",
+    journeySide: "destination",
     category: "shopping",
     area: "天神",
     latitude: 33.5900,
@@ -168,6 +179,7 @@ export const places: Place[] = [
   {
     id: "kumamoto-station",
     name: "熊本站",
+    journeySide: "destination",
     category: "transport",
     area: "熊本",
     latitude: 32.7907,
@@ -182,6 +194,7 @@ export const places: Place[] = [
   {
     id: "paypay-dome",
     name: "Mizuho PayPay Dome Fukuoka",
+    journeySide: "destination",
     category: "baseball",
     area: "百道",
     latitude: 33.5953,
@@ -196,6 +209,7 @@ export const places: Place[] = [
   {
     id: "mark-is",
     name: "MARK IS 福岡百道",
+    journeySide: "destination",
     category: "shopping",
     area: "百道",
     latitude: 33.5948,
@@ -210,6 +224,7 @@ export const places: Place[] = [
   {
     id: "hakata-shopping",
     name: "博多站周邊購物",
+    journeySide: "destination",
     category: "shopping",
     area: "博多站",
     latitude: 33.5898,

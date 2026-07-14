@@ -10,5 +10,5 @@ export function apiError(code: string, message: string, status: number, details?
 }
 
 export async function requireTravelSession() {
-  return await hasTravelSession() ? null : apiError("UNAUTHORIZED", "請先輸入旅費管理 PIN。", 401);
+  return await hasTravelSession() ? null : apiError("UNAUTHORIZED", "請先輸入旅行共用 PIN。", 401);
 }

@@ -10,17 +10,27 @@ const markerLabels: Record<PlaceCategory, string> = {
   hotel: "宿", transport: "站", attraction: "景", restaurant: "食", shopping: "買", baseball: "球", rest: "休", wishlist: "願",
 };
 
-function FitMapToPlaces({ places }: { places: Place[] }) {
+function FitMapToPlaces({ places, selectedPlaceId }: { places: Place[]; selectedPlaceId: string | null }) {
   const map = useMap();
   useEffect(() => {
+    if (selectedPlaceId) return;
     if (!places.length) return;
     if (places.length === 1) map.setView([places[0].latitude, places[0].longitude], 14);
     else map.fitBounds(latLngBounds(places.map((place) => [place.latitude, place.longitude])), { padding: [28, 28], maxZoom: 14 });
-  }, [map, places]);
+  }, [map, places, selectedPlaceId]);
   return null;
 }
 
-export function TripMap({ places }: { places: Place[] }) {
+function FocusSelectedPlace({ places, selectedPlaceId }: { places: Place[]; selectedPlaceId: string | null }) {
+  const map = useMap();
+  useEffect(() => {
+    const selected = places.find((place) => place.id === selectedPlaceId);
+    if (selected) map.setView([selected.latitude, selected.longitude], 15, { animate: true });
+  }, [map, places, selectedPlaceId]);
+  return null;
+}
+
+export function TripMap({ places, selectedPlaceId, onSelectPlace }: { places: Place[]; selectedPlaceId: string | null; onSelectPlace: (placeId: string) => void }) {
   const [tileFailed, setTileFailed] = useState(false);
   const tileEvents = useMemo(() => ({ tileerror: () => setTileFailed(true) }), []);
   const icons = useMemo(() => Object.fromEntries(Object.keys(markerLabels).map((category) => [category, divIcon({
@@ -39,8 +49,9 @@ export function TripMap({ places }: { places: Place[] }) {
         maxZoom={19}
         eventHandlers={tileEvents}
       />
-      <FitMapToPlaces places={places} />
-      {places.map((place) => <Marker key={place.id} position={[place.latitude, place.longitude]} icon={icons[place.category]}>
+      <FitMapToPlaces places={places} selectedPlaceId={selectedPlaceId} />
+      <FocusSelectedPlace places={places} selectedPlaceId={selectedPlaceId} />
+      {places.map((place) => <Marker key={place.id} position={[place.latitude, place.longitude]} icon={icons[place.category]} title={place.name} alt={place.name} eventHandlers={{ click: () => onSelectPlace(place.id) }}>
         <Popup maxWidth={250} minWidth={190}>
           <div className="map-popup"><span>{placeCategoryLabels[place.category]} · {place.area}</span><strong>{place.name}</strong>{place.note&&<p>{place.note}</p>}{place.momFriendlyNote&&<p className="map-popup-memo"><b>媽媽友善</b>{place.momFriendlyNote}</p>}<a href={getGoogleMapsUrl(place)} target="_blank" rel="noopener noreferrer">開啟 Google Maps ↗</a></div>
         </Popup>

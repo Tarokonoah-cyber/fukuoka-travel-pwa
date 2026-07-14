@@ -1,8 +1,10 @@
 import { z } from "zod";
 import { expenseCategories, expensePaymentMethods, type DuplicateMatch, type ReceiptAnalysis, type TravelExpense } from "@/types/expenses";
+import { trip } from "@/data/trip";
+import { getTokyoDateKey } from "@/lib/date";
 
-export const TRIP_START = "2026-08-02";
-export const TRIP_END = "2026-08-06";
+export const TRIP_START = trip.startDate;
+export const TRIP_END = trip.endDate;
 export const EXPENSE_SETTINGS_KEY = "fukuoka-expense-settings-v1";
 export const DEFAULT_EXCHANGE_RATE = 0.22;
 
@@ -103,7 +105,7 @@ export function findDuplicateMatches(expenses: TravelExpense[], candidate: Pick<
 }
 
 export function getTokyoDate(now = new Date()) {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
+  return getTokyoDateKey(now);
 }
 
 export function getDefaultExpenseDate(now = new Date()) {

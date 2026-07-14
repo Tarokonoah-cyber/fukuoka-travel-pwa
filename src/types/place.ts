@@ -11,6 +11,7 @@ export type PlaceCategory =
 export type Place = {
   id: string;
   name: string;
+  journeySide: "origin" | "destination";
   category: PlaceCategory;
   area: string;
   latitude: number;

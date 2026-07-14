@@ -1,8 +1,12 @@
 import { z } from "zod";
 import { apiError, apiSuccess } from "@/lib/server/api";
-import { createTravelSession, isAuthConfigured, TRAVEL_SESSION_COOKIE, verifyPin } from "@/lib/server/auth";
+import { createTravelSession, hasTravelSession, isAuthConfigured, TRAVEL_SESSION_COOKIE, verifyPin } from "@/lib/server/auth";
 
 const pinSchema = z.object({ pin: z.string().min(1).max(128) });
+
+export async function GET() {
+  return apiSuccess({ authenticated: isAuthConfigured() && await hasTravelSession() });
+}
 
 export async function POST(request: Request) {
   if (!isAuthConfigured()) return apiError("AUTH_NOT_CONFIGURED", "旅費管理尚未設定 PIN，請聯絡網站管理者。", 503);

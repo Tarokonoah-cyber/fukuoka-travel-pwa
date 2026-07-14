@@ -16,8 +16,8 @@ export const itinerary: TripDay[] = [
     rainPlan: "抵達後直接搭車前往飯店，晚餐與輕鬆購物都留在博多站室內。",
     momFriendlyNote: "第一天只處理抵達、飯店與晚餐；不要急著跑景點。",
     items: [
-      { id: "d1-tpe-flight", time: "09:35", title: "星宇航空 JX840 起飛", location: "桃園國際機場 TPE → 福岡機場 FUK", type: "交通", note: "13:05 抵達福岡機場，日本當地時間。", walkingLevel: "低", environment: "室內", momFriendlyNote: "證件與手機電量放在好拿的位置。", rainPlan: "航班行程不受福岡天氣影響。", restStops: "機場座位、登機口" },
-      { id: "d1-arrive-fuk", time: "13:05", title: "抵達福岡機場", location: "福岡機場 FUK", type: "交通", note: "入境後前往博多西鐵克魯姆飯店。", walkingLevel: "低", environment: "室內", momFriendlyNote: "先整理行李、網路與交通卡，不急著移動。", rainPlan: "雨天或行李多時直接計程車。", restStops: "抵達大廳座椅、洗手間" },
+      { id: "d1-tpe-flight", time: "09:35", startTime: "09:35", fixedTime: true, title: "星宇航空 JX840 起飛", location: "桃園國際機場 TPE → 福岡機場 FUK", type: "交通", note: "13:05 抵達福岡機場，日本當地時間。", walkingLevel: "低", environment: "室內", momFriendlyNote: "證件與手機電量放在好拿的位置。", rainPlan: "航班行程不受福岡天氣影響。", restStops: "機場座位、登機口" },
+      { id: "d1-arrive-fuk", time: "13:05", startTime: "13:05", fixedTime: true, title: "抵達福岡機場", location: "福岡機場 FUK", type: "交通", note: "入境後前往博多西鐵克魯姆飯店。", walkingLevel: "低", environment: "室內", momFriendlyNote: "先整理行李、網路與交通卡，不急著移動。", rainPlan: "雨天或行李多時直接計程車。", restStops: "抵達大廳座椅、洗手間" },
       { id: "d1-hotel", time: "下午", title: "前往博多西鐵克魯姆飯店", location: "福岡機場 → 博多西鐵克魯姆飯店", type: "住宿", note: "住宿日期 2026-08-02 至 2026-08-06；早餐不含。", walkingLevel: "低", environment: "室內／室外", momFriendlyNote: "抵達日以少走路為優先，必要時搭計程車。", rainPlan: "計程車或車站室內動線。", restStops: "飯店大廳、房間" },
       { id: "d1-hakata-evening", time: "傍晚", title: "博多站周邊輕鬆購物與晚餐", location: "博多站周邊", type: "購物", note: "只買水、簡單用品與晚餐，不安排遠距離景點。", walkingLevel: "低", environment: "室內", momFriendlyNote: "候位太久就換店，今天重點是早點休息。", rainPlan: "全程留在博多站室內。", restStops: "百貨餐廳樓層、飯店" },
     ],
@@ -78,7 +78,7 @@ export const itinerary: TripDay[] = [
       { id: "d4-lunch", time: "中午", title: "天神或博多用餐", location: "天神／博多", type: "餐廳", note: "不指定餐廳；以好坐、等待短、方便回飯店休息為主。", walkingLevel: "低", environment: "室內", momFriendlyNote: "球賽日前不要吃太晚，留完整休息時間。", rainPlan: "百貨或地下街餐廳。", restStops: "餐廳、百貨座位" },
       { id: "d4-rest", time: "下午", title: "返回飯店附近休息", location: hotel, type: "休息", note: "保留至少一段完整休息時間，整理隨身包與行動電源。", walkingLevel: "低", environment: "室內", momFriendlyNote: "休息是正式行程，不加碼遠距離景點。", rainPlan: "原行程。", restStops: "房間、飯店大廳" },
       { id: "d4-dome-transfer", time: "傍晚", title: "前往 Mizuho PayPay Dome Fukuoka", location: "博多 → Mizuho PayPay Dome Fukuoka", type: "交通", note: "可搭公車或計程車前往；座位區域與票券形式待確認。", walkingLevel: "中", environment: "室內／室外", momFriendlyNote: "雨天或疲累時直接計程車。", rainPlan: "公車或計程車，避免長時間戶外步行。", restStops: "MARK IS 福岡百道、球場座位" },
-      { id: "d4-game", time: "18:00", title: "福岡軟銀鷹 VS 北海道日本火腿鬥士", location: "Mizuho PayPay Dome Fukuoka", type: "棒球", note: "正式球賽日；座位區域與票券形式待確認。", walkingLevel: "低", environment: "室內", momFriendlyNote: "入場後先確認洗手間與座位區。", rainPlan: "巨蛋內不受雨影響。", restStops: "球場座位、場內餐飲區" },
+      { id: "d4-game", time: "18:00", startTime: "18:00", fixedTime: true, title: "福岡軟銀鷹 VS 北海道日本火腿鬥士", location: "Mizuho PayPay Dome Fukuoka", type: "棒球", note: "正式球賽日；座位區域與票券形式待確認。", walkingLevel: "低", environment: "室內", momFriendlyNote: "入場後先確認洗手間與座位區。", rainPlan: "巨蛋內不受雨影響。", restStops: "球場座位、場內餐飲區" },
       { id: "d4-after-game", time: "賽後", title: "公車或計程車返回博多", location: "Mizuho PayPay Dome → 博多", type: "交通", note: "賽後人潮多，不搶第一波；公車或計程車返回博多。", walkingLevel: "中", environment: "室內／室外", momFriendlyNote: "累了就等人潮散或搭計程車。", rainPlan: "計程車優先。", restStops: "球場周邊、車內、飯店" },
     ],
   },
@@ -97,7 +97,7 @@ export const itinerary: TripDay[] = [
     items: [
       { id: "d5-checkout", time: "上午", title: "飯店退房與行李整理", location: hotel, type: "住宿", note: "早餐不含；整理行李後前往福岡機場。", walkingLevel: "低", environment: "室內", momFriendlyNote: "護照、手機、行動電源與登機資料放在好拿的位置。", rainPlan: "原行程。", restStops: "房間、飯店大廳" },
       { id: "d5-airport", time: "上午～中午", title: "前往福岡機場", location: "博多 → 福岡機場 FUK", type: "交通", note: "不安排觀光行程，保留機場移動時間。", walkingLevel: "低", environment: "室內／室外", momFriendlyNote: "行李多或下雨時用計程車。", rainPlan: "計程車或室內轉乘動線。", restStops: "車站、機場" },
-      { id: "d5-flight-home", time: "14:15", title: "星宇航空 JX841 回桃園", location: "福岡機場 FUK → 桃園國際機場 TPE", type: "交通", note: "15:45 抵達桃園，台灣時間。", walkingLevel: "低", environment: "室內", momFriendlyNote: "回程日不要排太緊，先顧好行李與登機。", rainPlan: "航班行程為主。", restStops: "機場座位、登機口" },
+      { id: "d5-flight-home", time: "14:15", startTime: "14:15", fixedTime: true, title: "星宇航空 JX841 回桃園", location: "福岡機場 FUK → 桃園國際機場 TPE", type: "交通", note: "15:45 抵達桃園，台灣時間。", walkingLevel: "低", environment: "室內", momFriendlyNote: "回程日不要排太緊，先顧好行李與登機。", rainPlan: "航班行程為主。", restStops: "機場座位、登機口" },
     ],
   },
 ];

@@ -6,7 +6,6 @@ export type PrepCategory =
   | "baseball"
   | "transport"
   | "map"
-  | "budget"
   | "shopping"
   | "restaurant"
   | "packing"

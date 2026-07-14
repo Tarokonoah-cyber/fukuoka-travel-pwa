@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useMemo, useState } from "react";
 import {
   filterPrepItems,
   getCategoryCompletion,
@@ -10,23 +10,17 @@ import {
   prepCategoryLabels,
   prepPriorityLabels,
 } from "@/lib/prep";
-import {
-  getPrepChecksSnapshot,
-  getServerPrepChecksSnapshot,
-  parsePrepChecksSnapshot,
-  subscribeToPrepChecks,
-  togglePrepCheck,
-} from "@/lib/prepStorage";
 import type { PrepFilter, PrepItem } from "@/types/prep";
+import { useTravelSync } from "./TravelSyncProvider";
 
 type PrepPageClientProps = {
   items: PrepItem[];
 };
 
 export function PrepPageClient({ items }: PrepPageClientProps) {
+  const sync = useTravelSync();
   const [filter, setFilter] = useState<PrepFilter>("all");
-  const snapshot = useSyncExternalStore(subscribeToPrepChecks, getPrepChecksSnapshot, getServerPrepChecksSnapshot);
-  const checkedIds = useMemo(() => new Set(parsePrepChecksSnapshot(snapshot).checked), [snapshot]);
+  const checkedIds = useMemo(() => new Set(sync.items.filter((item) => item.namespace === "prep" && item.checked).map((item) => item.itemId)), [sync.items]);
   const summary = getPrepSummary(items, checkedIds);
   const visibleItems = filterPrepItems(items, filter);
   const groups = groupPrepItemsByPriority(visibleItems).filter((group) => group.items.length > 0);
@@ -103,7 +97,7 @@ export function PrepPageClient({ items }: PrepPageClientProps) {
                   <input
                     checked={checked}
                     type="checkbox"
-                    onChange={() => togglePrepCheck(item.id)}
+                    onChange={() => sync.toggleItem("prep", item.id)}
                     aria-label={`確認${item.title}`}
                   />
                   <span className="prep-check-box" aria-hidden="true">

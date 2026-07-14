@@ -1,4 +1,6 @@
-export function EmptyState({ children, title, description }: { children?: string; title?: string; description?: string }) {
+import type { ReactNode } from "react";
+
+export function EmptyState({ children, title, description }: { children?: ReactNode; title?: string; description?: string }) {
   if (title || description) {
     return (
       <div className="empty-state">
@@ -8,5 +10,5 @@ export function EmptyState({ children, title, description }: { children?: string
     );
   }
 
-  return <p className="empty-state">{children ?? "尚未有資料"}</p>;
+  return <div className="empty-state">{children ?? "尚未有資料"}</div>;
 }

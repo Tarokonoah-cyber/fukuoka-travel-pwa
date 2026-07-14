@@ -3,30 +3,141 @@ import nextEnv from "@next/env";
 import { neon } from "@neondatabase/serverless";
 
 const { loadEnvConfig } = nextEnv;
-loadEnvConfig(process.cwd());
+loadEnvConfig(process.cwd(), process.env.NODE_ENV !== "production");
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
-  console.error("缺少 DATABASE_URL，migration 未執行。");
+  console.error("Missing DATABASE_URL; migration was not executed.");
   process.exit(1);
 }
 
-const migrationUrl = new URL("../migrations/20260713_create_travel_expenses.sql", import.meta.url);
-const migration = await readFile(migrationUrl, "utf8");
+const migrationUrls = [
+  new URL("../migrations/20260713_create_travel_expenses.sql", import.meta.url),
+  new URL("../migrations/20260713_create_travel_item_state.sql", import.meta.url),
+  new URL("../migrations/20260713_create_travel_day_plan_state.sql", import.meta.url),
+];
+
+const expectedTables = [
+  "travel_day_plan_state",
+  "travel_expenses",
+  "travel_item_state",
+];
+const expectedIndexes = [
+  "travel_day_plan_state_date_order_idx",
+  "travel_expenses_created_at_idx",
+  "travel_expenses_expense_date_idx",
+  "travel_expenses_receipt_hash_idx",
+  "travel_item_state_updated_at_idx",
+];
+
 const sql = neon(databaseUrl);
+const assert = (condition, message) => {
+  if (!condition) throw new Error(`CATALOG_ASSERTION_FAILED:${message}`);
+};
 
 try {
-  await sql.query(migration);
-  const [table] = await sql`select to_regclass('public.travel_expenses')::text as name`;
-  const indexes = await sql`
-    select indexname
-    from pg_indexes
-    where schemaname = 'public' and tablename = 'travel_expenses'
-    order by indexname
+  for (const migrationUrl of migrationUrls) {
+    await sql.query(await readFile(migrationUrl, "utf8"));
+  }
+
+  const tables = await sql`
+    select table_name
+    from information_schema.tables
+    where table_schema = 'public'
+      and table_name in ('travel_expenses', 'travel_item_state', 'travel_day_plan_state')
+    order by table_name
   `;
-  if (table?.name !== "travel_expenses") throw new Error("MIGRATION_VERIFICATION_FAILED");
-  console.log(`travel_expenses migration 執行完成；已驗證資料表與 ${indexes.length} 個 index。`);
-} catch {
-  console.error("travel_expenses migration 執行失敗；請檢查資料庫連線與權限。");
+  assert(
+    JSON.stringify(tables.map(({ table_name }) => table_name)) === JSON.stringify(expectedTables),
+    "tables",
+  );
+
+  const columns = await sql`
+    select table_name, column_name, data_type, is_nullable
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name in ('travel_expenses', 'travel_item_state', 'travel_day_plan_state')
+  `;
+  const column = (tableName, columnName) =>
+    columns.find(
+      (entry) => entry.table_name === tableName && entry.column_name === columnName,
+    );
+  assert(column("travel_expenses", "ai_raw_result")?.data_type === "jsonb", "expenses-jsonb");
+  assert(column("travel_expenses", "updated_at")?.data_type === "timestamp with time zone", "expenses-updated-at");
+  assert(column("travel_item_state", "updated_at")?.data_type === "timestamp with time zone", "state-updated-at");
+  assert(column("travel_day_plan_state", "updated_at")?.data_type === "timestamp with time zone", "day-plan-updated-at");
+  assert(
+    !columns.some(({ column_name }) => /(image|base64|blob)/i.test(column_name)),
+    "no-receipt-image-columns",
+  );
+
+  const constraints = await sql`
+    select
+      c.conrelid::regclass::text as table_name,
+      c.contype,
+      pg_get_constraintdef(c.oid) as definition
+    from pg_constraint c
+    where c.connamespace = 'public'::regnamespace
+      and c.conrelid in (
+        'public.travel_expenses'::regclass,
+        'public.travel_item_state'::regclass,
+        'public.travel_day_plan_state'::regclass
+      )
+  `;
+  const definitions = (tableName, type) =>
+    constraints
+      .filter(({ table_name, contype }) => table_name === tableName && contype === type)
+      .map(({ definition }) => definition);
+  assert(definitions("travel_expenses", "p").some((value) => /PRIMARY KEY \(id\)/.test(value)), "expenses-pk");
+  assert(definitions("travel_item_state", "p").some((value) => /PRIMARY KEY \(namespace, item_id\)/.test(value)), "state-pk");
+  assert(definitions("travel_day_plan_state", "p").some((value) => /PRIMARY KEY \(travel_date, item_id\)/.test(value)), "day-plan-pk");
+
+  const expenseChecks = definitions("travel_expenses", "c").join("\n");
+  for (const token of ["amount_jpy", "amount_twd", "category", "payment_method", "input_method"]) {
+    assert(expenseChecks.includes(token), `expenses-check-${token}`);
+  }
+  const stateChecks = definitions("travel_item_state", "c").join("\n");
+  assert(stateChecks.includes("namespace"), "state-namespace-check");
+  assert(stateChecks.includes("custom_name") && stateChecks.includes("custom_category"), "state-custom-check");
+  const dayPlanChecks = definitions("travel_day_plan_state", "c").join("\n");
+  assert(dayPlanChecks.includes("status"), "day-plan-status-check");
+  assert(dayPlanChecks.includes("custom_title") && dayPlanChecks.includes("is_custom"), "day-plan-custom-check");
+  assert(dayPlanChecks.includes("custom_start_time"), "day-plan-time-check");
+
+  const indexes = await sql`
+    select indexname, indexdef
+    from pg_indexes
+    where schemaname = 'public'
+      and tablename in ('travel_expenses', 'travel_item_state', 'travel_day_plan_state')
+  `;
+  for (const indexName of expectedIndexes) {
+    assert(indexes.some(({ indexname }) => indexname === indexName), `index-${indexName}`);
+  }
+  assert(
+    indexes.find(({ indexname }) => indexname === "travel_expenses_receipt_hash_idx")?.indexdef.includes("WHERE (receipt_hash IS NOT NULL)"),
+    "receipt-hash-partial-index",
+  );
+
+  const triggers = await sql`
+    select t.tgname, p.prosecdef
+    from pg_trigger t
+    join pg_proc p on p.oid = t.tgfoid
+    where t.tgrelid = 'public.travel_expenses'::regclass
+      and not t.tgisinternal
+  `;
+  const updatedAtTrigger = triggers.find(
+    ({ tgname }) => tgname === "travel_expenses_set_updated_at",
+  );
+  assert(Boolean(updatedAtTrigger), "expenses-updated-at-trigger");
+  assert(updatedAtTrigger?.prosecdef === false, "trigger-function-not-security-definer");
+
+  console.log(
+    `Migration and catalog verification passed: ${tables.length} tables, ${constraints.length} constraints, ${indexes.length} indexes, ${triggers.length} application trigger.`,
+  );
+} catch (error) {
+  const safeReason = error instanceof Error && error.message.startsWith("CATALOG_ASSERTION_FAILED:")
+    ? error.message
+    : "DATABASE_MIGRATION_FAILED";
+  console.error(`Migration verification failed: ${safeReason}`);
   process.exit(1);
 }

@@ -8,7 +8,7 @@ const items = [
   { href: "/today", label: "今日", mark: "今" },
   { href: "/itinerary", label: "行程", mark: "行" },
   { href: "/map", label: "地圖", mark: "圖" },
-  { href: "/budget", label: "花費", mark: "¥" },
+  { href: "/expenses", label: "旅費", mark: "¥" },
 ];
 
 export function BottomNav() {

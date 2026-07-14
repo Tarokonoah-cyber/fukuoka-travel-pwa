@@ -17,7 +17,7 @@ export function ComfortPageClient() {
     return (
       <div className="page-enter">
         <PageHeader eyebrow="COMFORT CHECK" title="今日舒適度" description="依照天氣、步行量、室內比例與休息點，快速判斷今天怎麼走。" />
-        <NoticeBox tone="blue" title="日期確認中">正在以台北時間確認旅程狀態，避免出發前誤判為今天。</NoticeBox>
+        <NoticeBox tone="blue" title="日期確認中">正在以福岡時間確認旅程狀態，避免出發前誤判為今天。</NoticeBox>
       </div>
     );
   }

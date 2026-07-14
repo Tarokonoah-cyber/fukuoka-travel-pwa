@@ -1,6 +1,8 @@
-export const TRIP_START_DATE = "2026-08-02";
-export const TRIP_END_DATE = "2026-08-06";
-export const TRIP_TIME_ZONE = "Asia/Taipei";
+import { trip } from "@/data/trip";
+
+export const TRIP_START_DATE = trip.startDate;
+export const TRIP_END_DATE = trip.endDate;
+export const TRIP_TIME_ZONE = "Asia/Tokyo";
 
 export type TripPhase = "pending" | "before" | "active" | "after";
 
@@ -11,7 +13,7 @@ export type TripStatus = {
   activeDate: string;
 };
 
-const taipeiDateFormatter = new Intl.DateTimeFormat("en-CA", {
+const tokyoDateFormatter = new Intl.DateTimeFormat("en-CA", {
   timeZone: TRIP_TIME_ZONE,
   year: "numeric",
   month: "2-digit",
@@ -24,10 +26,19 @@ function dateKeyToUtcMs(dateKey: string) {
   return Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
 }
 
-export function getTaipeiDateKey(now = new Date()) {
-  const parts = taipeiDateFormatter.formatToParts(now);
+export function getTokyoDateKey(now = new Date()) {
+  const parts = tokyoDateFormatter.formatToParts(now);
   const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
   return `${values.year}-${values.month}-${values.day}`;
+}
+
+export function getTokyoTimeKey(now = new Date()) {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: TRIP_TIME_ZONE,
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(now);
 }
 
 export function getTripStatusForDateKey(dateKey: string): TripStatus {
@@ -48,7 +59,7 @@ export function getTripStatusForDateKey(dateKey: string): TripStatus {
 }
 
 export function getTripStatus(now = new Date()) {
-  return getTripStatusForDateKey(getTaipeiDateKey(now));
+  return getTripStatusForDateKey(getTokyoDateKey(now));
 }
 
 function dateKeyToNoonUtc(dateKey: string) {

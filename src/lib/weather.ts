@@ -54,7 +54,7 @@ export async function fetchFukuokaWeather(): Promise<WeatherData> {
   if (cached && typeof navigator !== "undefined" && !navigator.onLine) return { ...cached, stale: true };
 
   const params = new URLSearchParams({
-    latitude: String(FUKUOKA_LATITUDE), longitude: String(FUKUOKA_LONGITUDE), timezone: "Asia/Taipei", forecast_days: "16",
+    latitude: String(FUKUOKA_LATITUDE), longitude: String(FUKUOKA_LONGITUDE), timezone: "Asia/Tokyo", forecast_days: "16",
     current: "temperature_2m,apparent_temperature,weather_code,wind_speed_10m",
     daily: "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_probability_max,wind_speed_10m_max",
   });
@@ -102,5 +102,5 @@ export function getWeatherAdvice(weather: Pick<DailyWeather, "maxTemperature" | 
 }
 
 export function formatWeatherUpdate(iso: string) {
-  return new Intl.DateTimeFormat("zh-TW", { timeZone: "Asia/Taipei", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+  return new Intl.DateTimeFormat("zh-TW", { timeZone: "Asia/Tokyo", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
 }
