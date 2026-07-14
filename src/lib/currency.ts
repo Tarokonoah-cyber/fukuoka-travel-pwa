@@ -36,6 +36,12 @@ export async function fetchJpyTwdRate(): Promise<CurrencyRate> {
 }
 
 export function convertCurrency(amount: number, rate: number, direction: "JPY_TWD" | "TWD_JPY") {
-  if (!Number.isFinite(amount) || amount < 0 || !Number.isFinite(rate) || rate <= 0) return 0;
+  if (!Number.isFinite(amount) || !Number.isFinite(rate) || rate <= 0) return 0;
   return direction === "JPY_TWD" ? amount * rate : amount / rate;
+}
+
+export type CurrencyOperator = "+" | "-";
+
+export function calculateCurrencyAmount(left: number, right: number, operator: CurrencyOperator) {
+  return operator === "+" ? left + right : left - right;
 }

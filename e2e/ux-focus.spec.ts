@@ -66,18 +66,37 @@ test("天氣頁同時顯示即時資料、旅行日長期預估與穿搭建議",
   await expect(page.locator(".forecast-row.estimate")).toHaveCount(5);
 });
 
-test("匯率計算機可用數字鍵即時雙向換算", async ({ page }) => {
+test("匯率計算機可加減並即時雙向換算", async ({ page }) => {
   await mockCurrencyRate(page);
   await page.goto("/currency");
   const bottomNav = page.getByRole("navigation", { name: "主要導覽" });
   await expect(bottomNav.getByRole("link", { name: "匯率" })).toHaveAttribute("aria-current", "page");
   await expect(bottomNav.getByRole("link", { name: "行程" })).toHaveCount(0);
-  await page.getByRole("button", { name: "清除金額" }).click();
+  await expect(page.getByLabel("JPY 金額")).toHaveValue("");
+  await expect(page.getByText("—", { exact: true })).toBeVisible();
+  await expect(page.getByText("輸入或直接按數字鍵，即時計算日幣與台幣。")).toHaveCount(0);
+  await expect(page.getByText("匯率提醒")).toHaveCount(0);
   await page.getByRole("button", { name: "輸入 5" }).click();
   await page.getByRole("button", { name: "輸入 000" }).click();
-  await expect(page.getByText("NT$ 1,050", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "加", exact: true }).click();
+  await page.getByRole("button", { name: "輸入 1" }).click();
+  await page.getByRole("button", { name: "輸入 000" }).click();
+  await page.getByRole("button", { name: "等於", exact: true }).click();
+  await expect(page.getByLabel("JPY 金額")).toHaveValue("6000");
+  await expect(page.getByText("NT$ 1,260", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "減", exact: true }).click();
+  await page.getByRole("button", { name: "輸入 5" }).click();
+  await page.getByRole("button", { name: "輸入 00", exact: true }).click();
+  await page.getByRole("button", { name: "等於", exact: true }).click();
+  await expect(page.getByLabel("JPY 金額")).toHaveValue("5500");
+  await expect(page.getByText("NT$ 1,155", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "切換換算方向" }).click();
-  await expect(page.getByLabel("TWD 金額")).toHaveValue("1050");
+  await expect(page.getByLabel("TWD 金額")).toHaveValue("1155");
+});
+
+test("首頁不重複顯示旅費捷徑", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".home-budget-link")).toHaveCount(0);
 });
 
 for (const viewport of [

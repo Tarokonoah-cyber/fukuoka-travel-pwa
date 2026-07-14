@@ -5,7 +5,6 @@ import { itinerary } from "@/data/itinerary";
 import { trip } from "@/data/trip";
 import { useTripStatus } from "@/lib/useTripStatus";
 import { DayPlanController } from "./DayPlanController";
-import { HomeExpenseSummary } from "./HomeExpenseSummary";
 
 function TravelCover({ compact = false }: { compact?: boolean }) {
   return (
@@ -59,6 +58,5 @@ export function HomeSmartDashboard() {
     <Link className="home-day-preview" href="/today">
       <span>FIRST DAY PREVIEW</span><strong>{dayOne.highlight}</strong><small>查看 DAY 1 航班、抵達與雨天備案 →</small>
     </Link>
-    <HomeExpenseSummary />
   </>;
 }
