@@ -2,17 +2,17 @@ import { expect, test } from "@playwright/test";
 
 test("今日頁預設聚焦現在與下一站", async ({ page }) => {
   await page.goto("/today");
-  await expect(page.getByRole("heading", { name: "星宇航空 JX840 起飛", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "抵達福岡機場國際線", exact: true })).toBeVisible();
   await expect(page.locator(".day-plan-row")).toHaveCount(0);
-  await page.getByRole("button", { name: /展開 4 站/ }).click();
-  await expect(page.locator(".day-plan-row")).toHaveCount(4);
+  await page.getByRole("button", { name: /展開 5 站/ }).click();
+  await expect(page.locator(".day-plan-row")).toHaveCount(5);
   await expect(page.getByRole("button", { name: "收起" })).toBeVisible();
 });
 
 test("出發前地圖預設只看日本目的地", async ({ page }) => {
   await page.goto("/map");
   await expect(page.getByRole("button", { name: "目的地", pressed: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "福岡機場 FUK" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "福岡機場國際線旅客航廈" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "桃園國際機場 TPE" })).toHaveCount(0);
 });
 
@@ -37,7 +37,7 @@ for (const viewport of [
     });
     await page.setViewportSize(viewport);
 
-    for (const route of ["/", "/today", "/map", "/settings", "/packing", "/expenses"]) {
+    for (const route of ["/", "/today", "/itinerary", "/map", "/transport", "/settings", "/packing", "/expenses"]) {
       await page.goto(route);
       await expect(page.locator("main")).toBeVisible();
       const overlayText = await page.locator("nextjs-portal").evaluateAll((portals) => portals

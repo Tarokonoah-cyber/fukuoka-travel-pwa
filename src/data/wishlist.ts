@@ -10,7 +10,11 @@ export const wishlistItems: ChecklistItemData[] = [
 
   { id:"yoshizuka", name:"吉塚鰻魚屋候補", category:"餐廳", area:"中洲川端", reason:"名店候補", suitability:"中", momFriendly:"中", note:"不訂位不硬排；排隊太久就換店" },
   { id:"hakata-food", name:"博多站餐廳街", category:"餐廳", area:"博多站", reason:"離飯店近、選擇多", suitability:"高", momFriendly:"高", note:"抵達日與晚餐首選" },
-  { id:"dome-food", name:"球場或 MARK IS 賽前用餐", category:"餐廳", area:"百道", reason:"8/5 看球前不用趕路", suitability:"高", momFriendly:"高", note:"不指定餐廳，現場以好坐、等待短為主" },
+  { id:"dome-food", name:"とりかわ竹乃屋 鷹正／球場內餐飲", category:"餐廳", area:"MIZUHO PayPay Dome", reason:"16:00 入場後不必再移動", suitability:"高", momFriendly:"高", note:"官方場內餐飲候補；以當日營運與有座位、等待短為準" },
+  { id:"ooyama-kitte", name:"博多もつ鍋 おおやま KITTE博多店", category:"餐廳", area:"博多站", reason:"8/2 抵達日晚餐主選", suitability:"高", momFriendly:"高", note:"候位太久就改因幡うどん或站內有座位的餐廳" },
+  { id:"wakamatsuya", name:"若松屋鰻せいろ蒸し", category:"餐廳", area:"柳川沖端", reason:"8/3 柳川午餐主選", suitability:"高", momFriendly:"高", note:"建議事前電話確認平日預約；旺季受理狀況以店家為準" },
+  { id:"yokayoka", name:"あか牛Dining yoka-yoka", category:"餐廳", area:"熊本城彩苑", reason:"8/4 赤牛午餐主選", suitability:"高", momFriendly:"高", note:"候位長就改城彩苑內有座位的餐廳或熊本拉麵" },
+  { id:"karonouron", name:"かろのうろん", category:"餐廳", area:"博多舊市街", reason:"8/5 博多柔軟烏龍麵午餐主選", suitability:"高", momFriendly:"高", note:"候位長就換川端／祇園附近有座位的店" },
 
   { id:"rec-coffee", name:"REC COFFEE 候補", category:"咖啡", area:"博多／天神", reason:"安排坐下休息", suitability:"高", momFriendly:"高", note:"找最近分店，不為咖啡繞遠路" },
   { id:"department-cafe", name:"百貨咖啡店", category:"咖啡", area:"天神／博多", reason:"購物中段休息", suitability:"高", momFriendly:"高", note:"有座位比名氣重要" },

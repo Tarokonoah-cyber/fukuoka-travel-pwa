@@ -5,7 +5,7 @@ export interface TimelineItem {
   id: string; time: string; title: string; location: string; type: PlaceType;
   startTime?: string; fixedTime?: boolean; placeId?: string;
   note: string; walkingLevel: WalkingLevel; environment: "室內" | "室外" | "室內／室外";
-  momFriendlyNote: string; rainPlan: string; restStops: string;
+  momFriendlyNote: string; heatPlan: string; rainPlan: string; restStops: string; mapHref: string;
 }
 
 export interface TripDay {
@@ -21,5 +21,6 @@ export interface ChecklistItemData {
 
 export interface TransportRoute {
   id: string; from: string; to: string; method: string; duration: string;
-  transfer: string; note: string; momFriendlyNote: string; walkingLevel?: WalkingLevel; accessibilityNote?: string; mapHref?: string;
+  transfer: string; transferCount: string; note: string; momFriendlyNote: string;
+  rainPlan: string; heatPlan: string; walkingLevel?: WalkingLevel; accessibilityNote?: string; mapHref?: string;
 }

@@ -136,4 +136,13 @@ export const prepItems: PrepItem[] = [
     note: "AMANBERRY、やまや明太子仙貝、伊都きんぐ 博多ぱいおう與紅白圓形仙貝的實際庫存與門市仍待確認。",
     dueHint: "出發前 3 天",
   },
+  { id: "v2-kumamoto-reserved-seats", title: "預訂或購買 8/4 博多－熊本來回新幹線指定席", category: "transport", priority: "critical", source: "2026 正式行程／JR 當日班次", note: "選擇 08:40–09:00 時段去程與約 17:00 回程；不在網站寫死尚未購買的車次。", dueHint: "出發前 14 天" },
+  { id: "v2-wakamatsuya-call", title: "致電確認 8/3 若松屋平日訂位", category: "transport", priority: "critical", source: "若松屋官方網站／2026 正式行程", note: "確認 12:40 左右兩人座位、無障礙需求與當日受理狀況。", dueHint: "出發前 14 天" },
+  { id: "v2-yanagawa-operation-heat", title: "出發前確認柳川遊船營運及高溫狀況", category: "transport", priority: "critical", source: "柳川市觀光官方網站／天氣頁", note: "預設沖端約 30–40 分鐘短程；高溫警報、雷雨或媽媽精神不佳就取消。", dueHint: "8/3 當天早上" },
+  { id: "v2-baseball-qr", title: "確認 8/5 棒球 QR 票券", category: "baseball", priority: "critical", source: "福岡軟銀鷹官方票券頁", note: "先在手機開啟可入場 QR，另保留離線可用的安全備援；不要公開票券內容。", dueHint: "出發前 3 天" },
+  { id: "v2-baseball-seat-gate", title: "確認球場座位與入口", category: "baseball", priority: "critical", source: "福岡軟銀鷹官方票券／場館資訊", note: "確認座位區、入口與最近洗手間；16:00 開場、18:00 開賽。", dueHint: "出發前 3 天" },
+  { id: "v2-baseball-power-bank", title: "棒球日行動電源", category: "packing", priority: "important", source: "2026 正式行程", note: "8/5 午休時充滿電並放入隨身包。", dueHint: "8/5 出門前" },
+  { id: "v2-summer-protection", title: "帽子、陽傘、防曬、飲水", category: "packing", priority: "critical", source: "8 月高溫行程原則", note: "太宰府、柳川遊船與熊本城均需使用。", dueHint: "每日出門前" },
+  { id: "v2-mom-walking-shoes", title: "媽媽好走的鞋", category: "packing", priority: "critical", source: "媽媽同行原則", note: "選防滑、已穿習慣的鞋；熊本城雨天路面尤其注意。", dueHint: "出發前 2 天" },
+  { id: "v2-return-three-hours", title: "回程航班前三小時抵達機場", category: "flight", priority: "critical", source: "既有 JX841 航班資料／2026 正式行程", note: "JX841 14:15 起飛，以 11:15 前抵達福岡機場國際線為目標。", dueHint: "8/6 當天" },
 ];

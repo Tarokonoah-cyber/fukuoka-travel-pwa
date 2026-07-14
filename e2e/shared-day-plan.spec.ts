@@ -55,14 +55,14 @@ test("兩支手機共享完成狀態與臨時行程", async ({ browser }) => {
   const pageB = await phoneB.newPage();
 
   await pageA.goto("/today");
-  await pageA.getByRole("button", { name: /展開 4 站/ }).click();
-  const firstRowA = pageA.locator(".day-plan-row").filter({ hasText: "星宇航空 JX840 起飛" });
+  await pageA.getByRole("button", { name: /展開 5 站/ }).click();
+  const firstRowA = pageA.locator(".day-plan-row").filter({ hasText: "抵達福岡機場國際線" });
   await firstRowA.getByRole("button", { name: "完成" }).click();
   await expect(firstRowA).toContainText("已完成");
 
   await pageB.goto("/today");
-  await pageB.getByRole("button", { name: /展開 4 站/ }).click();
-  const firstRowB = pageB.locator(".day-plan-row").filter({ hasText: "星宇航空 JX840 起飛" });
+  await pageB.getByRole("button", { name: /展開 5 站/ }).click();
+  const firstRowB = pageB.locator(".day-plan-row").filter({ hasText: "抵達福岡機場國際線" });
   await expect(firstRowB).toContainText("已完成");
 
   await pageA.getByRole("button", { name: "＋ 臨時安排" }).click();
@@ -72,7 +72,7 @@ test("兩支手機共享完成狀態與臨時行程", async ({ browser }) => {
   await expect(pageA.getByText("回飯店休息")).toBeVisible();
 
   await pageB.reload();
-  await pageB.getByRole("button", { name: /展開 5 站/ }).click();
+  await pageB.getByRole("button", { name: /展開 6 站/ }).click();
   await expect(pageB.getByText("回飯店休息")).toBeVisible();
 
   await pageB.goto("/settings");

@@ -5,7 +5,7 @@ import type { DayPlanItemState } from "@/types/dayPlan";
 
 const base = (id: string, title: string, startTime?: string): TimelineItem => ({
   id, title, time: startTime ?? "彈性", startTime, fixedTime: Boolean(startTime), location: title,
-  type: "景點", note: "", walkingLevel: "低", environment: "室內", momFriendlyNote: "", rainPlan: "", restStops: "",
+  type: "景點", note: "", walkingLevel: "低", environment: "室內", momFriendlyNote: "", heatPlan: "", rainPlan: "", restStops: "", mapHref: "https://www.google.com/maps",
 });
 
 describe("Now / Next control", () => {

@@ -3,6 +3,10 @@ import type { ChecklistItemData } from "@/types/trip";
 export const shoppingCategories = ["伴手禮", "藥妝", "零食", "生活用品", "棒球周邊", "媽媽想買"];
 
 export const shoppingItems: ChecklistItemData[] = [
+  { id:"dazaifu-amulet", name:"太宰府天滿宮御守", category:"伴手禮", important:true, price:"現場確認", location:"太宰府天滿宮", note:"8/3 主要境內順路購買，不為款式走遍全區" },
+  { id:"kasanoya-umegae", name:"かさの家梅枝餅", category:"零食", price:"現場確認", location:"太宰府參道 かさの家", note:"當作上午坐下休息；保存與攜帶方式現場確認" },
+  { id:"yanagawa-gift", name:"柳川／御花周邊伴手禮", category:"伴手禮", price:"現場確認", location:"御花周邊", note:"遊船後只挑輕量、好攜帶的商品" },
+  { id:"kumamon-gift", name:"熊本熊官方伴手禮", category:"伴手禮", price:"現場確認", location:"熊本熊廣場／鶴屋百貨", note:"8/4 室內休息時順路挑選" },
   { id:"fukutaro-mentai-senbei", name:"福太郎めんべい／明太子仙貝", category:"伴手禮", important:true, price:"待確認", location:"博多站或福岡市區門市，實際地點待確認", note:"必買；保留福太郎品牌，不與やまや明太子仙貝合併" },
   { id:"torimon", name:"明月堂博多通りもん", category:"伴手禮", important:true, price:"待確認", location:"博多站周邊，實際門市待確認", note:"必買" },
   { id:"amanberry", name:"AMANBERRY／アマンベリー", category:"伴手禮", important:true, price:"待確認", location:"博多站周邊／博多阪急，實際庫存待確認", note:"必買；福岡甘王草莓甜點，圖片中白色紅條紋盒裝商品" },
@@ -26,7 +30,7 @@ export const shoppingItems: ChecklistItemData[] = [
   { id:"stationery", name:"文具／收納小物", category:"生活用品", price:"待確認", location:"天神／博多", note:"不特地繞路，有看到再買" },
   { id:"eco-bag", name:"折疊購物袋", category:"生活用品", price:"約 ¥500–1,500", location:"雜貨店", note:"旅行中也能立刻用" },
 
-  { id:"hawks-towel", name:"軟銀鷹紀念毛巾", category:"棒球周邊", price:"待確認", location:"Mizuho PayPay Dome", note:"8/5 到球場再看款式" },
+  { id:"hawks-towel", name:"軟銀鷹紀念毛巾", category:"棒球周邊", price:"待確認", location:"MIZUHO PayPay Dome", note:"8/5 16:00 開場後到官方商店看款式" },
   { id:"hawks-keychain", name:"球隊鑰匙圈／小物", category:"棒球周邊", price:"待確認", location:"Mizuho PayPay Dome", note:"小件好帶，不佔行李" },
   { id:"baseball-photo", name:"球場紀念照／票根保存", category:"棒球周邊", price:"待確認", location:"Mizuho PayPay Dome", note:"票根與照片比大型周邊更實用" },
 

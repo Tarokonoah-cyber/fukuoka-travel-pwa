@@ -328,6 +328,7 @@ h1, h2, h3, p { margin-top: 0; }
 .timeline-card .location { margin: 2px 0 8px; color: var(--muted); font-size: 14px; }
 .mini-tags { display: flex; gap: 5px; margin-top: 9px; }
 .mini-tags span { padding: 2px 7px; border: 1px solid var(--line); font-size: 12px; }
+.timeline-map-link { display: inline-flex; min-height: 44px; align-items: center; color: var(--accent); font-size: 14px; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
 .timeline-card details { margin-top: 11px; border-top: 1px dotted var(--line-strong); }
 .timeline-card summary { display: flex; min-height: 44px; align-items: center; color: var(--accent); font-size: 14px; font-weight: 700; }
 .timeline-card details p { margin: 5px 0; color: var(--muted); font-size: 14px; }
@@ -383,7 +384,8 @@ h1, h2, h3, p { margin-top: 0; }
 .route-top { display: grid; min-height: 48px; align-items: center; padding: 0 13px; grid-template-columns: 36px minmax(0, 1fr) auto; border-bottom: 1px solid var(--line); }
 .route-top > span { color: var(--warning); font: 700 11px var(--font-geist-mono), monospace; }
 .route-top b { font-size: 14px; }
-.route-top small { color: var(--muted); font-size: 13px; }
+.route-top b, .route-top small { min-width: 0; overflow-wrap: anywhere; }
+.route-top small { color: var(--muted); font-size: 13px; text-align: right; }
 .route-points { display: grid; align-items: center; padding: 17px 13px; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr); gap: 6px; }
 .route-points strong { font-size: 17px; line-height: 1.4; }
 .route-points i { color: var(--accent); font-style: normal; text-align: center; }
