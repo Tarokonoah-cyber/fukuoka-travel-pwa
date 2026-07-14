@@ -4,6 +4,7 @@ import {
   createExpenseSchema,
   findDuplicateMatches,
   getAnalysisWarnings,
+  normalizeExpenseDate,
   storeNamesAreSimilar,
   summarizeExpenses,
   updateExpenseSchema,
@@ -94,6 +95,11 @@ describe("AI 結果與警告", () => {
 });
 
 describe("重複偵測與 Dashboard", () => {
+  it("PostgreSQL Date 會正規化為 YYYY-MM-DD，避免漏掉重複資料", () => {
+    expect(normalizeExpenseDate(new Date("2026-08-03T00:00:00.000Z"))).toBe("2026-08-03");
+    expect(normalizeExpenseDate("2026-08-03")).toBe("2026-08-03");
+  });
+
   it("相同 receipt hash 會提醒", () => {
     const matches = findDuplicateMatches([baseExpense], {
       expenseDate: baseExpense.expenseDate,

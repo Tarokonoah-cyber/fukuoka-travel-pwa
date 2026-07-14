@@ -55,6 +55,10 @@ export function calculateAmountTWD(amountJPY: number, exchangeRate: number) {
   return Math.round(amountJPY * exchangeRate);
 }
 
+export function normalizeExpenseDate(value: string | Date) {
+  return value instanceof Date ? value.toISOString().slice(0, 10) : value.slice(0, 10);
+}
+
 export function isOutsideTrip(date: string | null | undefined) {
   return Boolean(date && (date < TRIP_START || date > TRIP_END));
 }

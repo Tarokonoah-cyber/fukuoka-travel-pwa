@@ -1,11 +1,11 @@
 import "server-only";
-import { calculateAmountTWD, findDuplicateMatches } from "@/lib/expenses";
+import { calculateAmountTWD, findDuplicateMatches, normalizeExpenseDate } from "@/lib/expenses";
 import { getExpenseSql } from "@/lib/server/db";
 import type { DuplicateMatch, ReceiptAnalysis, TravelExpense } from "@/types/expenses";
 
 interface ExpenseRow {
   id: string;
-  expense_date: string;
+  expense_date: string | Date;
   store_name: string | null;
   store_name_ja: string | null;
   amount_jpy: number;
@@ -47,7 +47,7 @@ function asIso(value: string | Date) {
 function mapExpense(row: ExpenseRow): TravelExpense {
   return {
     id: row.id,
-    expenseDate: String(row.expense_date).slice(0, 10),
+    expenseDate: normalizeExpenseDate(row.expense_date),
     storeName: row.store_name,
     storeNameJa: row.store_name_ja,
     amountJPY: Number(row.amount_jpy),
