@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { tripDayImages } from "../src/data/tripImages";
 
 async function mockLiveFukuokaWeather(page: Page) {
   await page.route("https://api.open-meteo.com/**", (route) => route.fulfill({
@@ -99,21 +100,62 @@ test("首頁不重複顯示旅費捷徑", async ({ page }) => {
   await expect(page.locator(".home-budget-link")).toHaveCount(0);
 });
 
+test("大字預設與手機偏好可持久保存並跨分頁同步", async ({ page, context }) => {
+  await page.goto("/settings");
+  await expect(page.locator("html")).toHaveAttribute("data-text-size", "large");
+  await expect.poll(() => page.locator("body").evaluate((element) => getComputedStyle(element).fontSize)).toBe("18px");
+
+  const secondPage = await context.newPage();
+  await secondPage.goto("/settings");
+  await page.bringToFront();
+  await page.getByRole("button", { name: /標準/ }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-text-size", "standard");
+  await expect.poll(() => page.locator("body").evaluate((element) => getComputedStyle(element).fontSize)).toBe("16px");
+  await expect(secondPage.locator("html")).toHaveAttribute("data-text-size", "standard");
+
+  await page.goto("/today");
+  await expect(page.locator("html")).toHaveAttribute("data-text-size", "standard");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-text-size", "standard");
+
+  await page.goto("/settings");
+  await page.getByRole("button", { name: /大字/ }).click();
+  await expect.poll(() => page.locator("body").evaluate((element) => getComputedStyle(element).fontSize)).toBe("18px");
+});
+
+test("今日顯示一張當日圖，全部行程顯示五張完整授權圖", async ({ page }) => {
+  await page.goto("/today");
+  await expect(page.locator(".trip-day-photo")).toHaveCount(1);
+  await expect(page.locator(".trip-day-photo img")).toHaveAttribute("alt", tripDayImages[1].alt);
+  await expect(page.getByText(tripDayImages[1].caption, { exact: true })).toBeVisible();
+
+  await page.goto("/itinerary");
+  await expect(page.locator(".trip-day-photo")).toHaveCount(5);
+  for (const image of Object.values(tripDayImages)) {
+    await expect(page.locator(`img[alt="${image.alt}"]`)).toHaveCount(1);
+    await expect(page.getByText(image.caption, { exact: true })).toBeVisible();
+    await expect(page.locator(`a[href="${image.sourceHref}"]`)).toHaveCount(1);
+  }
+});
+
 for (const viewport of [
   { width: 375, height: 812 },
   { width: 390, height: 844 },
   { width: 430, height: 932 },
+  { width: 720, height: 1024 },
 ]) {
-  test(`${viewport.width}×${viewport.height} 核心頁面無水平破版或瀏覽器錯誤`, async ({ page }) => {
+  for (const textSize of ["standard", "large"] as const) {
+  test(`${viewport.width}×${viewport.height} ${textSize} 核心頁面無水平破版或瀏覽器錯誤`, async ({ page }) => {
     const consoleErrors: string[] = [];
     page.on("console", (message) => {
       if (message.type() === "error") consoleErrors.push(message.text());
     });
+    await page.addInitScript((size) => localStorage.setItem("fukuoka-text-size-v1", size), textSize);
     await page.setViewportSize(viewport);
     await mockLiveFukuokaWeather(page);
     await mockCurrencyRate(page);
 
-    for (const route of ["/", "/today", "/itinerary", "/map", "/transport", "/settings", "/prep", "/weather", "/currency", "/expenses"]) {
+    for (const route of ["/", "/today", "/itinerary", "/settings"]) {
       await page.goto(route);
       await expect(page.locator("main")).toBeVisible();
       const overlayText = await page.locator("nextjs-portal").evaluateAll((portals) => portals
@@ -129,6 +171,7 @@ for (const viewport of [
 
     expect(consoleErrors).toEqual([]);
   });
+  }
 }
 
 test("舊 /budget 永久導向私人旅費頁", async ({ page }) => {

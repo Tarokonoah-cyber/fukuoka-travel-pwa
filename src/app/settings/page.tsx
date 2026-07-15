@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { NoticeBox } from "@/components/NoticeBox";
 import { PageHeader } from "@/components/PageHeader";
 import { PwaInstallSection } from "@/components/PwaInstallSection";
+import { TextSizeControl } from "@/components/TextSizeControl";
 import { useTravelSync } from "@/components/TravelSyncProvider";
 import { clearCurrencyCache, clearWeatherCache } from "@/lib/storage";
 import { getTokyoDateKey, getTripStatusForDateKey } from "@/lib/date";
@@ -96,6 +97,7 @@ export default function SettingsPage() {
   return (
     <div className="page-enter settings-page">
       <PageHeader eyebrow="ON BOTH PHONES" title="設定與同步" description="管理共用清單、安裝狀態與這支手機的離線快取。" />
+      <TextSizeControl />
       <NoticeBox tone="blue" title="兩支手機共用">
         行李、必買、願望、行前檢查與今日實際進度會使用旅行 PIN 同步；離線變更會保留在手機，恢復連線後補送。
       </NoticeBox>

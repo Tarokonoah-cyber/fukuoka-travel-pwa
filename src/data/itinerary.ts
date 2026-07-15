@@ -1,3 +1,4 @@
+import { tripDayImages } from "@/data/tripImages";
 import type { TimelineItem, TripDay } from "@/types/trip";
 
 const hotel = "Nishitetsu Croom Hakata";
@@ -15,6 +16,7 @@ export const itinerary: TripDay[] = [
     weekday: "日",
     title: "抵達福岡・博多站輕鬆晚餐",
     highlight: "抵達後只安排入住、博多站晚餐與少量採買",
+    image: tripDayImages[1],
     hotel,
     walkingLevel: "低",
     indoorRatio: 85,
@@ -35,6 +37,7 @@ export const itinerary: TripDay[] = [
     weekday: "一",
     title: "太宰府天滿宮・柳川水鄉",
     highlight: "早上完成太宰府戶外段，午後在柳川吃鰻魚與搭短程遊船",
+    image: tripDayImages[2],
     hotel,
     walkingLevel: "中",
     indoorRatio: 35,
@@ -61,6 +64,7 @@ export const itinerary: TripDay[] = [
     weekday: "二",
     title: "熊本城・熊本熊一日遊",
     highlight: "新幹線往返熊本，只走熊本城主要路線與市中心室內點",
+    image: tripDayImages[3],
     hotel,
     walkingLevel: "中高",
     indoorRatio: 45,
@@ -87,6 +91,7 @@ export const itinerary: TripDay[] = [
     weekday: "三",
     title: "博多舊市街・軟銀鷹棒球",
     highlight: "上午短走博多舊市街，午休 90 分鐘後搭計程車進巨蛋",
+    image: tripDayImages[4],
     hotel,
     walkingLevel: "中",
     indoorRatio: 60,
@@ -112,6 +117,7 @@ export const itinerary: TripDay[] = [
     weekday: "四",
     title: "退房・返回台灣",
     highlight: "依既有 JX841 航班資料整理行李、最後採買並提早到國際線",
+    image: tripDayImages[5],
     hotel: "退房日",
     walkingLevel: "低",
     indoorRatio: 85,

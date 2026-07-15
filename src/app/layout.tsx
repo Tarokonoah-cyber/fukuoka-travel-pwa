@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppShell } from "@/components/AppShell";
+import { TEXT_SIZE_STORAGE_KEY } from "@/lib/textSize";
 import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const textSizeScript = `(function(){try{var value=localStorage.getItem("${TEXT_SIZE_STORAGE_KEY}");document.documentElement.dataset.textSize=value==="standard"||value==="large"?value:"large"}catch(error){document.documentElement.dataset.textSize="large"}})();`;
 
 export const metadata: Metadata = {
   title: { default: "福岡 8/2–8/6 旅遊手冊", template: "%s｜福岡旅遊手冊" },
@@ -26,7 +28,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-Hant" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="zh-Hant" data-text-size="large" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head><script dangerouslySetInnerHTML={{ __html: textSizeScript }} /></head>
       <body>
         <AppShell>{children}</AppShell>
       </body>

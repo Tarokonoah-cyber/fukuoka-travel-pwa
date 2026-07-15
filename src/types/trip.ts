@@ -8,8 +8,19 @@ export interface TimelineItem {
   momFriendlyNote: string; heatPlan: string; rainPlan: string; restStops: string; mapHref: string;
 }
 
+export interface TripDayImage {
+  src: string;
+  alt: string;
+  caption: string;
+  author: string;
+  sourceHref: string;
+  licenseName: string;
+  licenseHref: string;
+}
+
 export interface TripDay {
   day: number; date: string; weekday: string; title: string; highlight: string;
+  image: TripDayImage;
   hotel: string; walkingLevel: WalkingLevel; indoorRatio: number;
   restStops: string[]; rainPlan: string; momFriendlyNote: string; items: TimelineItem[];
 }
