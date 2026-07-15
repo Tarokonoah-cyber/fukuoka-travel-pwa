@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type KeyboardEvent } from "react";
+import { useState, useSyncExternalStore, type KeyboardEvent } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { DayTimeline } from "@/components/DayTimeline";
 import { TripDayPhoto } from "@/components/TripDayPhoto";
@@ -8,14 +8,26 @@ import { itinerary } from "@/data/itinerary";
 import { formatTripDate } from "@/lib/date";
 import { useTripStatus } from "@/lib/useTripStatus";
 
+function subscribeToHashChange(callback: () => void) {
+  window.addEventListener("hashchange", callback);
+  return () => window.removeEventListener("hashchange", callback);
+}
+
+function getHashDay() {
+  const dayNumber = Number(window.location.hash.match(/^#day-(\d+)$/)?.[1]);
+  return itinerary.some((day) => day.day === dayNumber) ? dayNumber : null;
+}
+
 export default function ItineraryPage() {
   const status = useTripStatus();
   const [chosenDay, setChosenDay] = useState<number | null>(null);
-  const activeDayNumber = chosenDay ?? (status.phase === "active" ? status.day : 1);
+  const hashDay = useSyncExternalStore(subscribeToHashChange, getHashDay, () => null);
+  const activeDayNumber = chosenDay ?? hashDay ?? (status.phase === "active" ? status.day : 1);
   const activeDay = itinerary.find((day) => day.day === activeDayNumber) ?? itinerary[0];
 
   const selectDay = (dayNumber: number) => {
     setChosenDay(dayNumber);
+    window.history.replaceState(null, "", `#day-${dayNumber}`);
     requestAnimationFrame(() => {
       document.getElementById("itinerary-day-panel")?.scrollIntoView({ block: "start" });
     });

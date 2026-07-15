@@ -129,8 +129,10 @@ test("今日顯示一張當日圖，全部行程可逐日切換完整授權圖",
   await expect(page.locator(".trip-day-photo img")).toHaveAttribute("alt", tripDayImages[1].alt);
   await expect(page.getByText(tripDayImages[1].caption, { exact: true })).toBeVisible();
 
-  await page.goto("/itinerary");
+  await page.goto("/itinerary#day-2");
   await expect(page.locator(".trip-day-photo")).toHaveCount(1);
+  await expect(page.getByRole("tab", { name: /DAY 2/ })).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(`img[alt="${tripDayImages[2].alt}"]`)).toBeVisible();
   for (const [day, image] of Object.entries(tripDayImages)) {
     await page.getByRole("tab", { name: new RegExp(`DAY ${day}`) }).click();
     await expect(page.locator(".trip-day-photo")).toHaveCount(1);
