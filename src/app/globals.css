@@ -292,11 +292,13 @@ h1, h2, h3, p { margin-top: 0; }
 
 /* Itinerary ledger */
 .day-jump { position: sticky; z-index: 10; top: 0; display: grid; padding: 7px 0; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line-strong); background: var(--background); }
-.day-jump a { display: flex; min-height: 48px; align-items: center; justify-content: center; flex-direction: column; border-right: 1px solid var(--line); font: 650 0.75rem/1.4 var(--font-geist-mono), monospace; }
-.day-jump a:last-child { border: 0; }
+.day-jump button { display: flex; min-width: 0; min-height: 48px; align-items: center; justify-content: center; flex-direction: column; padding: 0 2px; border: 0; border-right: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--ink); font: 650 0.75rem/1.4 var(--font-geist-mono), monospace; cursor: pointer; }
+.day-jump button:last-child { border-right: 0; }
+.day-jump button.active { background: var(--accent); color: white; }
+.day-jump button.active small { color: white; }
+.day-jump button:focus-visible { z-index: 1; outline: 2px solid var(--warning); outline-offset: -2px; }
 .day-jump small { color: var(--muted); font-size: 0.77778rem; }
-.day-section { padding: 34px 0 12px; border-top: 2px solid var(--ink); scroll-margin-top: 70px; }
-.day-section:first-child { border-top: 0; }
+.day-section { padding: 34px 0 12px; border-top: 2px solid var(--ink); scroll-margin-top: 63px; }
 .day-section.current { border-top-color: var(--warning); }
 .day-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .day-heading span { color: var(--accent); font: 700 0.77778rem/1.2 var(--font-geist-mono), monospace; letter-spacing: .06em; }

@@ -123,16 +123,18 @@ test("大字預設與手機偏好可持久保存並跨分頁同步", async ({ pa
   await expect.poll(() => page.locator("body").evaluate((element) => getComputedStyle(element).fontSize)).toBe("18px");
 });
 
-test("今日顯示一張當日圖，全部行程顯示五張完整授權圖", async ({ page }) => {
+test("今日顯示一張當日圖，全部行程可逐日切換完整授權圖", async ({ page }) => {
   await page.goto("/today");
   await expect(page.locator(".trip-day-photo")).toHaveCount(1);
   await expect(page.locator(".trip-day-photo img")).toHaveAttribute("alt", tripDayImages[1].alt);
   await expect(page.getByText(tripDayImages[1].caption, { exact: true })).toBeVisible();
 
   await page.goto("/itinerary");
-  await expect(page.locator(".trip-day-photo")).toHaveCount(5);
-  for (const image of Object.values(tripDayImages)) {
-    await expect(page.locator(`img[alt="${image.alt}"]`)).toHaveCount(1);
+  await expect(page.locator(".trip-day-photo")).toHaveCount(1);
+  for (const [day, image] of Object.entries(tripDayImages)) {
+    await page.getByRole("tab", { name: new RegExp(`DAY ${day}`) }).click();
+    await expect(page.locator(".trip-day-photo")).toHaveCount(1);
+    await expect(page.locator(`img[alt="${image.alt}"]`)).toBeVisible();
     await expect(page.getByText(image.caption, { exact: true })).toBeVisible();
     await expect(page.locator(`a[href="${image.sourceHref}"]`)).toHaveCount(1);
   }
