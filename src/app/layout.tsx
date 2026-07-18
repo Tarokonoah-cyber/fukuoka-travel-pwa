@@ -11,7 +11,7 @@ const textSizeScript = `(function(){try{var value=localStorage.getItem("${TEXT_S
 
 export const metadata: Metadata = {
   title: { default: "福岡 8/2–8/6 旅遊手冊", template: "%s｜福岡旅遊手冊" },
-  description: "2026 福岡母女旅行 PWA，收納行程、行前檢查、地圖、交通與文件。",
+  description: "2026 福岡兩人旅行手冊",
   applicationName: "福岡旅遊手冊",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/favicon.ico", apple: "/apple-touch-icon.png" },

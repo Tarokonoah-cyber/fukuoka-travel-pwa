@@ -127,7 +127,9 @@ async function fetchTripWeatherEstimates() {
   }
 }
 
-export async function fetchFukuokaWeather(): Promise<WeatherData> {
+let pendingWeatherRequest: Promise<WeatherData> | null = null;
+
+async function loadFukuokaWeather(): Promise<WeatherData> {
   const cached = readWeatherCache();
   if (cached && Date.now() - Date.parse(cached.updatedAt) < WEATHER_CACHE_MS) return { ...cached, stale: false };
   if (cached && typeof navigator !== "undefined" && !navigator.onLine) return { ...cached, stale: true };
@@ -162,6 +164,13 @@ export async function fetchFukuokaWeather(): Promise<WeatherData> {
     if (cached) return { ...cached, stale: true };
     throw error;
   }
+}
+
+export function fetchFukuokaWeather(): Promise<WeatherData> {
+  if (!pendingWeatherRequest) {
+    pendingWeatherRequest = loadFukuokaWeather().finally(() => { pendingWeatherRequest = null; });
+  }
+  return pendingWeatherRequest;
 }
 
 export function getWeatherLabel(code: number) {

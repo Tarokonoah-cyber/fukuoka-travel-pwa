@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { getNowNextItems, minutesUntil, resolveDayPlanItems, type ResolvedDayPlanItem } from "@/lib/dayPlan";
+import { getNowNextItems, resolveDayPlanItems, type ResolvedDayPlanItem } from "@/lib/dayPlan";
 import { getTokyoTimeKey } from "@/lib/date";
 import type { DayPlanCustomFields, DayPlanStatus } from "@/types/dayPlan";
 import type { TripDay } from "@/types/trip";
+import { SmartCompanionCard } from "./SmartCompanionCard";
 import { useTravelSync } from "./TravelSyncProvider";
 
 function navigationUrl(location: string) {
@@ -39,6 +40,7 @@ export function DayPlanController({ day, variant = "today", timeAware = true }: 
   const [tokyoTime, setTokyoTime] = useState(() => getTokyoTimeKey());
   const [showAdd, setShowAdd] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
+  const [adjustmentCandidateIds, setAdjustmentCandidateIds] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [timeLabel, setTimeLabel] = useState("彈性");
   const [startTime, setStartTime] = useState("");
@@ -55,7 +57,6 @@ export function DayPlanController({ day, variant = "today", timeAware = true }: 
   const items = useMemo(() => resolveDayPlanItems(day.items, stateItems), [day.items, stateItems]);
   const effectiveTime = timeAware ? tokyoTime : "00:00";
   const nowNext = useMemo(() => getNowNextItems(items, effectiveTime), [effectiveTime, items]);
-  const upcomingMinutes = timeAware && nowNext.upcomingFixed?.startTime ? minutesUntil(nowNext.upcomingFixed.startTime, tokyoTime) : null;
 
   function changeStatus(item: ResolvedDayPlanItem, status: DayPlanStatus) {
     sync.setDayItemStatus(toSeed(day.date, item), status);
@@ -83,41 +84,35 @@ export function DayPlanController({ day, variant = "today", timeAware = true }: 
     setTitle(""); setTimeLabel("彈性"); setStartTime(""); setLocation(""); setNote(""); setShowAdd(false);
   }
 
+  function revealAdjustments(itemIds: string[]) {
+    setAdjustmentCandidateIds(itemIds);
+    setShowPlan(true);
+    setShowAdd(false);
+    window.setTimeout(() => document.getElementById(`day-plan-${itemIds[0]}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 0);
+  }
+
   if (variant === "home") {
     return (
-      <section className="day-control day-control-compact" aria-labelledby="home-now-title">
-        <div className="day-control-heading"><span>LIVE DAY {day.day}</span><strong>福岡 {tokyoTime}</strong></div>
-        <div className="day-control-now">
-          <span id="home-now-title">NOW · 現在</span>
-          <h2>{nowNext.current?.title ?? "今天的行程已完成"}</h2>
-          <p>{nowNext.current ? `${nowNext.current.time} · ${nowNext.current.location}` : "辛苦了，接下來舒服回飯店休息。"}</p>
-          {nowNext.current && <div className="day-control-actions"><button type="button" onClick={() => changeStatus(nowNext.current!, "completed")}>完成這站</button>{nowNext.current.location && <a href={navigationUrl(nowNext.current.location)} target="_blank" rel="noopener noreferrer">開始導航 ↗</a>}</div>}
-        </div>
-        {nowNext.next && <div className="day-control-next"><span>NEXT</span><strong>{nowNext.next.time} · {nowNext.next.title}</strong></div>}
+      <section className="day-control day-control-compact" aria-label="智慧旅伴摘要">
+        <SmartCompanionCard day={day} items={items} tokyoTime={tokyoTime} compact onComplete={(item) => changeStatus(item, "completed")} onRevealAdjustments={revealAdjustments} />
         <Link className="day-control-more" href="/today">開啟完整旅途控制台 →</Link>
       </section>
     );
   }
 
   return (
-    <section className="day-control" aria-labelledby="day-control-title">
-      <div className="day-control-heading"><span>NOW / NEXT</span><strong>福岡時間 {tokyoTime}</strong></div>
+    <section className="day-control" aria-label={timeAware ? "智慧旅伴與今日完整行程" : "今日行程預覽"}>
       {sync.conflictMessage && <p className="sync-conflict-note" role="status">{sync.conflictMessage}</p>}
-      {upcomingMinutes !== null && upcomingMinutes >= 0 && upcomingMinutes <= 90 && nowNext.upcomingFixed && (
-        <div className="fixed-time-alert" role="status"><span>{upcomingMinutes} 分鐘後</span><strong>{nowNext.upcomingFixed.startTime} · {nowNext.upcomingFixed.title}</strong></div>
-      )}
-      <div className="day-control-now">
-        <span id="day-control-title">NOW · 現在</span>
-        <h2>{nowNext.current?.title ?? "今天的行程已完成"}</h2>
-        <p>{nowNext.current ? `${nowNext.current.time} · ${nowNext.current.location}` : "可以回飯店休息，或新增一個臨時安排。"}</p>
-        {nowNext.current && <div className="day-control-actions">
-          <button type="button" onClick={() => changeStatus(nowNext.current!, "completed")}>完成</button>
-          {nowNext.current.location && <a href={navigationUrl(nowNext.current.location)} target="_blank" rel="noopener noreferrer">導航 ↗</a>}
-          <button type="button" className="quiet" onClick={() => changeStatus(nowNext.current!, "skipped")}>跳過</button>
-          {nowNext.current.placeId && <Link className="quiet" href={{ pathname: "/map", query: { place: nowNext.current.placeId, scope: "today" } }}>旅程地圖</Link>}
-        </div>}
-      </div>
-      {nowNext.next && <div className="day-control-next"><span>NEXT · 下一站</span><strong>{nowNext.next.time} · {nowNext.next.title}</strong><p>{nowNext.next.location}</p></div>}
+      {timeAware ? <SmartCompanionCard day={day} items={items} tokyoTime={tokyoTime} onComplete={(item) => changeStatus(item, "completed")} onRevealAdjustments={revealAdjustments} /> : <>
+        <div className="day-control-heading"><span>DAY 1 PREVIEW</span><strong>出發後啟用智慧旅伴</strong></div>
+        <div className="day-control-now">
+          <span id="day-control-title">FIRST · 第一站</span>
+          <h2>{nowNext.current?.title ?? "行程準備完成"}</h2>
+          <p>{nowNext.current ? `${nowNext.current.time} · ${nowNext.current.location}` : "出發後會依福岡時間顯示現在與下一站。"}</p>
+          {nowNext.current?.location && <div className="day-control-actions"><a href={navigationUrl(nowNext.current.location)} target="_blank" rel="noopener noreferrer">預覽導航 ↗</a></div>}
+        </div>
+        {nowNext.next && <div className="day-control-next"><span>NEXT · 下一站</span><strong>{nowNext.next.time} · {nowNext.next.title}</strong><p>{nowNext.next.location}</p></div>}
+      </>}
 
       <div className="day-plan-list-heading"><div><span>SHARED PLAN</span><h3>今日完整行程</h3></div><button type="button" aria-expanded={showPlan} aria-controls="shared-day-plan" onClick={() => { setShowPlan((visible) => !visible); setShowAdd(false); }}>{showPlan ? "收起" : `展開 ${items.length} 站`}</button></div>
       {showPlan && <div id="shared-day-plan">
@@ -130,15 +125,18 @@ export function DayPlanController({ day, variant = "today", timeAware = true }: 
         <button type="button" disabled={!title.trim()} onClick={addItem}>加入今天並同步</button>
       </div>}
       <div className="day-plan-list">
-        {items.map((item, index) => <article key={item.id} className={`day-plan-row status-${item.status}`}>
+        {items.map((item, index) => {
+          const adjustmentCandidate = adjustmentCandidateIds.includes(item.id) && (item.status === "pending" || item.status === "active");
+          return <article id={`day-plan-${item.id}`} key={item.id} className={`day-plan-row status-${item.status}${adjustmentCandidate ? " adjustment-candidate" : ""}`}>
           <div className="day-plan-order"><button type="button" disabled={index === 0} aria-label={`將 ${item.title} 往上移`} onClick={() => move(index, -1)}>↑</button><button type="button" disabled={index === items.length - 1} aria-label={`將 ${item.title} 往下移`} onClick={() => move(index, 1)}>↓</button></div>
-          <div className="day-plan-copy"><span>{item.time} · {statusLabel(item.status)}</span><h4>{item.title}</h4><p>{item.location || item.note}</p><div>
+          <div className="day-plan-copy"><span>{item.time} · {statusLabel(item.status)}</span>{adjustmentCandidate && <em>智慧旅伴建議檢視</em>}<h4>{item.title}</h4><p>{item.location || item.note}</p><div>
             {item.status === "pending" && <button type="button" onClick={() => changeStatus(item, "active")}>現在</button>}
             {(item.status === "pending" || item.status === "active") && <button type="button" onClick={() => changeStatus(item, "completed")}>完成</button>}
+            {(item.status === "pending" || item.status === "active") && <button type="button" onClick={() => { if (window.confirm(`確定跳過「${item.title}」？`)) changeStatus(item, "skipped"); }}>跳過</button>}
             {(item.status === "completed" || item.status === "skipped") && <button type="button" onClick={() => changeStatus(item, "pending")}>復原</button>}
             {item.isCustom && <button type="button" className="danger" onClick={() => { if (window.confirm(`刪除「${item.title}」？`)) sync.deleteDayPlanItem(day.date, item.id); }}>刪除</button>}
           </div></div>
-        </article>)}
+        </article>;})}
       </div>
       </div>}
     </section>

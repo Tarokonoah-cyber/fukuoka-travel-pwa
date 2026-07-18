@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "福岡 8/2–8/6 旅遊手冊",
     short_name: "福岡旅遊",
-    description: "2026 福岡母女旅行的手機旅遊小冊子。",
+    description: "2026 福岡兩人旅行手冊",
     start_url: "/",
     scope: "/",
     display: "standalone",
