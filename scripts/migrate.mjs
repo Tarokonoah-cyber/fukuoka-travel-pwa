@@ -15,11 +15,13 @@ const migrationUrls = [
   new URL("../migrations/20260713_create_travel_expenses.sql", import.meta.url),
   new URL("../migrations/20260713_create_travel_item_state.sql", import.meta.url),
   new URL("../migrations/20260713_create_travel_day_plan_state.sql", import.meta.url),
+  new URL("../migrations/20260718_create_food_candidates.sql", import.meta.url),
 ];
 
 const expectedTables = [
   "travel_day_plan_state",
   "travel_expenses",
+  "travel_food_candidates",
   "travel_item_state",
 ];
 const expectedIndexes = [
@@ -27,6 +29,7 @@ const expectedIndexes = [
   "travel_expenses_created_at_idx",
   "travel_expenses_expense_date_idx",
   "travel_expenses_receipt_hash_idx",
+  "travel_food_candidates_updated_at_idx",
   "travel_item_state_updated_at_idx",
 ];
 
@@ -54,7 +57,7 @@ try {
     select table_name
     from information_schema.tables
     where table_schema = 'public'
-      and table_name in ('travel_expenses', 'travel_item_state', 'travel_day_plan_state')
+      and table_name in ('travel_expenses', 'travel_food_candidates', 'travel_item_state', 'travel_day_plan_state')
     order by table_name
   `;
   assert(
@@ -67,13 +70,14 @@ try {
     select table_name, column_name, data_type, is_nullable
     from information_schema.columns
     where table_schema = 'public'
-      and table_name in ('travel_expenses', 'travel_item_state', 'travel_day_plan_state')
+      and table_name in ('travel_expenses', 'travel_food_candidates', 'travel_item_state', 'travel_day_plan_state')
   `;
   const column = (tableName, columnName) =>
     columns.find(
       (entry) => entry.table_name === tableName && entry.column_name === columnName,
     );
   assert(column("travel_expenses", "ai_raw_result")?.data_type === "jsonb", "expenses-jsonb");
+  assert(column("travel_food_candidates", "payload")?.data_type === "jsonb", "food-jsonb");
   assert(column("travel_expenses", "updated_at")?.data_type === "timestamp with time zone", "expenses-updated-at");
   assert(column("travel_item_state", "updated_at")?.data_type === "timestamp with time zone", "state-updated-at");
   assert(column("travel_day_plan_state", "updated_at")?.data_type === "timestamp with time zone", "day-plan-updated-at");
@@ -92,6 +96,7 @@ try {
     where c.connamespace = 'public'::regnamespace
       and c.conrelid in (
         'public.travel_expenses'::regclass,
+        'public.travel_food_candidates'::regclass,
         'public.travel_item_state'::regclass,
         'public.travel_day_plan_state'::regclass
       )
@@ -101,6 +106,7 @@ try {
       .filter(({ table_name, contype }) => table_name === tableName && contype === type)
       .map(({ definition }) => definition);
   assert(definitions("travel_expenses", "p").some((value) => /PRIMARY KEY \(id\)/.test(value)), "expenses-pk");
+  assert(definitions("travel_food_candidates", "p").some((value) => /PRIMARY KEY \(id\)/.test(value)), "food-pk");
   assert(definitions("travel_item_state", "p").some((value) => /PRIMARY KEY \(namespace, item_id\)/.test(value)), "state-pk");
   assert(definitions("travel_day_plan_state", "p").some((value) => /PRIMARY KEY \(travel_date, item_id\)/.test(value)), "day-plan-pk");
 
@@ -121,7 +127,7 @@ try {
     select indexname, indexdef
     from pg_indexes
     where schemaname = 'public'
-      and tablename in ('travel_expenses', 'travel_item_state', 'travel_day_plan_state')
+      and tablename in ('travel_expenses', 'travel_food_candidates', 'travel_item_state', 'travel_day_plan_state')
   `;
   for (const indexName of expectedIndexes) {
     assert(indexes.some(({ indexname }) => indexname === indexName), `index-${indexName}`);

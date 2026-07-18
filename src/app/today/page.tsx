@@ -6,6 +6,7 @@ import { NoticeBox } from "@/components/NoticeBox";
 import { PageHeader } from "@/components/PageHeader";
 import { TodaySummaryCard } from "@/components/TodaySummaryCard";
 import { TodayToolsSummary } from "@/components/TodayToolsSummary";
+import { TodayFoodRecommendations } from "@/components/TodayFoodRecommendations";
 import { TripDayPhoto } from "@/components/TripDayPhoto";
 import { itinerary } from "@/data/itinerary";
 import { buildComfortReport } from "@/lib/comfort";
@@ -63,6 +64,7 @@ export default function TodayPage() {
         <Link href="/itinerary"><span>行</span><strong>原始行程</strong></Link>
       </nav>
 
+      <TodayFoodRecommendations activeDate={status.activeDate} />
       <TodayToolsSummary phase={status.phase} activeDate={status.activeDate} />
     </div>
   );

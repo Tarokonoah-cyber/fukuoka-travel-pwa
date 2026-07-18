@@ -39,7 +39,7 @@ test("全新安裝後公開頁面與清單可真正離線使用", async ({ page,
   expect(cacheAudit.some((url) => new URL(url).pathname.startsWith("/api/"))).toBe(false);
 
   await context.setOffline(true);
-  const routesToOpen = ["/", "/today", "/itinerary", "/map", "/prep", "/weather", "/currency", "/transport", "/documents", "/settings"];
+  const routesToOpen = ["/", "/today", "/food", "/itinerary", "/map", "/prep", "/weather", "/currency", "/transport", "/documents", "/settings"];
   for (const route of routesToOpen) {
     await page.goto(`${baseURL}${route}`, { waitUntil: "domcontentloaded" });
     await expect(page.locator("main")).toBeVisible();
@@ -50,12 +50,18 @@ test("全新安裝後公開頁面與清單可真正離線使用", async ({ page,
   await expect(page.locator(".trip-day-photo img")).toBeVisible();
 
   await page.goto(`${baseURL}/itinerary`, { waitUntil: "domcontentloaded" });
-  await expect(page.locator(".trip-day-photo img")).toHaveCount(5);
-  await expect(page.locator(".trip-day-photo img").first()).toBeVisible();
+  await expect(page.locator(".trip-day-photo img")).toHaveCount(1);
+  await expect(page.locator(".trip-day-photo img")).toBeVisible();
+  await page.getByRole("tab", { name: /DAY 5/ }).click();
+  await expect(page.locator(".trip-day-photo img")).toHaveCount(1);
 
   await page.goto(`${baseURL}/prep`, { waitUntil: "domcontentloaded" });
   const passport = page.getByRole("checkbox", { name: /護照/ });
   await passport.click({ force: true });
   await page.getByRole("button", { name: "全部" }).last().click();
   await expect(page.getByRole("checkbox", { name: /護照/ })).toBeChecked();
+
+  await page.goto(`${baseURL}/food`, { waitUntil: "domcontentloaded" });
+  await expect(page.getByRole("heading", { name: "美食候選清單" })).toBeVisible();
+  await expect(page.locator(".food-card")).toHaveCount(8);
 });

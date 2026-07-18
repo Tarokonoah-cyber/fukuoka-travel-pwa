@@ -1,6 +1,7 @@
 export const publicOfflineRoutes = [
   "/",
   "/today",
+  "/food",
   "/comfort",
   "/itinerary",
   "/map",
