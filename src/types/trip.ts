@@ -27,6 +27,7 @@ export interface TripDay {
 
 export interface ChecklistItemData {
   id: string; name: string; category: string; important?: boolean; note?: string;
+  imageId?: string;
   price?: number | string; location?: string; area?: string; reason?: string; suitability?: string; momFriendly?: string;
 }
 

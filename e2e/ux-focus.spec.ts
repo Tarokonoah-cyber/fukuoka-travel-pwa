@@ -51,6 +51,7 @@ test("長清單預設隱藏剛完成的項目並在有待送資料時提醒", as
   await page.goto("/prep");
   await expect(page.getByRole("button", { name: "未完成", pressed: true })).toBeVisible();
   const passport = page.getByRole("checkbox", { name: /護照/ });
+  await expect(passport).toBeEnabled();
   await passport.click({ force: true });
   await expect(passport).toHaveCount(0);
   await expect(page.getByText("1 筆變更尚未同步")).toBeVisible();

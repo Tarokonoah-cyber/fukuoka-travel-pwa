@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="#edf4f7"/>
+  <circle cx="160" cy="151" r="82" fill="#fff" stroke="#2e6075" stroke-width="6"/>
+  <path d="M115 83c27 24 36 49 36 68s-9 44-36 68M205 83c-27 24-36 49-36 68s9 44 36 68" fill="none" stroke="#c24f45" stroke-width="6" stroke-dasharray="9 7" stroke-linecap="round"/>
+  <text x="160" y="278" fill="#294e60" font-family="system-ui,sans-serif" font-size="24" font-weight="700" text-anchor="middle">棒球周邊 · 現場選款</text>
+</svg>

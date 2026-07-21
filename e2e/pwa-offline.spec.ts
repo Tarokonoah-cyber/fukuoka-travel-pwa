@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { publicOfflineRoutes } from "../src/data/pwa";
+import { shoppingImagePaths } from "../src/data/shoppingImages";
 import { tripImagePaths } from "../src/data/tripImages";
 
 test("全新安裝後公開頁面與清單可真正離線使用", async ({ page, context, baseURL }) => {
@@ -35,6 +36,7 @@ test("全新安裝後公開頁面與清單可真正離線使用", async ({ page,
   const cachedPaths = new Set(cacheAudit.map((url) => new URL(url).pathname));
   for (const route of publicOfflineRoutes) expect(cachedPaths.has(route)).toBe(true);
   for (const imagePath of tripImagePaths) expect(cachedPaths.has(imagePath)).toBe(true);
+  for (const imagePath of shoppingImagePaths) expect(cachedPaths.has(imagePath)).toBe(true);
   expect(cacheAudit.some((url) => new URL(url).pathname.startsWith("/expenses"))).toBe(false);
   expect(cacheAudit.some((url) => new URL(url).pathname.startsWith("/api/"))).toBe(false);
 
@@ -55,8 +57,13 @@ test("全新安裝後公開頁面與清單可真正離線使用", async ({ page,
   await page.getByRole("tab", { name: /DAY 5/ }).click();
   await expect(page.locator(".trip-day-photo img")).toHaveCount(1);
 
+  await page.goto(`${baseURL}/shopping`, { waitUntil: "domcontentloaded" });
+  await expect(page.locator(".shopping-thumb img").first()).toBeVisible();
+  await expect(page.locator('button[data-image-kind="official"] img[src$="/images/shopping/products/kasanoya-umegae.webp"]')).toBeVisible();
+
   await page.goto(`${baseURL}/prep`, { waitUntil: "domcontentloaded" });
   const passport = page.getByRole("checkbox", { name: /護照/ });
+  await expect(passport).toBeEnabled();
   await passport.click({ force: true });
   await page.getByRole("button", { name: "全部" }).last().click();
   await expect(page.getByRole("checkbox", { name: /護照/ })).toBeChecked();

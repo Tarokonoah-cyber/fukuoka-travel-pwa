@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="#fff2d9"/>
+  <path d="M101 76h118l17 166H84L101 76Z" fill="#fffdf9" stroke="#b66b1f" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M105 105h110M96 206h128" stroke="#b66b1f" stroke-width="6"/>
+  <circle cx="137" cy="155" r="24" fill="#e4a047"/>
+  <circle cx="185" cy="159" r="20" fill="#d98835"/>
+  <text x="160" y="278" fill="#6e491c" font-family="system-ui,sans-serif" font-size="24" font-weight="700" text-anchor="middle">零食 · 現場選款</text>
+</svg>

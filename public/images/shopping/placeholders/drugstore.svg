@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="#e9f3ef"/>
+  <rect x="74" y="91" width="172" height="150" rx="20" fill="#fff" stroke="#39745e" stroke-width="6"/>
+  <path d="M160 122v88M116 166h88" stroke="#39745e" stroke-width="18" stroke-linecap="round"/>
+  <path d="M123 91V72h74v19" fill="none" stroke="#39745e" stroke-width="6" stroke-linejoin="round"/>
+  <text x="160" y="278" fill="#315449" font-family="system-ui,sans-serif" font-size="24" font-weight="700" text-anchor="middle">藥妝 · 現場選款</text>
+</svg>

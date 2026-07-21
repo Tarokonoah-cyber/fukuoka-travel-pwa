@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="#f8eaf0"/>
+  <path d="M160 232S82 184 82 123c0-31 22-52 50-52 16 0 28 8 28 8s12-8 28-8c28 0 50 21 50 52 0 61-78 109-78 109Z" fill="#fff" stroke="#a65b76" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M122 143c19 0 38 16 38 35 0-19 19-35 38-35" fill="none" stroke="#d28ba3" stroke-width="8" stroke-linecap="round"/>
+  <text x="160" y="278" fill="#704255" font-family="system-ui,sans-serif" font-size="24" font-weight="700" text-anchor="middle">媽媽想買 · 現場選款</text>
+</svg>
