@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { normalizeRecommendationUrl } from "@/lib/recommendationUrl";
 import { apiError, apiSuccess, requireTravelSession } from "@/lib/server/api";
 import {
   deleteTravelStateItem,
@@ -10,16 +11,24 @@ import { travelNamespaces } from "@/types/travelSync";
 
 const namespaceSchema = z.enum(travelNamespaces);
 const itemIdSchema = z.string().trim().min(1).max(160);
+const recommendationUrlSchema = z.string().trim().max(2048)
+  .refine((value) => normalizeRecommendationUrl(value) !== null, "推薦來源必須是安全的 HTTP(S) 網址。")
+  .transform((value) => normalizeRecommendationUrl(value)!);
 const patchSchema = z.object({
   namespace: namespaceSchema,
   itemId: itemIdSchema,
   checked: z.boolean(),
   name: z.string().trim().min(1).max(160).nullable().optional(),
   category: z.string().trim().min(1).max(80).nullable().optional(),
+  note: z.string().trim().max(500).nullable().optional(),
+  sourceUrl: recommendationUrlSchema.nullable().optional(),
   baseUpdatedAt: z.string().datetime().nullable().default(null),
 }).superRefine((value, context) => {
   if ((value.name != null) !== (value.category != null)) {
     context.addIssue({ code: "custom", message: "自訂項目的名稱與分類必須同時提供。" });
+  }
+  if ((value.note != null || value.sourceUrl != null) && (value.name == null || value.category == null)) {
+    context.addIssue({ code: "custom", message: "推薦備註與來源只能用於自訂項目。" });
   }
 });
 const deleteSchema = z.object({ namespace: namespaceSchema, itemId: itemIdSchema.optional() });

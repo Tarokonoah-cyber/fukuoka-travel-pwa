@@ -16,6 +16,7 @@ const migrationUrls = [
   new URL("../migrations/20260713_create_travel_item_state.sql", import.meta.url),
   new URL("../migrations/20260713_create_travel_day_plan_state.sql", import.meta.url),
   new URL("../migrations/20260718_create_food_candidates.sql", import.meta.url),
+  new URL("../migrations/20260722_add_travel_item_recommendation_fields.sql", import.meta.url),
 ];
 
 const expectedTables = [
@@ -80,6 +81,8 @@ try {
   assert(column("travel_food_candidates", "payload")?.data_type === "jsonb", "food-jsonb");
   assert(column("travel_expenses", "updated_at")?.data_type === "timestamp with time zone", "expenses-updated-at");
   assert(column("travel_item_state", "updated_at")?.data_type === "timestamp with time zone", "state-updated-at");
+  assert(column("travel_item_state", "custom_note")?.data_type === "text", "state-custom-note");
+  assert(column("travel_item_state", "custom_source_url")?.data_type === "text", "state-custom-source-url");
   assert(column("travel_day_plan_state", "updated_at")?.data_type === "timestamp with time zone", "day-plan-updated-at");
   assert(
     !columns.some(({ column_name }) => /(image|base64|blob)/i.test(column_name)),
@@ -117,6 +120,7 @@ try {
   const stateChecks = definitions("travel_item_state", "c").join("\n");
   assert(stateChecks.includes("namespace"), "state-namespace-check");
   assert(stateChecks.includes("custom_name") && stateChecks.includes("custom_category"), "state-custom-check");
+  assert(stateChecks.includes("custom_note") && stateChecks.includes("custom_source_url"), "state-recommendation-custom-check");
   const dayPlanChecks = definitions("travel_day_plan_state", "c").join("\n");
   assert(dayPlanChecks.includes("status"), "day-plan-status-check");
   assert(dayPlanChecks.includes("custom_title") && dayPlanChecks.includes("is_custom"), "day-plan-custom-check");

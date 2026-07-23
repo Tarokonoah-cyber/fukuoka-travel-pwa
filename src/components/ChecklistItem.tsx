@@ -74,6 +74,11 @@ export function ChecklistItem({ item, image, checked, disabled = false, onToggle
           <strong>{item.name}</strong>
           {displayImage && <small className={`shopping-image-status ${displayImage.kind}`}>{displayImage.statusLabel}</small>}
           {item.note && <small>{item.note}</small>}
+          {item.sourceUrl && (
+            <a className="check-source-link" href={item.sourceUrl} target="_blank" rel="noreferrer">
+              查看推薦來源（另開視窗）
+            </a>
+          )}
           {(item.price || item.location) && (
             <small>
               {typeof item.price === "number" ? `約 ¥${item.price.toLocaleString()}` : item.price}

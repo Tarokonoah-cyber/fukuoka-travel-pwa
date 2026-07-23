@@ -8,6 +8,8 @@ export type TravelStateItem = {
   checked: boolean;
   name: string | null;
   category: string | null;
+  note: string | null;
+  sourceUrl: string | null;
   isCustom: boolean;
   updatedAt: string;
 };
@@ -23,7 +25,14 @@ export type TravelStatePatch = {
   checked: boolean;
   name?: string | null;
   category?: string | null;
+  note?: string | null;
+  sourceUrl?: string | null;
   baseUpdatedAt?: string | null;
+};
+
+export type CustomTravelItemDetails = {
+  note?: string | null;
+  sourceUrl?: string | null;
 };
 
 export type TravelStateDelete = {

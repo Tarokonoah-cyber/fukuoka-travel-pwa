@@ -27,7 +27,7 @@ import {
   type SyncOperation,
 } from "@/lib/travelSyncDb";
 import type { DayPlanCustomFields, DayPlanItemState, DayPlanResponse, DayPlanStatus } from "@/types/dayPlan";
-import type { TravelNamespace, TravelStateItem, TravelStateResponse } from "@/types/travelSync";
+import type { CustomTravelItemDetails, TravelNamespace, TravelStateItem, TravelStateResponse } from "@/types/travelSync";
 
 export type TravelSyncStatus = "loading" | "synced" | "pending" | "offline" | "locked" | "error";
 
@@ -43,7 +43,7 @@ type TravelSyncContextValue = {
   error: string;
   conflictMessage: string;
   toggleItem: (namespace: TravelNamespace, itemId: string) => void;
-  addCustomItem: (namespace: Exclude<TravelNamespace, "prep">, name: string, category: string) => void;
+  addCustomItem: (namespace: Exclude<TravelNamespace, "prep">, name: string, category: string, details?: CustomTravelItemDetails) => void;
   deleteCustomItem: (namespace: Exclude<TravelNamespace, "prep">, itemId: string) => void;
   resetNamespace: (namespace: TravelNamespace) => Promise<void>;
   ensureDayPlan: (date: string) => Promise<void>;
@@ -94,8 +94,16 @@ async function apiRequest<T>(url: string, init?: RequestInit) {
   return envelope.data;
 }
 
-function createItem(namespace: TravelNamespace, itemId: string, checked: boolean, name: string | null = null, category: string | null = null): TravelStateItem {
-  return { namespace, itemId, checked, name, category, isCustom: Boolean(name && category), updatedAt: new Date().toISOString() };
+function createItem(
+  namespace: TravelNamespace,
+  itemId: string,
+  checked: boolean,
+  name: string | null = null,
+  category: string | null = null,
+  note: string | null = null,
+  sourceUrl: string | null = null,
+): TravelStateItem {
+  return { namespace, itemId, checked, name, category, note, sourceUrl, isCustom: Boolean(name && category), updatedAt: new Date().toISOString() };
 }
 
 async function migrateLegacyLocalStorage() {
@@ -104,7 +112,8 @@ async function migrateLegacyLocalStorage() {
     await putCachedTravelItem(item);
     await enqueueSyncOperation({
       resource: "checklist", id: newOperationId(), action: "patch", namespace: item.namespace, itemId: item.itemId,
-      checked: item.checked, name: item.name, category: item.category, baseUpdatedAt: null, createdAt: newOperationCreatedAt(),
+      checked: item.checked, name: item.name, category: item.category, note: item.note, sourceUrl: item.sourceUrl,
+      baseUpdatedAt: null, createdAt: newOperationCreatedAt(),
     });
   };
   for (const namespace of ["packing", "shopping", "wishlist"] as const) {
@@ -181,7 +190,8 @@ export function TravelSyncProvider({ children }: { children: ReactNode }) {
     if (operation.action === "patch") {
       return await apiRequest<TravelStateItem>("/api/travel-state", { method: "PATCH", body: JSON.stringify({
         namespace: operation.namespace, itemId: operation.itemId, checked: operation.checked,
-        name: operation.name, category: operation.category, baseUpdatedAt: operation.baseUpdatedAt ?? null,
+        name: operation.name, category: operation.category, note: operation.note, sourceUrl: operation.sourceUrl,
+        baseUpdatedAt: operation.baseUpdatedAt ?? null,
       }) });
     }
     return await apiRequest<{ deleted: number | boolean }>("/api/travel-state", {
@@ -326,7 +336,8 @@ export function TravelSyncProvider({ children }: { children: ReactNode }) {
     await putCachedTravelItem(item);
     await enqueueLatestSyncOperation({
       resource: "checklist", id: newOperationId(), action: "patch", namespace: item.namespace, itemId: item.itemId,
-      checked: item.checked, name: item.name, category: item.category, baseUpdatedAt, createdAt: newOperationCreatedAt(),
+      checked: item.checked, name: item.name, category: item.category, note: item.note, sourceUrl: item.sourceUrl,
+      baseUpdatedAt, createdAt: newOperationCreatedAt(),
     });
     rerunRequestedRef.current = true;
     setPendingCount((await getSyncOutbox()).length);
@@ -336,13 +347,29 @@ export function TravelSyncProvider({ children }: { children: ReactNode }) {
 
   const toggleItem = useCallback((namespace: TravelNamespace, itemId: string) => {
     const current = itemsRef.current.find((item) => item.namespace === namespace && item.itemId === itemId);
-    const next = createItem(namespace, itemId, !current?.checked, current?.name ?? null, current?.category ?? null);
+    const next = createItem(
+      namespace,
+      itemId,
+      !current?.checked,
+      current?.name ?? null,
+      current?.category ?? null,
+      current?.note ?? null,
+      current?.sourceUrl ?? null,
+    );
     updateItems([...itemsRef.current.filter((item) => !(item.namespace === namespace && item.itemId === itemId)), next]);
     void queueChecklistPatch(next, current?.updatedAt ?? null);
   }, [queueChecklistPatch, updateItems]);
 
-  const addCustomItem = useCallback((namespace: Exclude<TravelNamespace, "prep">, name: string, category: string) => {
-    const item = createItem(namespace, `custom-${newOperationId()}`, false, name, category);
+  const addCustomItem = useCallback((namespace: Exclude<TravelNamespace, "prep">, name: string, category: string, details: CustomTravelItemDetails = {}) => {
+    const item = createItem(
+      namespace,
+      `custom-${newOperationId()}`,
+      false,
+      name,
+      category,
+      details.note?.trim() || null,
+      details.sourceUrl?.trim() || null,
+    );
     updateItems([...itemsRef.current, item]);
     void queueChecklistPatch(item, null);
   }, [queueChecklistPatch, updateItems]);

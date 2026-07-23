@@ -360,6 +360,22 @@ h1, h2, h3, p { margin-top: 0; }
 .checklist-filter-count { margin: 6px 0 14px; color: var(--muted); font-size: 0.75rem; }
 .empty-state p { margin-bottom: 10px; }
 .empty-state-action { min-height: 44px; padding: 0 14px; border: 1px solid var(--accent); background: var(--paper); color: var(--accent); font-weight: 700; }
+.recommendation-panel { margin: 0 0 18px; border: 1px solid var(--line-strong); background: color-mix(in srgb, var(--accent-soft) 62%, var(--paper)); }
+.recommendation-panel > summary { display: flex; min-height: 50px; align-items: center; padding: 0 12px; color: var(--accent); font-size: 0.9375rem; font-weight: 750; list-style: none; cursor: pointer; }
+.recommendation-panel > summary::-webkit-details-marker { display: none; }
+.recommendation-form { display: grid; gap: 11px; padding: 0 12px 14px; }
+.recommendation-form > p { margin: 0; color: var(--muted); font-size: 0.8125rem; line-height: 1.5; }
+.recommendation-form label { display: grid; min-width: 0; gap: 4px; color: var(--muted); font-size: 0.8125rem; }
+.recommendation-form input, .recommendation-form select, .recommendation-form textarea { width: 100%; min-width: 0; border: 1px solid var(--line-strong); border-radius: 0; background: var(--paper); color: var(--ink); font: inherit; font-size: 1rem; }
+.recommendation-form input, .recommendation-form select { min-height: 46px; padding: 0 10px; }
+.recommendation-form textarea { padding: 9px 10px; resize: vertical; }
+.recommendation-url-row, .recommendation-fields { display: grid; gap: 8px; }
+.recommendation-preview-button, .recommendation-submit { min-height: 46px; border: 0; font: inherit; font-weight: 750; }
+.recommendation-preview-button { padding: 0 14px; border: 1px solid var(--accent); background: var(--paper); color: var(--accent); }
+.recommendation-submit { background: var(--ink); color: white; }
+.recommendation-preview-button:disabled, .recommendation-submit:disabled { opacity: .48; }
+.recommendation-feedback { color: var(--accent) !important; font-weight: 650; }
+.recommendation-feedback.error { color: var(--danger) !important; }
 .check-item-shell { position: relative; border-bottom: 1px solid var(--line); }
 .check-item-shell .check-item { border-bottom: 0; }
 .check-item-shell:has(.check-item-delete) .check-item { padding-right: 64px; }
@@ -378,10 +394,11 @@ h1, h2, h3, p { margin-top: 0; }
 .check-item.checked .check-box { background: var(--accent); animation: check-complete 200ms ease-out; }
 @keyframes check-complete { 50% { transform: scale(.86); } 100% { transform: scale(1); } }
 .check-item.checked .check-copy strong { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
-.check-copy { min-width: 0; }
+.check-copy { min-width: 0; overflow-wrap: anywhere; }
 .check-copy strong, .check-copy small { display: block; }
 .check-copy strong { font-size: 1rem; }
 .check-copy small { color: var(--muted); font-size: 0.875rem; line-height: 1.45; }
+.check-source-link { display: inline-flex; width: fit-content; min-height: 44px; align-items: center; margin-top: 3px; color: var(--accent); font-size: 0.8125rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .check-copy .shopping-image-status { width: fit-content; margin: 3px 0 4px; padding: 1px 5px; border: 1px solid var(--line-strong); color: var(--accent); font-size: 0.6875rem; font-weight: 750; line-height: 1.45; }
 .check-copy .shopping-image-status.category { color: var(--muted); }
 .check-copy .shopping-image-status.pending { border-color: #d9ad91; color: var(--warning); }
@@ -866,6 +883,8 @@ h1, h2, h3, p { margin-top: 0; }
   .route-card { margin: 0; }
   .add-form { grid-template-columns: 1fr 160px 82px; }
   .add-form button { align-self: end; grid-column: auto; }
+  .recommendation-url-row { align-items: end; grid-template-columns: minmax(0, 1fr) auto; }
+  .recommendation-fields { grid-template-columns: minmax(0, 1fr) 180px; }
   .reminder-list { grid-template-columns: 1fr 1fr; }
   .today-tools { display: grid; grid-template-columns: 1fr 1fr; }
   .today-tools > a:first-child { border-right: 1px solid var(--line); }

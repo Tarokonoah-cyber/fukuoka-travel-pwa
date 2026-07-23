@@ -44,7 +44,13 @@ export function Checklist({
   const custom = useMemo<ChecklistItemData[]>(
     () => stateItems
       .filter((item) => item.isCustom && item.name && item.category)
-      .map((item) => ({ id: item.itemId, name: item.name!, category: item.category! })),
+      .map((item) => ({
+        id: item.itemId,
+        name: item.name!,
+        category: item.category!,
+        note: item.note ?? undefined,
+        sourceUrl: item.sourceUrl ?? undefined,
+      })),
     [stateItems],
   );
   const [name, setName] = useState("");

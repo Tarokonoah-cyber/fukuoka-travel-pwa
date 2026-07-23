@@ -20,3 +20,9 @@ export interface ShoppingImageAsset {
   itemIds: readonly string[];
   aliases: readonly string[];
 }
+
+export interface ShoppingLinkPreview {
+  url: string;
+  title: string;
+  sourceName: string;
+}

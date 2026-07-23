@@ -58,7 +58,7 @@ export function resolveShoppingItemImage(
       src: shoppingPendingImagePath,
       alt: `${item.name}待補官方商品圖`,
       kind: "pending",
-      statusLabel: "待補官方圖",
+      statusLabel: "待確認官方圖",
       fallbackSrc: categorySrc,
       fallbackAlt,
     };

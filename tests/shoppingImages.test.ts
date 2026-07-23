@@ -49,8 +49,20 @@ describe("shopping image resolution", () => {
     );
 
     expect(image.kind).toBe("pending");
-    expect(image.statusLabel).toBe("待補官方圖");
+    expect(image.statusLabel).toBe("待確認官方圖");
     expect(image.src).toBe(shoppingPendingImagePath);
     expect(image.sourceHref).toBeUndefined();
+  });
+
+  it.each([
+    ["maruchan-seimen-ninniku-shio-tantan", "maruchan-seimen-ninniku-shio-tantan.webp", "maruchan.co.jp"],
+    ["seven-wakame-asari-shio-ramen", "seven-wakame-asari-shio.webp", "7premium.jp"],
+    ["clean-dental-total-care", "clean-dental-total-care.webp", "daiichisankyo-hc.co.jp"],
+    ["rohto-jinmart", "rohto-jinmart.webp", "jp.rohto.com"],
+  ])("resolves the added product %s to its official local image", (imageId, filename, sourceHost) => {
+    const image = resolveShoppingItemImage(item({ id: imageId, imageId, category: "泡麵" }), shoppingImageAssets);
+    expect(image.kind).toBe("official");
+    expect(image.src).toContain(filename);
+    expect(image.sourceHref).toContain(sourceHost);
   });
 });

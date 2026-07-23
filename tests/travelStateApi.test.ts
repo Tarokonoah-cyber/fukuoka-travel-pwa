@@ -25,6 +25,8 @@ const item: TravelStateItem = {
   checked: true,
   name: null,
   category: null,
+  note: null,
+  sourceUrl: null,
   isCustom: false,
   updatedAt: "2026-07-13T12:00:00.000Z",
 };
@@ -58,6 +60,52 @@ describe("共用清單 Route Handler", () => {
     const incompleteCustom = await PATCH(new Request("http://localhost/api/travel-state", { method: "PATCH", body: JSON.stringify({ namespace: "packing", itemId: "x", checked: true, name: "雨傘" }) }));
     expect(invalidNamespace.status).toBe(400);
     expect(incompleteCustom.status).toBe(400);
+    expect(repository.upsertTravelState).not.toHaveBeenCalled();
+  });
+
+  it("保存推薦來源與備註，並移除網址 fragment", async () => {
+    const customItem = {
+      ...item,
+      namespace: "shopping" as const,
+      itemId: "custom-noodle",
+      name: "網友推薦泡麵",
+      category: "泡麵",
+      note: "蒜味很濃",
+      sourceUrl: "https://example.com/noodle",
+      isCustom: true,
+    };
+    repository.upsertTravelState.mockResolvedValue({ item: customItem, conflict: false });
+    const response = await PATCH(new Request("http://localhost/api/travel-state", {
+      method: "PATCH",
+      body: JSON.stringify({
+        namespace: "shopping",
+        itemId: "custom-noodle",
+        checked: false,
+        name: "網友推薦泡麵",
+        category: "泡麵",
+        note: "蒜味很濃",
+        sourceUrl: "https://example.com/noodle#comments",
+      }),
+    }));
+
+    expect(response.status).toBe(200);
+    expect(repository.upsertTravelState).toHaveBeenCalledWith(expect.objectContaining({
+      note: "蒜味很濃",
+      sourceUrl: "https://example.com/noodle",
+    }));
+  });
+
+  it("拒絕帶帳密、內網站名或特殊連接埠的推薦網址", async () => {
+    const payload = (sourceUrl: string) => ({
+      namespace: "shopping", itemId: "custom-x", checked: false,
+      name: "測試商品", category: "泡麵", sourceUrl,
+    });
+    const responses = await Promise.all([
+      PATCH(new Request("http://localhost/api/travel-state", { method: "PATCH", body: JSON.stringify(payload("https://user:pass@example.com/item")) })),
+      PATCH(new Request("http://localhost/api/travel-state", { method: "PATCH", body: JSON.stringify(payload("http://localhost/item")) })),
+      PATCH(new Request("http://localhost/api/travel-state", { method: "PATCH", body: JSON.stringify(payload("https://example.com:8443/item")) })),
+    ]);
+    expect(responses.map((response) => response.status)).toEqual([400, 400, 400]);
     expect(repository.upsertTravelState).not.toHaveBeenCalled();
   });
 

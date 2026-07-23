@@ -1,6 +1,6 @@
 import type { ChecklistItemData } from "@/types/trip";
 
-export const shoppingCategories = ["伴手禮", "藥妝", "零食", "生活用品", "棒球周邊", "媽媽想買"];
+export const shoppingCategories = ["伴手禮", "藥妝", "零食", "泡麵", "生活用品", "棒球周邊", "媽媽想買"];
 
 export const shoppingItems: ChecklistItemData[] = [
   { id:"dazaifu-amulet", name:"太宰府天滿宮御守", category:"伴手禮", important:true, price:"現場確認", location:"太宰府天滿宮", note:"8/3 主要境內順路購買，不為款式走遍全區" },
@@ -18,6 +18,28 @@ export const shoppingItems: ChecklistItemData[] = [
   { id:"station-gift", name:"博多站限定禮盒候補", category:"伴手禮", price:"待確認", location:"博多站", note:"依保存期限與重量決定" },
 
   { id:"patch", imageId:"lion-kyusoku-jikan", name:"休足時間／痠痛貼布", category:"藥妝", price:"約 ¥600–1,200", location:"天神藥妝／博多站", note:"媽媽與自己都可用" },
+  {
+    id: "clean-dental-total-care",
+    imageId: "clean-dental-total-care",
+    name: "クリーンデンタル トータルケア",
+    category: "藥妝",
+    important: true,
+    price: "圖片店頭價：100g 約 ¥1,452／150g 約 ¥2,068",
+    location: "藥妝店，依門市庫存與實際售價",
+    note: "紅盒 Total Care；100g／150g 現場比價。官方列為醫藥部外品藥用牙膏，用於牙周病、蛀牙與口臭預防等。",
+    sourceUrl: "https://www.daiichisankyo-hc.co.jp/products/details/cleandental_lb/",
+  },
+  {
+    id: "rohto-jinmart",
+    imageId: "rohto-jinmart",
+    name: "メンソレータム ジンマート",
+    category: "藥妝",
+    important: true,
+    price: "官方希望售價 ¥1,320（含稅）",
+    location: "藥妝店；購買時可向藥師或登錄販售者確認",
+    note: "15g、第2類醫藥品、非類固醇外用乳霜；適用蕁麻疹、搔癢、濕疹、蟲咬等。請閱讀說明，使用 5–6 日未改善應停用並諮詢專業人員。",
+    sourceUrl: "https://jp.rohto.com/jinmart/ointment",
+  },
   { id:"eye-drops", name:"眼藥水候補", category:"藥妝", price:"待確認", location:"天神藥妝", note:"品牌與款式現場確認" },
   { id:"stomach-meds", name:"腸胃藥候補", category:"藥妝", price:"待確認", location:"藥妝店", note:"注意成分與平常用藥衝突" },
   { id:"cooling-sheets", name:"退熱貼／涼感貼", category:"藥妝", price:"約 ¥400–900", location:"藥妝店", note:"8 月旅行備用" },
@@ -25,6 +47,29 @@ export const shoppingItems: ChecklistItemData[] = [
   { id:"kyushu-snacks", name:"福岡／九州限定零食", category:"零食", price:"約 ¥500–1,500", location:"博多站", note:"看包裝大小與保存期限" },
   { id:"ramen-pack", name:"博多拉麵包裝食品", category:"零食", price:"約 ¥800–2,000", location:"博多站／機場", note:"重量較重，最後再決定" },
   { id:"senbei", name:"其他仙貝候補", category:"零食", price:"待確認", location:"博多站", note:"福太郎明太子仙貝已列為必買，其他款式現場再看" },
+
+  {
+    id: "maruchan-seimen-ninniku-shio-tantan",
+    imageId: "maruchan-seimen-ninniku-shio-tantan",
+    name: "マルちゃん正麺 カップ にんにく塩担々麺",
+    category: "泡麵",
+    important: true,
+    price: "建議售價 ¥278（未稅）",
+    location: "便利商店／超市，依門市庫存",
+    note: "網友推薦的 2026 年版；金色碗裝，蒜香、辣油與唐辛子風味。JAN 4901990383783，113g（麵 75g），熱湯 5 分鐘。",
+    sourceUrl: "https://www.maruchan.co.jp/news_topics/entry/2026/04/post_20211136.html",
+  },
+  {
+    id: "seven-wakame-asari-shio-ramen",
+    imageId: "seven-wakame-asari-shio-ramen",
+    name: "7プレミアム わかめたくさん あさりだし塩ラーメン",
+    category: "泡麵",
+    important: true,
+    price: "¥170（含稅，店舖可能不同）",
+    location: "7-Eleven，依門市庫存",
+    note: "網友推薦；蛤蜊高湯鹽味、蒜香與淡淡奶油香，海帶芽份量多。65g、278 kcal，熱湯 3 分鐘。",
+    sourceUrl: "https://7premium.jp/product/search/detail?id=6832",
+  },
 
   { id:"towel", name:"日本製小毛巾", category:"生活用品", price:"約 ¥700–1,500", location:"天神百貨／博多站", note:"自用或送媽媽" },
   { id:"stationery", name:"文具／收納小物", category:"生活用品", price:"待確認", location:"天神／博多", note:"不特地繞路，有看到再買" },

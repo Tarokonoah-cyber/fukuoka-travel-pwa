@@ -19,6 +19,8 @@ export type ChecklistSyncOperation = {
   checked?: boolean;
   name?: string | null;
   category?: string | null;
+  note?: string | null;
+  sourceUrl?: string | null;
   baseUpdatedAt?: string | null;
   createdAt: string;
 };
@@ -92,6 +94,8 @@ export async function getCachedTravelItems() {
     checked: row.checked,
     name: row.name,
     category: row.category,
+    note: row.note ?? null,
+    sourceUrl: row.sourceUrl ?? null,
     isCustom: row.isCustom,
     updatedAt: row.updatedAt,
   }));
